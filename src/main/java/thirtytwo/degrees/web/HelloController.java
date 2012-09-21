@@ -1,4 +1,4 @@
-package thirtytwo.degrees;
+package thirtytwo.degrees.web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,8 +11,8 @@ public class HelloController {
 
     @RequestMapping(value = "/hello")
     public void home(Writer out) throws IOException {
-        System.out.println("HomeController: Passing through...");
-        out.write("hello heroku");
+        System.out.println("HelloController: Passing through...");
+        out.write("hello controller");
         out.flush();
         out.close();
     }

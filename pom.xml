@@ -1,0 +1,103 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.heroku.sample</groupId>
+  <artifactId>embeddedTomcatSample</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <name>embeddedTomcatSample Maven Webapp</name>
+  <url>http://maven.apache.org</url>
+  <packaging>war</packaging>
+    <properties>
+        <!--<java-version>1.6</java-version>-->
+        <tomcat-version>7.0.30</tomcat-version>
+        <org.springframework-version>3.1.2.RELEASE</org.springframework-version>
+        <!--<org.slf4j-version>1.6.1</org.slf4j-version>-->
+        <slope.spring.config.class>thirtytwo.degrees.AppConfig</slope.spring.config.class>
+    </properties>
+
+    <dependencies>
+    <dependency>
+        <groupId>org.apache.tomcat.embed</groupId>
+        <artifactId>tomcat-embed-core</artifactId>
+        <version>${tomcat-version}</version>
+        <scope>provided</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.tomcat.embed</groupId>
+        <artifactId>tomcat-embed-logging-juli</artifactId>
+        <version>${tomcat-version}</version>
+        <scope>provided</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.tomcat.embed</groupId>
+        <artifactId>tomcat-embed-jasper</artifactId>
+        <version>${tomcat-version}</version>
+        <scope>provided</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.tomcat</groupId>
+        <artifactId>tomcat-jasper</artifactId>
+        <version>${tomcat-version}</version>
+        <scope>provided</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.tomcat</groupId>
+        <artifactId>tomcat-jasper-el</artifactId>
+        <version>${tomcat-version}</version>
+        <scope>provided</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.tomcat</groupId>
+        <artifactId>tomcat-jsp-api</artifactId>
+        <version>${tomcat-version}</version>
+        <scope>provided</scope>
+    </dependency>
+      <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-webmvc</artifactId>
+          <version>${org.springframework-version}</version>
+      </dependency>
+
+      <!-- CGLIB, only required and used for @Configuration usage -->
+      <dependency>
+          <groupId>cglib</groupId>
+          <artifactId>cglib-nodep</artifactId>
+          <version>2.2</version>
+      </dependency>
+
+  </dependencies>
+  <build>
+    <finalName>embeddedTomcatSample</finalName>
+      <resources>
+      <resource>
+          <directory>src/main/resources</directory>
+          <filtering>true</filtering>
+      </resource>
+      </resources>
+    <plugins>
+        <!-- http://tomcat.apache.org/maven-plugin-2.0-SNAPSHOT/tomcat7-maven-plugin/exec-war-mojo.html -->
+        <plugin>
+            <groupId>org.apache.tomcat.maven</groupId>
+            <artifactId>tomcat7-maven-plugin</artifactId>
+            <version>2.0-beta-1</version>
+            <executions>
+                <execution>
+                    <id>tomcat-run</id>
+                    <goals>
+                        <goal>exec-war-only</goal>
+                    </goals>
+                    <phase>package</phase>
+                    <configuration>
+                        <path>/test</path>
+                        <!-- optional only if you want to use a preconfigured server.xml file
+                        <serverXml>src/main/tomcatconf/server.xml</serverXml> -->
+                        <!-- optional values which can be configurable
+                        <attachArtifactClassifier>default value is exec-war but you can customize</attachArtifactClassifier>
+                        <attachArtifactClassifierType>default value is jar</attachArtifactClassifierType> -->
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
+    </plugins>
+  </build>
+</project>

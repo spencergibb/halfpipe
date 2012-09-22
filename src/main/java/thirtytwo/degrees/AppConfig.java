@@ -1,7 +1,9 @@
-package thirtytwo.degrees.resources;
+package thirtytwo.degrees;
 
 import com.netflix.config.*;
 import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.ComponentScan.Filter;
+import org.springframework.stereotype.Controller;
 
 import javax.inject.Named;
 
@@ -13,8 +15,10 @@ import javax.inject.Named;
  * http://static.springsource.org/spring/docs/3.1.x/spring-framework-reference/html/mvc.html#mvc-config-enable
  */
 @Configuration
-@ComponentScan(basePackageClasses = ResourceConfig.class)
-public class ResourceConfig {
+@ComponentScan(basePackageClasses = AppConfig.class, excludeFilters = {
+    @Filter(Controller.class)
+})
+public class AppConfig {
 
     //TODO: create a proxy that auto-populates a pojo full off values and watches for changes?
     // https://github.com/Netflix/archaius/wiki/Getting-Started

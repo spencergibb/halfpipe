@@ -14,7 +14,7 @@
  specified for component-scanning -->
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>thirtytwo.degrees.resources.ResourceConfig</param-value>
+        <param-value>thirtytwo.degrees.AppConfig</param-value>
     </context-param>
 
     <!-- Bootstrap the root application context as usual using ContextLoaderListener -->

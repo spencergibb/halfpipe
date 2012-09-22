@@ -114,7 +114,20 @@
             <artifactId>archaius-core</artifactId>
             <version>0.3.3</version>
         </dependency>
-  </dependencies>
+
+        <dependency>
+            <groupId>com.yammer.metrics</groupId>
+            <artifactId>metrics-core</artifactId>
+            <version>2.1.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.yammer.metrics</groupId>
+            <artifactId>metrics-servlet</artifactId>
+            <version>2.1.2</version>
+        </dependency>
+
+    </dependencies>
   <build>
     <finalName>embeddedTomcatSample</finalName>
       <resources>

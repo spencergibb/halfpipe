@@ -1,6 +1,5 @@
-package thirtytwo.degrees.web.admin;
+package thirtytwo.degrees.halfpipe.example.web.admin;
 
-import com.yammer.metrics.reporting.AdminServlet;
 import com.yammer.metrics.reporting.PingServlet;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

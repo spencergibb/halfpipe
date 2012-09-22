@@ -1,4 +1,4 @@
-package thirtytwo.degrees.health;
+package thirtytwo.degrees.halfpipe.example.health;
 
 import com.yammer.metrics.core.HealthCheck;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package thirtytwo.degrees;
+package thirtytwo.degrees.halfpipe.example;
 
 import com.netflix.config.*;
 import org.springframework.context.annotation.*;

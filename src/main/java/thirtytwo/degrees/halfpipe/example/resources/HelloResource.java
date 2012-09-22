@@ -1,12 +1,11 @@
-package thirtytwo.degrees.resources;
+package thirtytwo.degrees.halfpipe.example.resources;
 
 import org.springframework.stereotype.Component;
-import thirtytwo.degrees.core.Hello;
+import thirtytwo.degrees.halfpipe.example.core.Hello;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 /**
  * User: gibbsb

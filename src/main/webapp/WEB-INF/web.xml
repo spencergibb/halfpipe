@@ -14,7 +14,7 @@
  specified for component-scanning -->
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>thirtytwo.degrees.AppConfig</param-value>
+        <param-value>thirtytwo.degrees.halfpipe.example.AppConfig</param-value>
     </context-param>
 
     <!-- Bootstrap the root application context as usual using ContextLoaderListener -->
@@ -38,7 +38,7 @@
         <!-- Again, config locations must consist of one or more comma- or space-delimited and fully-qualified @Configuration classes -->
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>thirtytwo.degrees.web.MvcConfig</param-value>
+            <param-value>thirtytwo.degrees.halfpipe.example.web.MvcConfig</param-value>
             <!--<param-value>${slope.spring.config.class}</param-value>-->
         </init-param>
         <load-on-startup>1</load-on-startup>
@@ -46,14 +46,14 @@
 
     <servlet>
         <servlet-name>jersey-serlvet</servlet-name>
-        <servlet-class>
-            com.sun.jersey.spi.spring.container.servlet.SpringServlet
-        </servlet-class>
+        <servlet-class>com.sun.jersey.spi.spring.container.servlet.SpringServlet</servlet-class>
+        <!-- TODO: instrument jersey
+        <servlet-class>thirtytwo.degrees.halfpipe.jersey.JerseyServlet</servlet-class> -->
         <init-param>
             <param-name>
                 com.sun.jersey.config.property.packages
             </param-name>
-            <param-value>thirtytwo.degrees.resources</param-value>
+            <param-value>thirtytwo.degrees.halfpipe.example.resources</param-value>
         </init-param>
         <init-param>
             <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>

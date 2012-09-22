@@ -1,4 +1,4 @@
-package thirtytwo.degrees.web;
+package thirtytwo.degrees.halfpipe.example.web;
 
 import com.yammer.metrics.HealthChecks;
 import com.yammer.metrics.core.HealthCheck;

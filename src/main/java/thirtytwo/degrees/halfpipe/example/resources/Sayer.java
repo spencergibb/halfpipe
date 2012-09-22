@@ -1,4 +1,4 @@
-package thirtytwo.degrees.resources;
+package thirtytwo.degrees.halfpipe.example.resources;
 
 import com.netflix.config.DynamicStringProperty;
 import org.springframework.stereotype.Service;

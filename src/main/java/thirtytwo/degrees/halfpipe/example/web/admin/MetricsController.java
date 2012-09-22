@@ -1,7 +1,6 @@
-package thirtytwo.degrees.web.admin;
+package thirtytwo.degrees.halfpipe.example.web.admin;
 
 import com.yammer.metrics.reporting.MetricsServlet;
-import com.yammer.metrics.reporting.ThreadDumpServlet;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -16,9 +15,9 @@ import java.io.IOException;
  * Time: 6:48 PM
  */
 @Controller
-public class ThreadDumpController extends ThreadDumpServlet {
+public class MetricsController extends MetricsServlet {
 
-    @RequestMapping("/admin/threads")
+    @RequestMapping("/admin/metrics")
     public void get(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
         doGet(req, res);
     }

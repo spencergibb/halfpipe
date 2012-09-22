@@ -1,4 +1,4 @@
-package thirtytwo.degrees.core;
+package thirtytwo.degrees.halfpipe.example.core;
 
 /**
  * User: gibbsb

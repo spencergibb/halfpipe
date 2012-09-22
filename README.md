@@ -2,7 +2,7 @@
 ====================
 
 HTTP+JSON Services using industry best Java libraries.
-Spring enabled, with embedded tomcat.  Inspired
+Spring enabled, with embedded tomcat.  Inspired by dropwizard.
 
 Features
 -----

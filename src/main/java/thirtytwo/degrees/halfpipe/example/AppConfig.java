@@ -18,6 +18,7 @@ import javax.inject.Named;
 @ComponentScan(basePackageClasses = AppConfig.class, excludeFilters = {
     @Filter(Controller.class)
 })
+@ImportResource("classpath:META-INF/spring/applicationContext-security.xml")
 public class AppConfig {
 
     //TODO: create a proxy that auto-populates a pojo full off values and watches for changes?

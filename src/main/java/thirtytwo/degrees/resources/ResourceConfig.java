@@ -1,7 +1,9 @@
 package thirtytwo.degrees.resources;
 
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
+import com.netflix.config.*;
+import org.springframework.context.annotation.*;
+
+import javax.inject.Named;
 
 /**
  * User: gibbsb
@@ -14,4 +16,10 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan(basePackageClasses = ResourceConfig.class)
 public class ResourceConfig {
 
+    //TODO: create a proxy that auto-populates a pojo full off values and watches for changes?
+    // https://github.com/Netflix/archaius/wiki/Getting-Started
+    @Bean @Named("helloText")
+    public DynamicStringProperty helloText() {
+        return DynamicPropertyFactory.getInstance().getStringProperty("hello.text", "Hello default text");
+    }
 }

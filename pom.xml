@@ -66,6 +66,12 @@
       </dependency>
 
         <dependency>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
+            <version>1</version>
+        </dependency>
+
+        <dependency>
         <groupId>com.sun.jersey</groupId>
         <artifactId>jersey-json</artifactId>
             <version>1.14</version>
@@ -103,6 +109,11 @@
             </exclusions>
         </dependency>
 
+        <dependency>
+            <groupId>com.netflix.archaius</groupId>
+            <artifactId>archaius-core</artifactId>
+            <version>0.3.3</version>
+        </dependency>
   </dependencies>
   <build>
     <finalName>embeddedTomcatSample</finalName>

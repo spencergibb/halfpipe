@@ -3,6 +3,7 @@ package thirtytwo.degrees.resources;
 import org.springframework.stereotype.Component;
 import thirtytwo.degrees.core.Hello;
 
+import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -16,9 +17,12 @@ import javax.ws.rs.core.Response;
 @Path("/hello")
 public class HelloResource {
 
+    @Inject
+    Sayer sayer;
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Hello hello() {
-        return new Hello("Hello", "Resource");
+        return new Hello(sayer.hello(), "Resource");
     }
 }

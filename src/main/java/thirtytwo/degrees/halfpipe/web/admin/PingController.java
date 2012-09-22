@@ -1,6 +1,6 @@
-package thirtytwo.degrees.halfpipe.example.web.admin;
+package thirtytwo.degrees.halfpipe.web.admin;
 
-import com.yammer.metrics.reporting.HealthCheckServlet;
+import com.yammer.metrics.reporting.PingServlet;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -10,15 +10,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * //TODO: move out of example package
- * User: gibbsb
+ * User: spencer
  * Date: 9/21/12
  * Time: 6:48 PM
  */
 @Controller
-public class HealthCheckController extends HealthCheckServlet {
+public class PingController extends PingServlet {
 
-    @RequestMapping("/admin/healthcheck")
+    @RequestMapping("/admin/ping")
     public void admin(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
         doGet(req, res);
     }

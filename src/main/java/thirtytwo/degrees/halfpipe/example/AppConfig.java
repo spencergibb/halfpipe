@@ -13,7 +13,7 @@ import javax.inject.Named;
 import java.util.List;
 
 /**
- * User: gibbsb
+ * User: spencer
  * Date: 9/21/12
  * Time: 4:18 PM
  * <p/>

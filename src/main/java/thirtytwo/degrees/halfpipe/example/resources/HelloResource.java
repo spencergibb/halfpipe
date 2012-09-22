@@ -9,7 +9,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 /**
- * User: gibbsb
+ * User: spencer
  * Date: 9/21/12
  * Time: 5:11 PM
  */

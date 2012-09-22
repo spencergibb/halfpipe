@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 
 /**
- * User: gibbsb
+ * User: spencer
  * Date: 9/21/12
  * Time: 6:25 PM
  */

@@ -1,11 +1,16 @@
 package thirtytwo.degrees.halfpipe.example;
 
 import com.netflix.config.*;
+import com.yammer.metrics.HealthChecks;
+import com.yammer.metrics.core.HealthCheck;
+import com.yammer.metrics.core.HealthCheckRegistry;
+import com.yammer.metrics.util.DeadlockHealthCheck;
 import org.springframework.context.annotation.*;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.stereotype.Controller;
 
 import javax.inject.Named;
+import java.util.List;
 
 /**
  * User: gibbsb
@@ -27,4 +32,18 @@ public class AppConfig {
     public DynamicStringProperty helloText() {
         return DynamicPropertyFactory.getInstance().getStringProperty("hello.text", "Hello default text");
     }
+
+    @Bean
+    public DeadlockHealthCheck deadlockHealthCheck() {
+        return new DeadlockHealthCheck();
+    }
+
+    @Bean
+    public HealthCheckRegistry healthChecks(List<HealthCheck> healthChecks) {
+        for (HealthCheck healthCheck : healthChecks) {
+            HealthChecks.register(healthCheck);
+        }
+        return HealthChecks.defaultRegistry();
+    }
+
 }

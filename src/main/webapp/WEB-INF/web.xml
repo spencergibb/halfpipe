@@ -17,6 +17,9 @@
         <param-value>thirtytwo.degrees.halfpipe.example.AppConfig</param-value>
     </context-param>
 
+    <!-- TODO: use http://docs.oracle.com/javaee/6/api/javax/servlet/annotation/package-summary.html
+        instead of web.xml -->
+
     <!-- Bootstrap the root application context as usual using ContextLoaderListener -->
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
@@ -59,6 +62,10 @@
         <servlet-class>com.sun.jersey.spi.spring.container.servlet.SpringServlet</servlet-class>
         <!-- TODO: instrument jersey
         <servlet-class>thirtytwo.degrees.halfpipe.jersey.JerseyServlet</servlet-class> -->
+        <init-param>
+            <param-name>javax.ws.rs.Application</param-name>
+            <param-value>thirtytwo.degrees.halfpipe.jersey.HalfpipeResourceConfig</param-value>
+        </init-param>
         <init-param>
             <param-name>
                 com.sun.jersey.config.property.packages

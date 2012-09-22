@@ -5,7 +5,7 @@
     <artifactId>halfpipe</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>Halfpipe</name>
-    <url>http://maven.apache.org</url>
+    <url>http://halfpipe.32degre.es</url>
     <packaging>war</packaging>
     <properties>
         <!--<java-version>1.6</java-version>-->
@@ -165,7 +165,7 @@
 
     </dependencies>
     <build>
-        <finalName>embeddedTomcatSample</finalName>
+        <finalName>halfpipe-example</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
@@ -186,7 +186,7 @@
                         </goals>
                         <phase>package</phase>
                         <configuration>
-                            <path>/test</path>
+                            <path>/</path>
                             <!-- optional only if you want to use a preconfigured server.xml file
                            <serverXml>src/main/tomcatconf/server.xml</serverXml> -->
                             <!-- optional values which can be configurable

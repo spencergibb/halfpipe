@@ -1,5 +1,6 @@
 package thirtytwo.degrees.halfpipe.example.resources;
 
+import com.yammer.metrics.annotation.Timed;
 import org.springframework.stereotype.Component;
 import thirtytwo.degrees.halfpipe.example.core.Hello;
 
@@ -21,6 +22,7 @@ public class HelloResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Timed
     public Hello hello() {
         return new Hello(sayer.hello(), "Resource");
     }

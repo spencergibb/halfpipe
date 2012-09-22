@@ -1,16 +1,23 @@
 package thirtytwo.degrees.halfpipe.jersey;
 
-import com.sun.jersey.api.core.ScanningResourceConfig;
+import com.sun.jersey.api.core.*;
 import com.yammer.metrics.jersey.InstrumentedResourceMethodDispatchAdapter;
+import org.springframework.stereotype.Component;
+
+import java.util.Map;
 
 /**
  * User: gibbsb
  * Date: 9/21/12
  * Time: 10:43 PM
  */
-public class HalfpipeResourceConfig extends ScanningResourceConfig {
+public class HalfpipeResourceConfig extends PackagesResourceConfig {
 
-    public HalfpipeResourceConfig() {
+    public HalfpipeResourceConfig(Map<String, Object> props) {
+        super(props);
+
+        setPropertiesAndFeatures(props);
+        getFeatures().put(ResourceConfig.FEATURE_DISABLE_WADL, Boolean.TRUE);
         getClasses().add(InstrumentedResourceMethodDispatchAdapter.class);
     }
 }

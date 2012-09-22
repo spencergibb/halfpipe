@@ -1,14 +1,9 @@
 package thirtytwo.degrees.halfpipe.example.web;
 
-import com.yammer.metrics.HealthChecks;
-import com.yammer.metrics.core.HealthCheck;
-import com.yammer.metrics.core.HealthCheckRegistry;
 import com.yammer.metrics.reporting.MetricsServlet;
 import org.springframework.context.annotation.*;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.mvc.ServletWrappingController;
-
-import java.util.List;
 
 /**
  * User: gibbsb
@@ -40,13 +35,5 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
         controller.setServletName("metrics");
 
         return controller;
-    }
-
-    @Bean
-    public HealthCheckRegistry healthChecks(List<HealthCheck> healthChecks) {
-        for (HealthCheck healthCheck : healthChecks) {
-            HealthChecks.register(healthCheck);
-        }
-        return HealthChecks.defaultRegistry();
     }
 }

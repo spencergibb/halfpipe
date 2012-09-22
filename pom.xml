@@ -163,6 +163,12 @@
             <version>${metrics-version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.yammer.metrics</groupId>
+            <artifactId>metrics-web</artifactId>
+            <version>${metrics-version}</version>
+        </dependency>
+
     </dependencies>
     <build>
         <finalName>halfpipe-example</finalName>

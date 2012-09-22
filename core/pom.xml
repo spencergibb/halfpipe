@@ -18,58 +18,58 @@
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-core</artifactId>
-            <version>${tomcat-version}</version>
+            <version>${tomcat.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-logging-juli</artifactId>
-            <version>${tomcat-version}</version>
+            <version>${tomcat.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-jasper</artifactId>
-            <version>${tomcat-version}</version>
+            <version>${tomcat.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.tomcat</groupId>
             <artifactId>tomcat-jasper</artifactId>
-            <version>${tomcat-version}</version>
+            <version>${tomcat.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.tomcat</groupId>
             <artifactId>tomcat-jasper-el</artifactId>
-            <version>${tomcat-version}</version>
+            <version>${tomcat.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.tomcat</groupId>
             <artifactId>tomcat-jsp-api</artifactId>
-            <version>${tomcat-version}</version>
+            <version>${tomcat.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-            <version>${org.springframework-version}</version>
+            <version>${springframework.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
-            <version>${org.springframework-version}</version>
+            <version>${springframework.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-web</artifactId>
-            <version>${org.springframework-version}</version>
+            <version>${springframework.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-config</artifactId>
-            <version>${org.springframework-version}</version>
+            <version>${springframework.version}</version>
         </dependency>
 
         <!-- CGLIB, only required and used for @Configuration usage -->
@@ -132,13 +132,13 @@
         <dependency>
             <groupId>com.yammer.metrics</groupId>
             <artifactId>metrics-core</artifactId>
-            <version>${metrics-version}</version>
+            <version>${metrics.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.yammer.metrics</groupId>
             <artifactId>metrics-jersey</artifactId>
-            <version>${metrics-version}</version>
+            <version>${metrics.version}</version>
             <exclusions>
                 <exclusion>
                     <artifactId>jersey-core</artifactId>
@@ -158,13 +158,13 @@
         <dependency>
             <groupId>com.yammer.metrics</groupId>
             <artifactId>metrics-servlet</artifactId>
-            <version>${metrics-version}</version>
+            <version>${metrics.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.yammer.metrics</groupId>
             <artifactId>metrics-web</artifactId>
-            <version>${metrics-version}</version>
+            <version>${metrics.version}</version>
         </dependency>
 
     </dependencies>

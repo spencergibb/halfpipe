@@ -4,24 +4,66 @@
     <groupId>thirtytwo.degrees</groupId>
     <artifactId>halfpipe-parent</artifactId>
     <version>1.0-SNAPSHOT</version>
-	 <packaging>pom</packaging>
+    <packaging>pom</packaging>
     <name>Halfpipe</name>
     <url>http://halfpipe.32degre.es</url>
 
 
-	<modules>
-		 <module>core</module>
-		<module>example</module>
-	 </modules>
+    <modules>
+        <module>core</module>
+        <module>example</module>
+        <module>scala_2.9.1</module>
+    </modules>
 
     <properties>
         <!--<java-version>1.6</java-version>-->
-        <tomcat-version>7.0.30</tomcat-version>
-        <metrics-version>2.1.2</metrics-version>
-        <org.springframework-version>3.1.2.RELEASE</org.springframework-version>
+        <tomcat.version>7.0.30</tomcat.version>
+        <metrics.version>2.1.2</metrics.version>
+        <springframework.version>3.1.2.RELEASE</springframework.version>
         <!--<org.slf4j-version>1.6.1</org.slf4j-version>-->
     </properties>
 
 
+    <developers>
+        <developer>
+            <name>Spencer Gibb</name>
+            <email>spencer@gibb.us</email>
+            <timezone>-7</timezone>
+        </developer>
+    </developers>
+
+    <licenses>
+        <license>
+            <name>Apache License 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <connection>scm:git:git://github.com/32degrees/halfpipe.git</connection>
+        <developerConnection>scm:git:git@github.com:32degrees/halfpipe.git</developerConnection>
+        <url>http://github.com/32degrees/halfpipe/</url>
+        <tag>HEAD</tag>
+    </scm>
+
+    <issueManagement>
+        <system>github</system>
+        <url>http://github.com/32degrees/halfpipe/issues#issue/</url>
+    </issueManagement>
+
+    <!--<repositories>
+        <repository>
+            <id>sonatype-nexus-snapshots</id>
+            <name>Sonatype Nexus Snapshots</name>
+            <url>http://oss.sonatype.org/content/repositories/snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>-->
 
 </project>

@@ -1,0 +1,161 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>thirtytwo.degrees</groupId>
+    <artifactId>halfpipe-scala</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <name>Halfpipe for Scala ${scala.version}</name>
+    <url>http://halfpipe.32degre.es</url>
+    <packaging>war</packaging>
+
+	  <parent>
+         <groupId>thirtytwo.degrees</groupId>
+         <artifactId>halfpipe-parent</artifactId>
+        <version>1.0-SNAPSHOT</version>
+     </parent>
+
+    <properties>
+        <scala.version>2.9.1</scala.version>
+    </properties>
+
+
+    <repositories>
+        <repository>
+            <id>repo.codahale.com</id>
+            <url>http://repo.codahale.com/</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scala-library</artifactId>
+            <version>${scala.version}</version>
+        </dependency>
+        <dependency>
+			  <groupId>${project.groupId}</groupId>
+            <artifactId>halfpipe-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.5</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.codahale</groupId>
+            <artifactId>jersey-scala_${scala.version}</artifactId>
+            <version>0.2.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.sun.jersey</groupId>
+                    <artifactId>jersey-server</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.codahale</groupId>
+                    <artifactId>jerkson_${scala.version}</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.codahale</groupId>
+            <artifactId>jerkson_${scala.version}</artifactId>
+            <version>0.5.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.codehaus.jackson</groupId>
+                    <artifactId>jackson-mapper-asl</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.codehaus.jackson</groupId>
+                    <artifactId>jackson-core-asl</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.yammer.metrics</groupId>
+            <artifactId>metrics-scala_${scala.version}</artifactId>
+            <version>${metrics.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>halfpipe-example</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <plugins>
+            <!-- http://tomcat.apache.org/maven-plugin-2.0-SNAPSHOT/tomcat7-maven-plugin/exec-war-mojo.html -->
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.0-beta-1</version>
+                <executions>
+                    <execution>
+                        <id>tomcat-run</id>
+                        <goals>
+                            <goal>exec-war-only</goal>
+                        </goals>
+                        <phase>package</phase>
+                        <configuration>
+                            <path>/</path>
+                            <!-- optional only if you want to use a preconfigured server.xml file
+                           <serverXml>src/main/tomcatconf/server.xml</serverXml> -->
+                            <!-- optional values which can be configurable
+                        <attachArtifactClassifier>default value is exec-war but you can customize</attachArtifactClassifier>
+                        <attachArtifactClassifierType>default value is jar</attachArtifactClassifierType> -->
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>net.alchim31.maven</groupId>
+                <artifactId>scala-maven-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <id>compile</id>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <phase>compile</phase>
+                    </execution>
+                    <execution>
+                        <id>test-compile</id>
+                        <goals>
+                            <goal>testCompile</goal>
+                        </goals>
+                        <phase>test-compile</phase>
+                    </execution>
+                    <execution>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <charset>UTF-8</charset>
+                    <launchers>
+                        <launcher>
+                            <id>server</id>
+                            <mainClass>com.yammer.dropwizard.examples.ExampleService</mainClass>
+                            <args>
+                                <arg>server</arg>
+                                <arg>src/test/resources/scala-example.yml</arg>
+                            </args>
+                        </launcher>
+                    </launchers>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

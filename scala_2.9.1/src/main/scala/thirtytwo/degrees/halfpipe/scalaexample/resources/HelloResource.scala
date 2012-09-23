@@ -1,6 +1,6 @@
 package thirtytwo.degrees.halfpipe.scalaexample.resources
 
-import javax.ws.rs.{GET, Path}
+import javax.ws.rs.{QueryParam, GET, Path}
 import org.springframework.stereotype.Component
 import javax.inject.{Named, Inject}
 import com.netflix.config.{DynamicStringProperty => DString}
@@ -18,5 +18,6 @@ class HelloResource {
   var helloText: DString = _
 
   @GET
-  def hello() = helloText.get()
+  def hello(@QueryParam("more") more: Option[String]) =
+    helloText.get() + more.getOrElse("")
 }

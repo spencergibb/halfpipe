@@ -18,10 +18,7 @@ import com.yammer.metrics.annotation.Timed
  */
 @Component
 @Path("/hello")
-class HelloResource {
-
-  @Inject @Named("helloText")
-  var helloText: DString = _
+class HelloResource @Inject() (@Named("helloText") helloText: DString) {
 
   @GET
   @Path("/text")

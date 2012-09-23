@@ -19,7 +19,7 @@ public class HelloHealthCheck extends HealthCheck {
 
     @Override
     protected Result check() throws Exception {
-        System.out.println(new Date() +" workes");
+        System.out.println(new Date() +" works");
         return Result.healthy("The Date class works!");
     }
 }

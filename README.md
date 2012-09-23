@@ -18,6 +18,7 @@ Features
 - TODO: Guava integration
 - TODO: Validation
 - Jersey Metrics
+    - Health Checks
     - web metrics
     - TODO: tomcat metrics
     - TODO: spring metrics

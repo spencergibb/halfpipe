@@ -1,5 +1,6 @@
 package thirtytwo.degrees.halfpipe.example;
 
+import com.fasterxml.jackson.datatype.guava.GuavaModule;
 import com.netflix.config.*;
 import com.yammer.metrics.HealthChecks;
 import com.yammer.metrics.core.HealthCheck;
@@ -8,6 +9,8 @@ import com.yammer.metrics.util.DeadlockHealthCheck;
 import org.springframework.context.annotation.*;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.stereotype.Controller;
+import thirtytwo.degrees.halfpipe.jersey.GuavaExtrasModule;
+import thirtytwo.degrees.halfpipe.jersey.HalfpipeObjectMapperProvider;
 
 import javax.inject.Named;
 import java.util.List;
@@ -44,6 +47,21 @@ public class AppConfig {
             HealthChecks.register(healthCheck);
         }
         return HealthChecks.defaultRegistry();
+    }
+
+    @Bean
+    public GuavaExtrasModule guavaExtrasModule() {
+        return new GuavaExtrasModule();
+    }
+
+    @Bean
+    public GuavaModule guavaModule() {
+        return new GuavaModule();
+    }
+
+    @Bean @Scope
+    public HalfpipeObjectMapperProvider objectMapperProvider() {
+        return new HalfpipeObjectMapperProvider(guavaModule(), guavaExtrasModule());
     }
 
 }

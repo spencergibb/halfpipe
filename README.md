@@ -10,14 +10,17 @@ Features
 - [Embedded tomcat](http://tomcat.apache.org/maven-plugin-2/executable-war-jar.html)
 - Spring enabled (no or little XML)
     - mvc
-    - TODO: [java security](http://blog.springsource.org/2011/08/01/spring-security-configuration-with-scala/)
+    - TODO: [java security, not xml](http://blog.springsource.org/2011/08/01/spring-security-configuration-with-scala/)
     - data
     - integration
-- TODO: Multilingual java/Scala
+- Multilingual java/Scala
     - [scala-spring](https://github.com/ewolff/scala-spring)
+- TODO: Guava integration
+- TODO: Validation
 - Jersey Metrics
     - web metrics
     - TODO: tomcat metrics
+    - TODO: spring metrics
 - TODO: Spring command line
     - TODO: Scala repl
     - TODO: Yeoman integration

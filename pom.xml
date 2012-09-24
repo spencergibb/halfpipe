@@ -20,6 +20,7 @@
         <tomcat.version>7.0.30</tomcat.version>
         <metrics.version>2.1.2</metrics.version>
         <springframework.version>3.1.2.RELEASE</springframework.version>
+        <archaius.version>0.3.3</archaius.version>
         <!--<org.slf4j-version>1.6.1</org.slf4j-version>-->
     </properties>
 

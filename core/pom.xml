@@ -126,7 +126,7 @@
         <dependency>
             <groupId>com.netflix.archaius</groupId>
             <artifactId>archaius-core</artifactId>
-            <version>0.3.3</version>
+            <version>${archaius.version}</version>
         </dependency>
 
         <dependency>

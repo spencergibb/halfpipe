@@ -3,7 +3,7 @@ package thirtytwo.degrees.halfpipe.scalaexample.resources
 import javax.ws.rs.{Produces, QueryParam, GET, Path}
 import org.springframework.stereotype.Component
 import javax.inject.{Named, Inject}
-import com.netflix.config.{DynamicStringProperty => DString}
+import com.netflix.config.scala.{DynamicStringProperty => DString}
 import thirtytwo.degrees.halfpipe.scalaexample.core.Hello
 import javax.ws.rs.core.MediaType
 import com.yammer.metrics.annotation.Timed
@@ -31,5 +31,5 @@ class HelloResource @Inject() (@Named("helloText") helloText: DString) {
   @Produces(Array(MediaType.APPLICATION_JSON))
   @Timed
   def hellojson(@QueryParam("more") more: Option[String]) =
-    new Hello(helloText.get(), "Resource"+more.getOrElse(""))
+    new Hello(helloText.get(), "Scala Resource"+more.getOrElse(""))
 }

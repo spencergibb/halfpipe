@@ -36,11 +36,11 @@ public class HalfpipeWebAppInitializer implements WebApplicationInitializer {
             AnnotationConfigWebApplicationContext webCtx = createContext("halfpipe.view.config.class");
 
             // The main Spring MVC servlet.
-            addServlet(sc, "appServlet", new DispatcherServlet(webCtx), 1, "/*");
+            addServlet(sc, "viewServlet", new DispatcherServlet(webCtx), 1, getStringProp("halfpipe.view.url.pattern", "/*"));
 
             // Jersey Servlet
-            ServletRegistration.Dynamic jersey = addServlet(sc, "jersey-servlet", new SpringServlet(), 1, "/ws/*");
-            jersey.setInitParameter("com.sun.jersey.config.property.packages", "thirtytwo.degrees.halfpipe.example.resources");
+            ServletRegistration.Dynamic jersey = addServlet(sc, "jersey-servlet", new SpringServlet(), 1, getStringProp("halfpipe.url.pattern", "/ws/*"));
+            jersey.setInitParameter("com.sun.jersey.config.property.packages", getStringProp("halfpipe.resource.packages").get());
             jersey.setInitParameter("com.sun.jersey.api.json.POJOMappingFeature", Boolean.TRUE.toString());
         } catch (Exception e) {
             e.printStackTrace();
@@ -49,11 +49,12 @@ public class HalfpipeWebAppInitializer implements WebApplicationInitializer {
         }
     }
 
-    private ServletRegistration.Dynamic addServlet(ServletContext servletContext, String servletName, Servlet servlet, int loadOnStartup, String urlPattern) {
+    private ServletRegistration.Dynamic addServlet(ServletContext servletContext, String servletName, Servlet servlet,
+                                                   int loadOnStartup, DynamicStringProperty urlPattern) {
         ServletRegistration.Dynamic reg = servletContext.addServlet(servletName, servlet);
         Assert.notNull(reg, "Unable to create servlet "+servletName);
         reg.setLoadOnStartup(loadOnStartup);
-        Set<String> mappingConflicts = reg.addMapping(urlPattern);
+        Set<String> mappingConflicts = reg.addMapping(urlPattern.get());
 
         if (!mappingConflicts.isEmpty()) {
             for (String s : mappingConflicts) {
@@ -76,12 +77,21 @@ public class HalfpipeWebAppInitializer implements WebApplicationInitializer {
 
     private AnnotationConfigWebApplicationContext createContext(String classConfigProperty) throws ClassNotFoundException {
         AnnotationConfigWebApplicationContext ctx = new AnnotationConfigWebApplicationContext();
-        DynamicStringProperty className = DynamicPropertyFactory.getInstance().getStringProperty(classConfigProperty, null);
-
-        Assert.hasText(className.get(), classConfigProperty + " must not be empty");
+        DynamicStringProperty className = getStringProp(classConfigProperty);
 
         Class<?> appConfigClass = Class.forName(className.get());
         ctx.register(appConfigClass);
         return ctx;
+    }
+
+    private DynamicStringProperty getStringProp(String propName) {
+        DynamicStringProperty prop = getStringProp(propName, null);
+
+        Assert.hasText(prop.get(), propName + " must not be empty");
+        return prop;
+    }
+
+    private DynamicStringProperty getStringProp(String propName, String defaultValue) {
+        return DynamicPropertyFactory.getInstance().getStringProperty(propName, defaultValue);
     }
 }

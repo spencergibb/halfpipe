@@ -1,7 +1,7 @@
 package thirtytwo.degrees.halfpipe.scalaexample
 
 import org.springframework.context.annotation._
-import com.netflix.config.DynamicPropertyFactory
+import com.netflix.config.scala.DynamicProperties
 import javax.inject.Named
 import org.springframework.context.annotation.ComponentScan.Filter
 import org.springframework.stereotype.Controller
@@ -19,10 +19,10 @@ import java.util.{List => JList}
 @ComponentScan (basePackageClasses = Array (classOf[AppConfig]),
   excludeFilters = Array(new Filter (Array (classOf[Controller], classOf[Configuration]))))
 @ImportResource(Array ("classpath:META-INF/spring/applicationContext-security.xml"))
-class AppConfig {
+class AppConfig extends DynamicProperties {
 
   @Bean @Named("helloText")
-  def helloText() = DynamicPropertyFactory.getInstance().getStringProperty("hello.text", "Hello default")
+  def helloText() = dynamicStringProperty("hello.text", "Hello default")
 
   @Bean
   def deadlockHealthCheck() = new DeadlockHealthCheck()

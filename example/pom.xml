@@ -20,6 +20,13 @@
             <artifactId>halfpipe-core</artifactId>
             <version>${project.version}</version>
         </dependency>
+
+        <!-- TODO: why doesn't this come with core? -->
+        <dependency>
+            <groupId>com.fasterxml.jackson</groupId>
+            <artifactId>jackson-datatype-guava</artifactId>
+            <version>${jackson.guava.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

@@ -170,13 +170,13 @@
         <dependency>
             <groupId>com.fasterxml.jackson</groupId>
             <artifactId>jackson-datatype-guava</artifactId>
-            <version>1.9.1</version>
+            <version>${jackson.guava.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>13.0.1</version>
+            <version>${guava.version}</version>
         </dependency>
 
     </dependencies>

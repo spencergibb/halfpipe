@@ -85,7 +85,7 @@
         <dependency>
             <groupId>com.fasterxml.jackson</groupId>
             <artifactId>jackson-datatype-guava</artifactId>
-            <version>1.9.1</version>
+            <version>${jackson.guava.version}</version>
         </dependency>
 
         <dependency>

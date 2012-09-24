@@ -1,4 +1,4 @@
-package thirtytwo.degrees.halfpipe.scalaexample.web
+package thirtytwo.degrees.halfpipe.scalaexample.view
 
 import org.springframework.web.servlet.config.annotation.{ResourceHandlerRegistry, WebMvcConfigurerAdapter, EnableWebMvc}
 import org.springframework.context.annotation.{ComponentScan, Configuration}
@@ -11,8 +11,8 @@ import thirtytwo.degrees.halfpipe.web.admin.AdminControllers
  */
 @EnableWebMvc
 @Configuration
-@ComponentScan(basePackageClasses = Array(classOf[MvcConfig], classOf[AdminControllers]))
-class MvcConfig extends WebMvcConfigurerAdapter {
+@ComponentScan(basePackageClasses = Array(classOf[ViewConfig], classOf[AdminControllers]))
+class ViewConfig extends WebMvcConfigurerAdapter {
 
   override def addResourceHandlers(registry: ResourceHandlerRegistry) {
     registry.addResourceHandler("/**").addResourceLocations("classpath:/static/")

@@ -24,7 +24,8 @@ import java.util.List;
  */
 @Configuration
 @ComponentScan(basePackageClasses = AppConfig.class, excludeFilters = {
-    @Filter(Controller.class)
+    @Filter(Controller.class),
+    @Filter(Configuration.class)
 })
 @ImportResource("classpath:META-INF/spring/applicationContext-security.xml")
 public class AppConfig {

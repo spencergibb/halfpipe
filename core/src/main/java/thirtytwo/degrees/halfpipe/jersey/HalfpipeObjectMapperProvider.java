@@ -24,6 +24,7 @@ public class HalfpipeObjectMapperProvider implements ContextResolver<ObjectMappe
 
     @Override
     public ObjectMapper getContext(Class<?> type) {
+        //TODO: singleton ObjectMapper
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(guavaModule);
         mapper.registerModule(guavaExtrasModule);

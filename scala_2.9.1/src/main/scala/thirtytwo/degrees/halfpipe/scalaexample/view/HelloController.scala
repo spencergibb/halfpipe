@@ -1,4 +1,4 @@
-package thirtytwo.degrees.halfpipe.scalaexample.web
+package thirtytwo.degrees.halfpipe.scalaexample.view
 
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.RequestMapping

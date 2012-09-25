@@ -4,11 +4,14 @@ import static org.apache.tomcat.maven.runner.Tomcat7RunnerCli.STAND_ALONE_PROPER
 
 import org.apache.catalina.startup.Tomcat;
 import org.apache.commons.cli.*;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.*;
 import org.apache.tomcat.maven.runner.Tomcat7Runner;
+import org.springframework.core.io.ClassPathResource;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
+import java.io.*;
+import java.net.URL;
+import java.util.*;
 
 /**
  * User: spencergibb
@@ -18,7 +21,7 @@ import java.util.Properties;
 public class HalfpipeRunner {
 
     static Option server = OptionBuilder.withArgName("server")
-            .withDescription("run halfpipe server from executable war")
+            .withDescription("run halfpipe server")
             .create("server");
 
     static Option help = OptionBuilder.withLongOpt("help")
@@ -52,8 +55,27 @@ public class HalfpipeRunner {
                 runner.runtimeProperties = properties;
                 runner.run();
             } else {
+                String userDir = System.getProperty("user.dir");
+                AndFileFilter filter = new AndFileFilter();
+                filter.addFileFilter(new NameFileFilter("web.xml"));
+                filter.addFileFilter(new AbstractFileFilter() {
+                    public boolean accept(File file) {
+                        String path = file.getAbsolutePath();
+                        return path.matches(".*target.*WEB-INF.*") && !path.matches(".*war.work.*");
+                    }
+                });
+                Collection<File> files = FileUtils.listFiles(new File(userDir), filter, TrueFileFilter.INSTANCE);
+                if (files.isEmpty()) {
+                    System.err.println("No directory!");
+                    System.exit(1);
+                }
+                if (files.size() > 1) {
+                    System.err.println("More than one file! "+files);
+                }
                 Tomcat tomcat = new Tomcat();
-                tomcat.addWebapp("", "/home/gibbsb/workspace/32degrees/halfpipe/example/target/halfpipe-example");
+                File file = files.iterator().next();
+                String baseDir = file.getParentFile().getParentFile().getAbsolutePath();
+                tomcat.addWebapp("", baseDir);
                 tomcat.start();
                 waitIndefinitely();
             }

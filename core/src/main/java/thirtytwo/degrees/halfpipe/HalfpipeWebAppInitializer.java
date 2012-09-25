@@ -45,37 +45,37 @@ public class HalfpipeWebAppInitializer implements WebApplicationInitializer {
                 if (initialized) return;
 
                 initialized = true;
+                createConfig(sc);
+
+                // Create the root appcontext
+                AnnotationConfigWebApplicationContext rootCtx = createContext(PROP_CONFIG_CLASS);
+                rootCtx.refresh();
+
+                // Manage the lifecycle of the root appcontext
+                sc.addListener(new ContextLoaderListener(rootCtx));
+
+                // Filters
+                addFilter(sc, "springSecurityFilterChain", new DelegatingFilterProxy(), ROOT_URL_PATTERN);
+                addFilter(sc, "webappMetricsFilter", new DefaultWebappMetricsFilter(), ROOT_URL_PATTERN);
+
+                // now the config for the Dispatcher servlet
+                AnnotationConfigWebApplicationContext webCtx = createContext(PROP_VIEW_CONFIG_CLASS);
+
+                // The main Spring MVC servlet.
+                ServletRegistration.Dynamic viewServlet = addServlet(sc, "viewServlet", new DispatcherServlet(webCtx), 1,
+                        getStringProp(PROP_VIEW_URL_PATTERN, ROOT_URL_PATTERN));
+
+                if (DynamicPropertyFactory.getInstance().getBooleanProperty(PROP_INSTALL_DEFAULT_SERVLET, false).get()) {
+                    addServlet(sc, HALFPIPE_DEFAULT_SERVLET, new DefaultServlet(), 1, ROOT_URL_PATTERN);
+                }
+
+                // Jersey Servlet
+                ServletRegistration.Dynamic jersey = addServlet(sc, "jersey-servlet", new SpringServlet(), 1,
+                        getStringProp(HALFPIPE_URL_PATTERN, RESOURCE_URL_PATTERN));
+                jersey.setInitParameter(ServletContainer.RESOURCE_CONFIG_CLASS, HalfpipeResourceConfig.class.getName());
+                jersey.setInitParameter(PackagesResourceConfig.PROPERTY_PACKAGES, getStringProp(HALFPIPE_RESOURCE_PACKAGES).get());
+                jersey.setInitParameter(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE.toString());
             }
-            createConfig(sc);
-
-            // Create the root appcontext
-            AnnotationConfigWebApplicationContext rootCtx = createContext(PROP_CONFIG_CLASS);
-            rootCtx.refresh();
-
-            // Manage the lifecycle of the root appcontext
-            sc.addListener(new ContextLoaderListener(rootCtx));
-
-            // Filters
-            addFilter(sc, "springSecurityFilterChain", new DelegatingFilterProxy(), ROOT_URL_PATTERN);
-            addFilter(sc, "webappMetricsFilter", new DefaultWebappMetricsFilter(), ROOT_URL_PATTERN);
-
-            // now the config for the Dispatcher servlet
-            AnnotationConfigWebApplicationContext webCtx = createContext(PROP_VIEW_CONFIG_CLASS);
-
-            // The main Spring MVC servlet.
-            ServletRegistration.Dynamic viewServlet = addServlet(sc, "viewServlet", new DispatcherServlet(webCtx), 1,
-                    getStringProp(PROP_VIEW_URL_PATTERN, ROOT_URL_PATTERN));
-
-            if (DynamicPropertyFactory.getInstance().getBooleanProperty(PROP_INSTALL_DEFAULT_SERVLET, false).get()) {
-                addServlet(sc, HALFPIPE_DEFAULT_SERVLET, new DefaultServlet(), 1, ROOT_URL_PATTERN);
-            }
-
-            // Jersey Servlet
-            ServletRegistration.Dynamic jersey = addServlet(sc, "jersey-servlet", new SpringServlet(), 1,
-                    getStringProp(HALFPIPE_URL_PATTERN, RESOURCE_URL_PATTERN));
-            jersey.setInitParameter(ServletContainer.RESOURCE_CONFIG_CLASS, HalfpipeResourceConfig.class.getName());
-            jersey.setInitParameter(PackagesResourceConfig.PROPERTY_PACKAGES, getStringProp(HALFPIPE_RESOURCE_PACKAGES).get());
-            jersey.setInitParameter(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE.toString());
         } catch (Exception e) {
             e.printStackTrace();
             sc.log("Unable to initialize Halfpipe web application", e);

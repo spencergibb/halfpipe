@@ -3,9 +3,8 @@ package thirtytwo.degrees.halfpipe.scalaexample.view
 import org.springframework.context.annotation.{Bean, ComponentScan, Configuration}
 import thirtytwo.degrees.halfpipe.config.AbstractViewConfig
 import org.springframework.web.servlet.config.annotation.{ViewControllerRegistry, EnableWebMvc}
-import thirtytwo.degrees.halfpipe.web.mgmt.MgmtControllers
-import org.springframework.web.servlet.view.{UrlBasedViewResolver, JstlView}
 import org.springframework.web.servlet.view.freemarker.{FreeMarkerViewResolver, FreeMarkerConfigurer}
+import thirtytwo.degrees.halfpipe.mgmt.view.MgmtControllers
 
 /**
  * User: spencergibb

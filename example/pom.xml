@@ -21,6 +21,13 @@
             <version>${project.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>halfpipe-runner</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
         <!-- TODO: why doesn't this come with core? -->
         <dependency>
             <groupId>com.fasterxml.jackson</groupId>
@@ -34,7 +41,7 @@
             </exclusions>
         </dependency>
 
-
+        <!-- TODO: why doesn't this come with core? -->
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>

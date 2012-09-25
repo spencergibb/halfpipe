@@ -28,6 +28,9 @@ import java.util.Set;
  */
 public class HalfpipeWebAppInitializer implements WebApplicationInitializer {
 
+    static Object lock = new Object();
+    static boolean initialized = false;
+
     static {
         System.setProperty("archaius.configurationSource.defaultFileName", HALFPIPE_PROPERTIES_FILENAME);
     }
@@ -38,6 +41,11 @@ public class HalfpipeWebAppInitializer implements WebApplicationInitializer {
     @Override
     public void onStartup(ServletContext sc) throws ServletException {
         try {
+            synchronized (lock) {
+                if (initialized) return;
+
+                initialized = true;
+            }
             createConfig(sc);
 
             // Create the root appcontext
@@ -76,6 +84,9 @@ public class HalfpipeWebAppInitializer implements WebApplicationInitializer {
     }
 
     private void createConfig(ServletContext sc) {
+        if (DynamicPropertyFactory.isInitializedWithDefaultConfig() || ConfigurationManager.isConfigurationInstalled()) {
+            return; //TODO: why does this happen on exploded?
+        }
         Map<String, Object> map = Maps.newHashMap();
         map.put(PROP_INSTALL_DEFAULT_SERVLET, (sc.getNamedDispatcher("default") == null));
         System.err.println("Config: "+map);

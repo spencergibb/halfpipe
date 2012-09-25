@@ -1,7 +1,10 @@
 package thirtytwo.degrees.halfpipe.example.view;
 
 import org.springframework.context.annotation.*;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import thirtytwo.degrees.halfpipe.config.AbstractViewConfig;
 import thirtytwo.degrees.halfpipe.config.DefaultViewConfg;
+import thirtytwo.degrees.halfpipe.mgmt.view.MgmtControllers;
 
 /**
  * User: spencergibb
@@ -10,8 +13,10 @@ import thirtytwo.degrees.halfpipe.config.DefaultViewConfg;
  * <p/>
  * http://static.springsource.org/spring/docs/3.1.x/spring-framework-reference/html/mvc.html#mvc-config-enable
  */
+@EnableWebMvc
 @Configuration
-@ComponentScan(basePackageClasses = {ViewConfig.class})
-@Import(DefaultViewConfg.class)
-public class ViewConfig {
+@ComponentScan(basePackageClasses = {ViewConfig.class, MgmtControllers.class}, excludeFilters = {
+        @ComponentScan.Filter(Configuration.class)
+})
+public class ViewConfig extends AbstractViewConfig {
 }

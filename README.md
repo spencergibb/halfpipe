@@ -15,7 +15,7 @@ Features
     - integration
 - Multilingual java/Scala
     - [scala-spring](https://github.com/ewolff/scala-spring)
-- TODO: Guava integration
+- Guava integration
 - TODO: Validation
 - Jersey Metrics
     - Health Checks

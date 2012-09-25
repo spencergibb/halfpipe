@@ -5,7 +5,7 @@ import thirtytwo.degrees.halfpipe.security.web._
 import org.springframework.context.annotation.{Bean, Configuration}
 import org.springframework.security.web.FilterChainProxy
 import org.springframework.security.web.util.IpAddressMatcher
-import org.springframework.security.core.userdetails.{User, UserDetailsService}
+import org.springframework.security.core.userdetails.{UsernameNotFoundException, User, UserDetailsService}
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import java.util.Arrays
 import org.springframework.security.core.Authentication
@@ -40,29 +40,8 @@ class SecurityConfig {
       interceptUrl("/admin/**", hasRole("ROLE_ADMIN"))
       interceptUrl("/ws/**", hasRole("ROLE_USER"))
       interceptUrl("/", permitAll)
+      basicAuthenticationEntryPoint.setRealmName("scalaexample")
     }
-
-  /**
-   * A form-login configuration with remember-me and other standard options.
-   * Namespace equivalent would be:
-   * <pre>
-   *   &lt;http use-expressions="true">
-   *     &lt;intercept-url pattern="/" access="permitAll" />
-   *     &lt;intercept-url pattern="/&#42*" access="hasRole('ROLE_USER')" />
-   *     &lt;form-login />
-   *     &lt;logout />
-   *     &lt;remember-me />
-   *   &lt;/http>
-   * </pre>
-   */
-//@Bean
-//  def simpleFormLoginChain =
-//    new FilterChain with FormLogin with Logout with RememberMe with LoginPageGenerator {
-//      val authenticationManager = testAuthenticationManager
-//      val userDetailsService = testUserDetailsService
-//      interceptUrl("/", permitAll)
-//      interceptUrl("/**", hasRole("ROLE_USER"))
-//    }
 
   /**
    * Simple AuthenticationManager setup for testing.
@@ -88,11 +67,39 @@ class SecurityConfig {
     import thirtytwo.degrees.halfpipe.security.Conversions._
 
     new UserDetailsService {
-      def loadUserByUsername(username: String) = {
-        new User(username, "password", List("ROLE_USER", "ROLE_ADMIN"))
+      def loadUserByUsername(username: String) = username match {
+        case "admin" => new User(username, "password", List("ROLE_USER", "ROLE_ADMIN"))
+        case "user" => new User(username, "password", "ROLE_USER")
+        case _ => throw new UsernameNotFoundException(username)
       }
     }
   }
+
+  @Bean def accessLogger = new AccessLoggerListener
+
+  @Bean def authenticationLogger = new AuthLoggerListener
+
+  /**
+   * A form-login configuration with remember-me and other standard options.
+   * Namespace equivalent would be:
+   * <pre>
+   *   &lt;http use-expressions="true">
+   *     &lt;intercept-url pattern="/" access="permitAll" />
+   *     &lt;intercept-url pattern="/&#42*" access="hasRole('ROLE_USER')" />
+   *     &lt;form-login />
+   *     &lt;logout />
+   *     &lt;remember-me />
+   *   &lt;/http>
+   * </pre>
+   */
+  //@Bean
+  //  def simpleFormLoginChain =
+  //    new FilterChain with FormLogin with Logout with RememberMe with LoginPageGenerator {
+  //      val authenticationManager = testAuthenticationManager
+  //      val userDetailsService = testUserDetailsService
+  //      interceptUrl("/", permitAll)
+  //      interceptUrl("/**", hasRole("ROLE_USER"))
+  //    }
 
 //  @Bean
 //  def filterChainWithLotsOfStuff = {
@@ -107,10 +114,6 @@ class SecurityConfig {
 //      val userDetailsService = testUserDetailsService
 //    }
 //  }
-
-  @Bean def accessLogger = new AccessLoggerListener
-
-  @Bean def authenticationLogger = new AuthLoggerListener
 
   // Some access rules
  /* def allowOnEvenTime(a: Authentication, r: HttpServletRequest) = java.lang.System.currentTimeMillis() % 2 == 0

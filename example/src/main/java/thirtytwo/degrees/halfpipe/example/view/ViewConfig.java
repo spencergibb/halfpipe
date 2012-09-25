@@ -1,8 +1,7 @@
 package thirtytwo.degrees.halfpipe.example.view;
 
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.*;
+import org.springframework.context.annotation.*;
+import thirtytwo.degrees.halfpipe.config.DefaultViewConfg;
 import thirtytwo.degrees.halfpipe.web.admin.AdminControllers;
 
 /**
@@ -12,19 +11,8 @@ import thirtytwo.degrees.halfpipe.web.admin.AdminControllers;
  * <p/>
  * http://static.springsource.org/spring/docs/3.1.x/spring-framework-reference/html/mvc.html#mvc-config-enable
  */
-@EnableWebMvc
 @Configuration
-@ComponentScan(basePackageClasses = {ViewConfig.class, AdminControllers.class})
-public class ViewConfig extends WebMvcConfigurerAdapter {
-
-    @Override
-    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
-        configurer.enable();
-    }
-
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/**")
-                .addResourceLocations("classpath:/static/");
-    }
+@ComponentScan(basePackageClasses = {ViewConfig.class})
+@Import(DefaultViewConfg.class)
+public class ViewConfig {
 }

@@ -1,6 +1,7 @@
 package thirtytwo.degrees.halfpipe.config;
 
 import com.fasterxml.jackson.datatype.guava.GuavaModule;
+import com.google.common.collect.Lists;
 import com.yammer.metrics.HealthChecks;
 import com.yammer.metrics.core.HealthCheck;
 import com.yammer.metrics.core.HealthCheckRegistry;
@@ -9,6 +10,8 @@ import org.codehaus.jackson.map.*;
 import org.springframework.context.annotation.*;
 import thirtytwo.degrees.halfpipe.jersey.*;
 
+import javax.inject.Named;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -49,9 +52,8 @@ public class DefaultAppConfg {
 
     @Bean @Scope("singleton")
     public HalfpipeObjectMapperProvider objectMapperProvider(AnnotationSensitivePropertyNamingStrategy namingStrategy,
-                                                             GuavaExtrasModule guavaExtrasModule,
-                                                             GuavaModule guavaModule) {
-        return new HalfpipeObjectMapperProvider(namingStrategy, guavaExtrasModule, guavaModule);
+                                                             List<Module> modules) {
+        return new HalfpipeObjectMapperProvider(namingStrategy, modules);
     }
 
     @Bean @Scope("singleton")

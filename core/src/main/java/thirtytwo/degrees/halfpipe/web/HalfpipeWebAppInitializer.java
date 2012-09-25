@@ -2,6 +2,9 @@ package thirtytwo.degrees.halfpipe.web;
 
 import com.netflix.config.DynamicPropertyFactory;
 import com.netflix.config.DynamicStringProperty;
+import com.sun.jersey.api.core.PackagesResourceConfig;
+import com.sun.jersey.api.json.JSONConfiguration;
+import com.sun.jersey.spi.container.servlet.ServletContainer;
 import com.sun.jersey.spi.spring.container.servlet.SpringServlet;
 import com.yammer.metrics.web.DefaultWebappMetricsFilter;
 import org.springframework.util.Assert;
@@ -10,6 +13,7 @@ import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.DispatcherServlet;
+import thirtytwo.degrees.halfpipe.jersey.HalfpipeResourceConfig;
 
 import javax.servlet.*;
 import java.util.Set;
@@ -40,8 +44,9 @@ public class HalfpipeWebAppInitializer implements WebApplicationInitializer {
 
             // Jersey Servlet
             ServletRegistration.Dynamic jersey = addServlet(sc, "jersey-servlet", new SpringServlet(), 1, getStringProp("halfpipe.url.pattern", "/ws/*"));
-            jersey.setInitParameter("com.sun.jersey.config.property.packages", getStringProp("halfpipe.resource.packages").get());
-            jersey.setInitParameter("com.sun.jersey.api.json.POJOMappingFeature", Boolean.TRUE.toString());
+            jersey.setInitParameter(ServletContainer.RESOURCE_CONFIG_CLASS, HalfpipeResourceConfig.class.getName());
+            jersey.setInitParameter(PackagesResourceConfig.PROPERTY_PACKAGES, getStringProp("halfpipe.resource.packages").get());
+            jersey.setInitParameter(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE.toString());
         } catch (Exception e) {
             e.printStackTrace();
             sc.log("Unable to initialize Halfpipe web application", e);

@@ -5,7 +5,7 @@ import org.springframework.context.annotation.{ComponentScan, Configuration}
 import thirtytwo.degrees.halfpipe.web.admin.AdminControllers
 
 /**
- * User: gibbsb
+ * User: spencergibb
  * Date: 9/22/12
  * Time: 4:11 PM
  */

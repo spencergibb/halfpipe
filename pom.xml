@@ -23,6 +23,8 @@
         <archaius.version>0.3.3</archaius.version>
         <jackson.guava.version>1.9.1</jackson.guava.version>
         <guava.version>13.0.1</guava.version>
+        <jackson.version>1.9.10</jackson.version>
+        <jersey.version>1.14</jersey.version>
         <!--<org.slf4j-version>1.6.1</org.slf4j-version>-->
     </properties>
 

@@ -6,7 +6,7 @@ import java.util.Date
 import com.yammer.metrics.core.HealthCheck.Result
 
 /**
- * User: gibbsb
+ * User: spencergibb
  * Date: 9/23/12
  * Time: 12:01 AM
  */

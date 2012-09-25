@@ -1,0 +1,21 @@
+package thirtytwo.degrees.halfpipe.jersey;
+
+import org.codehaus.jackson.annotate.JacksonAnnotation;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+/**
+ * Marker annotation which indicates that the annotated case class should be
+ * serialized and deserialized using {@code snake_case} JSON field names instead
+ * of {@code camelCase} field names.
+ */
+// see original https://github.com/codahale/dropwizard/blob/master/dropwizard-core/src/main/java/com/yammer/dropwizard/json/JsonSnakeCase.java
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@JacksonAnnotation
+public @interface JsonSnakeCase {
+
+}

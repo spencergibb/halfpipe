@@ -1,13 +1,13 @@
 package thirtytwo.degrees.halfpipe.jersey
 
-import org.codehaus.jackson.map.ObjectMapper
+import org.codehaus.jackson.map.{SerializationConfig, DeserializationConfig, ObjectMapper}
 import javax.ws.rs.ext.{Provider, ContextResolver}
 import com.codahale.jerkson.ScalaModule
 import javax.inject.Inject
 import com.fasterxml.jackson.datatype.guava.GuavaModule
 
 /**
- * User: gibbsb
+ * User: spencergibb
  * Date: 9/22/12
  * Time: 10:18 PM
  *
@@ -16,12 +16,17 @@ import com.fasterxml.jackson.datatype.guava.GuavaModule
  */
 @Provider
 class HalfpipeScalaObjectMapperProvider (scalaModule: ScalaModule,
-                                    guavaModule: GuavaModule) extends ContextResolver[ObjectMapper] {
+                                    guavaModule: GuavaModule,
+                                    guavaExtrasModule: GuavaExtrasModule,
+                                    namingStrategy: AnnotationSensitivePropertyNamingStrategy) extends ContextResolver[ObjectMapper] {
+
+  private val objectMapper = {
+    val mapper = ObjectMapperFactory.get(namingStrategy, guavaExtrasModule, guavaModule)
+    mapper.registerModule(scalaModule)
+    mapper
+  }
 
   def getContext(klass: Class[_]) = {
-    val mapper = new ObjectMapper()
-    mapper.registerModule(scalaModule)
-    mapper.registerModule(guavaModule)
-    mapper
+    objectMapper
   }
 }

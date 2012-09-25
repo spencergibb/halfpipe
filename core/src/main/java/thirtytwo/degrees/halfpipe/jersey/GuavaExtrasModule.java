@@ -10,6 +10,7 @@ import org.codehaus.jackson.type.JavaType;
 
 import java.io.IOException;
 
+// original https://github.com/codahale/dropwizard/blob/master/dropwizard-core/src/main/java/com/yammer/dropwizard/json/GuavaExtrasModule.java
 public class GuavaExtrasModule extends Module {
     @JsonCachable
     private static class HostAndPortDeserializer extends JsonDeserializer<HostAndPort> {

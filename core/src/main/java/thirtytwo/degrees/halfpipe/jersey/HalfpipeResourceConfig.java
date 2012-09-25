@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 
 /**
- * User: spencer
+ * User: spencergibb
  * Date: 9/21/12
  * Time: 10:43 PM
  */

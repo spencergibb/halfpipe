@@ -9,7 +9,7 @@ import javax.ws.rs.core.MediaType
 import com.yammer.metrics.annotation.Timed
 
 /**
- * User: gibbsb
+ * User: spencergibb
  * Date: 9/22/12
  * Time: 4:06 PM
  *

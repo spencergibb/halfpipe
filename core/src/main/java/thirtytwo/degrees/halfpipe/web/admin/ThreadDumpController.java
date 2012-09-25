@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * User: spencer
+ * User: spencergibb
  * Date: 9/21/12
  * Time: 6:48 PM
  */

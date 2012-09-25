@@ -6,7 +6,7 @@ import org.springframework.web.servlet.config.annotation.*;
 import thirtytwo.degrees.halfpipe.web.admin.AdminControllers;
 
 /**
- * User: spencer
+ * User: spencergibb
  * Date: 9/21/12
  * Time: 4:18 PM
  * <p/>

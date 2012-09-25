@@ -10,7 +10,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 /**
- * User: spencer
+ * User: spencergibb
  * Date: 9/21/12
  * Time: 5:11 PM
  */
@@ -24,7 +24,7 @@ public class HelloResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Timed
-    public Hello hello(@QueryParam("more") /*Optional<String>*/String more) {
-        return new Hello(sayer.hello(), "Resource"+more/*.or("")*/);
+    public Hello hello(@QueryParam("more") Optional<String> more) {
+        return new Hello(sayer.hello(), "Resource"+more.or(""));
     }
 }

@@ -1,22 +1,16 @@
 package thirtytwo.degrees.halfpipe.example;
 
-import com.fasterxml.jackson.datatype.guava.GuavaModule;
-import com.netflix.config.*;
-import com.yammer.metrics.HealthChecks;
-import com.yammer.metrics.core.HealthCheck;
-import com.yammer.metrics.core.HealthCheckRegistry;
-import com.yammer.metrics.util.DeadlockHealthCheck;
+import com.netflix.config.DynamicPropertyFactory;
+import com.netflix.config.DynamicStringProperty;
 import org.springframework.context.annotation.*;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.stereotype.Controller;
-import thirtytwo.degrees.halfpipe.jersey.GuavaExtrasModule;
-import thirtytwo.degrees.halfpipe.jersey.HalfpipeObjectMapperProvider;
+import thirtytwo.degrees.halfpipe.config.DefaultAppConfg;
 
 import javax.inject.Named;
-import java.util.List;
 
 /**
- * User: spencer
+ * User: spencergibb
  * Date: 9/21/12
  * Time: 4:18 PM
  * <p/>
@@ -28,6 +22,7 @@ import java.util.List;
     @Filter(Configuration.class)
 })
 @ImportResource("classpath:META-INF/spring/applicationContext-security.xml")
+@Import(DefaultAppConfg.class)
 public class AppConfig {
 
     //TODO: create a proxy that auto-populates a pojo full off values and watches for changes?
@@ -35,34 +30,6 @@ public class AppConfig {
     @Bean @Named("helloText")
     public DynamicStringProperty helloText() {
         return DynamicPropertyFactory.getInstance().getStringProperty("hello.text", "Hello default text");
-    }
-
-    @Bean
-    public DeadlockHealthCheck deadlockHealthCheck() {
-        return new DeadlockHealthCheck();
-    }
-
-    @Bean
-    public HealthCheckRegistry healthChecks(List<HealthCheck> healthChecks) {
-        for (HealthCheck healthCheck : healthChecks) {
-            HealthChecks.register(healthCheck);
-        }
-        return HealthChecks.defaultRegistry();
-    }
-
-    @Bean
-    public GuavaExtrasModule guavaExtrasModule() {
-        return new GuavaExtrasModule();
-    }
-
-    @Bean
-    public GuavaModule guavaModule() {
-        return new GuavaModule();
-    }
-
-    @Bean @Scope
-    public HalfpipeObjectMapperProvider objectMapperProvider() {
-        return new HalfpipeObjectMapperProvider(guavaModule(), guavaExtrasModule());
     }
 
 }

@@ -28,13 +28,13 @@ class SecurityConfig {
    * The FilterChainProxy bean which is delegated to from web.xml
    */
   @Bean
-  def filterChainProxy = new FilterChainProxy(springSecurityFilterChain)
+  def springSecurityFilterChain = new FilterChainProxy(basicAuthFilterChain)
 
   /**
    * A Basic authentication configuration
    */
   @Bean
-  def springSecurityFilterChain: FilterChain =
+  def basicAuthFilterChain: FilterChain =
     new FilterChain with BasicAuthentication {
       val authenticationManager = testAuthenticationManager
       interceptUrl("/admin/**", hasRole("ROLE_ADMIN"))
@@ -89,7 +89,7 @@ class SecurityConfig {
 
     new UserDetailsService {
       def loadUserByUsername(username: String) = {
-        new User(username, username, "ROLE_USER")
+        new User(username, "password", List("ROLE_USER", "ROLE_ADMIN"))
       }
     }
   }

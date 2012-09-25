@@ -17,21 +17,13 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-				<artifactId>halfpipe-scala_${scala.version}</artifactId>
+            <artifactId>halfpipe-scala_${scala.version}</artifactId>
             <version>${project.version}</version>
         </dependency>
-
     </dependencies>
 
     <build>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
         <plugins>
-            <!-- http://tomcat.apache.org/maven-plugin-2.0-SNAPSHOT/tomcat7-maven-plugin/exec-war-mojo.html -->
             <plugin>
                 <groupId>org.apache.tomcat.maven</groupId>
                 <artifactId>tomcat7-maven-plugin</artifactId>
@@ -52,7 +44,7 @@
             <plugin>
                 <groupId>net.alchim31.maven</groupId>
                 <artifactId>scala-maven-plugin</artifactId>
-					 <version>${scala.maven.version}</version>
+                <version>${scala.maven.version}</version>
                 <executions>
                     <execution>
                         <id>compile</id>

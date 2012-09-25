@@ -10,7 +10,6 @@ import thirtytwo.degrees.halfpipe.{SecurityConfig, DefaultScalaAppConfig}
 @Configuration
 @ComponentScan (basePackageClasses = Array (classOf[AppConfig]),
   excludeFilters = Array(new Filter (Array (classOf[Controller], classOf[Configuration]))))
-//@ImportResource(Array ("classpath:META-INF/spring/applicationContext-security.xml"))
 @Import(Array(classOf[DefaultScalaAppConfig], classOf[SecurityConfig]))
 class AppConfig extends DynamicProperties {
 

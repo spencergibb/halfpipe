@@ -2,7 +2,7 @@ package thirtytwo.degrees.halfpipe.scalaexample.view
 
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.RequestMapping
-import java.io.Writer
+import collection.JavaConverters._
 
 /**
  * User: spencergibb
@@ -13,10 +13,8 @@ import java.io.Writer
 class HelloController {
 
   @RequestMapping(Array("/hello"))
-  def hello(out: Writer) = {
+  def hello() = {
     println("HelloController: Passing through...")
-    out.write("hello controller")
-    out.flush()
-    out.close()
+    Map("hello" -> "hello controller") asJava
   }
 }

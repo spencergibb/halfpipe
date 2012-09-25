@@ -75,9 +75,9 @@ class SecurityConfig {
     }
   }
 
-  @Bean def accessLogger = new AccessLoggerListener
+  /*@Bean def accessLogger = new AccessLoggerListener
 
-  @Bean def authenticationLogger = new AuthLoggerListener
+  @Bean def authenticationLogger = new AuthLoggerListener*/
 
   /**
    * A form-login configuration with remember-me and other standard options.

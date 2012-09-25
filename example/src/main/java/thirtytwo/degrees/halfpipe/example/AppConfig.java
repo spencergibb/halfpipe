@@ -6,6 +6,7 @@ import org.springframework.context.annotation.*;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.stereotype.Controller;
 import thirtytwo.degrees.halfpipe.config.DefaultAppConfg;
+import thirtytwo.degrees.halfpipe.mgmt.resources.GCResource;
 
 import javax.inject.Named;
 
@@ -17,7 +18,7 @@ import javax.inject.Named;
  * http://static.springsource.org/spring/docs/3.1.x/spring-framework-reference/html/mvc.html#mvc-config-enable
  */
 @Configuration
-@ComponentScan(basePackageClasses = AppConfig.class, excludeFilters = {
+@ComponentScan(basePackageClasses = {AppConfig.class, GCResource.class}, excludeFilters = {
     @Filter(Controller.class),
     @Filter(Configuration.class)
 })
@@ -30,6 +31,11 @@ public class AppConfig {
     @Bean @Named("helloText")
     public DynamicStringProperty helloText() {
         return DynamicPropertyFactory.getInstance().getStringProperty("hello.text", "Hello default text");
+    }
+
+    @Bean
+    public GCResource garbageCollectionTask() {
+        return new GCResource();
     }
 
 }

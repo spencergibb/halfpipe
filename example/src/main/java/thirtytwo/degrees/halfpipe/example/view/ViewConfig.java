@@ -2,7 +2,6 @@ package thirtytwo.degrees.halfpipe.example.view;
 
 import org.springframework.context.annotation.*;
 import thirtytwo.degrees.halfpipe.config.DefaultViewConfg;
-import thirtytwo.degrees.halfpipe.web.admin.AdminControllers;
 
 /**
  * User: spencergibb

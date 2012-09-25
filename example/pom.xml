@@ -66,6 +66,13 @@
                         <phase>package</phase>
                         <configuration>
                             <path>/</path>
+                            <extraDependencies>
+                                <dependency>
+                                    <groupId>${project.groupId}</groupId>
+                                    <artifactId>halfpipe-runner</artifactId>
+                                    <version>${project.version}</version>
+                                </dependency>
+                            </extraDependencies>
                             <!-- optional only if you want to use a preconfigured server.xml file
                            <serverXml>src/main/tomcatconf/server.xml</serverXml> -->
                             <!-- optional values which can be configurable

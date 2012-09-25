@@ -3,7 +3,7 @@ package thirtytwo.degrees.halfpipe.scalaexample.view
 import org.springframework.context.annotation.{Bean, ComponentScan, Configuration}
 import thirtytwo.degrees.halfpipe.config.AbstractViewConfig
 import org.springframework.web.servlet.config.annotation.{ViewControllerRegistry, EnableWebMvc}
-import thirtytwo.degrees.halfpipe.web.admin.AdminControllers
+import thirtytwo.degrees.halfpipe.web.mgmt.MgmtControllers
 import org.springframework.web.servlet.view.{UrlBasedViewResolver, JstlView}
 import org.springframework.web.servlet.view.freemarker.{FreeMarkerViewResolver, FreeMarkerConfigurer}
 
@@ -14,7 +14,7 @@ import org.springframework.web.servlet.view.freemarker.{FreeMarkerViewResolver, 
  */
 @EnableWebMvc
 @Configuration
-@ComponentScan(basePackageClasses = Array(classOf[ViewConfig], classOf[AdminControllers]))
+@ComponentScan(basePackageClasses = Array(classOf[ViewConfig], classOf[MgmtControllers]))
 class ViewConfig extends AbstractViewConfig {
 
   /*@Bean

@@ -1,4 +1,4 @@
-package thirtytwo.degrees.halfpipe.web.admin;
+package thirtytwo.degrees.halfpipe.mgmt.view;
 
 import com.yammer.metrics.reporting.PingServlet;
 import org.springframework.stereotype.Controller;
@@ -15,9 +15,9 @@ import java.io.IOException;
  * Time: 6:48 PM
  */
 @Controller
-public class PingController extends PingServlet {
+public class PingView extends PingServlet {
 
-    @RequestMapping("/admin/ping")
+    @RequestMapping("/mgmt/ping")
     public void admin(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
         doGet(req, res);
     }

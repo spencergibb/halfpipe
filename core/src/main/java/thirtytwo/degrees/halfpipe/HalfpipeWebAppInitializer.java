@@ -1,4 +1,4 @@
-package thirtytwo.degrees.halfpipe.web;
+package thirtytwo.degrees.halfpipe;
 
 import static thirtytwo.degrees.halfpipe.Halfpipe.*;
 
@@ -55,7 +55,8 @@ public class HalfpipeWebAppInitializer implements WebApplicationInitializer {
             AnnotationConfigWebApplicationContext webCtx = createContext(PROP_VIEW_CONFIG_CLASS);
 
             // The main Spring MVC servlet.
-            addServlet(sc, "viewServlet", new DispatcherServlet(webCtx), 1, getStringProp(PROP_VIEW_URL_PATTERN, ROOT_URL_PATTERN));
+            ServletRegistration.Dynamic viewServlet = addServlet(sc, "viewServlet", new DispatcherServlet(webCtx), 1,
+                    getStringProp(PROP_VIEW_URL_PATTERN, ROOT_URL_PATTERN));
 
             if (DynamicPropertyFactory.getInstance().getBooleanProperty(PROP_INSTALL_DEFAULT_SERVLET, false).get()) {
                 addServlet(sc, HALFPIPE_DEFAULT_SERVLET, new DefaultServlet(), 1, ROOT_URL_PATTERN);
@@ -100,11 +101,11 @@ public class HalfpipeWebAppInitializer implements WebApplicationInitializer {
     }
 
     private ServletRegistration.Dynamic addServlet(ServletContext servletContext, String servletName, Servlet servlet,
-        int loadOnStartup, String urlPattern) {
+        int loadOnStartup, String... urlPatterns) {
             ServletRegistration.Dynamic reg = servletContext.addServlet(servletName, servlet);
         Assert.notNull(reg, "Unable to create servlet "+servletName);
         reg.setLoadOnStartup(loadOnStartup);
-        Set<String> mappingConflicts = reg.addMapping(urlPattern);
+        Set<String> mappingConflicts = reg.addMapping(urlPatterns);
 
         if (!mappingConflicts.isEmpty()) {
             for (String s : mappingConflicts) {

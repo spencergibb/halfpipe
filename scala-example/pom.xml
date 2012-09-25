@@ -59,6 +59,13 @@
                         <phase>package</phase>
                         <configuration>
                             <path>/</path>
+                            <!--<extraDependencies>
+                                <dependency>
+                                    <groupId>${project.groupId}</groupId>
+                                    <artifactId>halfpipe-core</artifactId>
+                                    <version>${project.version}</version>
+                                </dependency>
+                            </extraDependencies>-->
                         </configuration>
                     </execution>
                 </executions>

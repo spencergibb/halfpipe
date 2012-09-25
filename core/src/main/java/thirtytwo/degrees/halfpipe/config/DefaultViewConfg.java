@@ -3,7 +3,7 @@ package thirtytwo.degrees.halfpipe.config;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import thirtytwo.degrees.halfpipe.web.admin.AdminControllers;
+import thirtytwo.degrees.halfpipe.mgmt.view.MgmtControllers;
 
 /**
  * User: spencergibb
@@ -12,7 +12,7 @@ import thirtytwo.degrees.halfpipe.web.admin.AdminControllers;
  */
 @EnableWebMvc
 @Configuration
-@ComponentScan(basePackageClasses = AdminControllers.class)
+@ComponentScan(basePackageClasses = MgmtControllers.class)
 public class DefaultViewConfg extends AbstractViewConfig {
 
 }

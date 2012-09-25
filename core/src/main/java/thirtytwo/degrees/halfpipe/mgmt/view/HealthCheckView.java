@@ -1,6 +1,6 @@
-package thirtytwo.degrees.halfpipe.web.admin;
+package thirtytwo.degrees.halfpipe.mgmt.view;
 
-import com.yammer.metrics.reporting.ThreadDumpServlet;
+import com.yammer.metrics.reporting.HealthCheckServlet;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -10,15 +10,16 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
+ * //TODO: move out of example package
  * User: spencergibb
  * Date: 9/21/12
  * Time: 6:48 PM
  */
 @Controller
-public class ThreadDumpController extends ThreadDumpServlet {
+public class HealthCheckView extends HealthCheckServlet {
 
-    @RequestMapping("/admin/threads")
-    public void get(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
+    @RequestMapping("/mgmt/healthcheck")
+    public void admin(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
         doGet(req, res);
     }
 

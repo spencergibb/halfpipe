@@ -11,6 +11,7 @@
 
     <modules>
         <module>common</module>
+        <module>runner</module>
         <module>core</module>
         <module>example</module>
         <module>scala_2.9.1</module>
@@ -29,6 +30,8 @@
         <tomcat7.maven.version>2.0</tomcat7.maven.version>
         <scala.version>2.9.1</scala.version>
         <scala.maven.version>3.1.0</scala.maven.version>
+        <tomcat.jar.finalName>${project.artifactId}-${project.version}-halfpipe.jar</tomcat.jar.finalName>
+        <maven.tomcat.exec.war.mainClass>thirtytwo.degrees.halfpipe.HalfpipeRunner</maven.tomcat.exec.war.mainClass>
     </properties>
 
 

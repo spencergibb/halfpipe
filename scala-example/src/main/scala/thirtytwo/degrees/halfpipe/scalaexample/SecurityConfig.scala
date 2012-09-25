@@ -37,7 +37,7 @@ class SecurityConfig {
   def basicAuthFilterChain: FilterChain =
     new FilterChain with BasicAuthentication {
       val authenticationManager = testAuthenticationManager
-      interceptUrl("/admin/**", hasRole("ROLE_ADMIN"))
+      interceptUrl("/**/mgmt/**", hasRole("ROLE_ADMIN"))
       interceptUrl("/ws/**", hasRole("ROLE_USER"))
       interceptUrl("/", permitAll)
       basicAuthenticationEntryPoint.setRealmName("scalaexample")

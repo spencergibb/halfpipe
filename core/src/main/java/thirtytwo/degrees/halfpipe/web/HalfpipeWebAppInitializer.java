@@ -77,6 +77,7 @@ public class HalfpipeWebAppInitializer implements WebApplicationInitializer {
     private void createConfig(ServletContext sc) {
         Map<String, Object> map = Maps.newHashMap();
         map.put(PROP_INSTALL_DEFAULT_SERVLET, (sc.getNamedDispatcher("default") == null));
+        System.err.println("Config: "+map);
 
         ConcurrentCompositeConfiguration configuration = new ConcurrentCompositeConfiguration();
         configuration.addConfiguration(new ConcurrentMapConfiguration(map));

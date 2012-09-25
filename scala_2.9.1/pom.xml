@@ -122,7 +122,7 @@
             <plugin>
                 <groupId>org.apache.tomcat.maven</groupId>
                 <artifactId>tomcat7-maven-plugin</artifactId>
-                <version>2.0-beta-1</version>
+                <version>${tomcat7.maven.version}</version>
                 <executions>
                     <execution>
                         <id>tomcat-run</id>
@@ -132,11 +132,6 @@
                         <phase>package</phase>
                         <configuration>
                             <path>/</path>
-                            <!-- optional only if you want to use a preconfigured server.xml file
-                           <serverXml>src/main/tomcatconf/server.xml</serverXml> -->
-                            <!-- optional values which can be configurable
-                        <attachArtifactClassifier>default value is exec-war but you can customize</attachArtifactClassifier>
-                        <attachArtifactClassifierType>default value is jar</attachArtifactClassifierType> -->
                         </configuration>
                     </execution>
                 </executions>

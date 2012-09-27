@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * //TODO: move out of example package
  * User: spencergibb
  * Date: 9/21/12
  * Time: 6:48 PM

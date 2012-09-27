@@ -17,6 +17,7 @@ Features
     - [scala-spring](https://github.com/ewolff/scala-spring)
 - Guava integration
 - TODO: Validation
+- TODO: Commands
 - Jersey Metrics
     - Health Checks
     - web metrics

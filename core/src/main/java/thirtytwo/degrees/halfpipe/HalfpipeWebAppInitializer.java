@@ -1,16 +1,16 @@
 package thirtytwo.degrees.halfpipe;
 
 import static thirtytwo.degrees.halfpipe.Halfpipe.*;
+import static thirtytwo.degrees.halfpipe.HalfpipeConfiguration.*;
 
-import com.google.common.collect.Maps;
-import com.netflix.config.*;
+import com.netflix.config.DynamicPropertyFactory;
+import com.netflix.config.DynamicStringProperty;
 import com.sun.jersey.api.core.PackagesResourceConfig;
 import com.sun.jersey.api.json.JSONConfiguration;
 import com.sun.jersey.spi.container.servlet.ServletContainer;
 import com.sun.jersey.spi.spring.container.servlet.SpringServlet;
 import com.yammer.metrics.web.DefaultWebappMetricsFilter;
 import org.apache.catalina.servlets.DefaultServlet;
-import org.apache.commons.configuration.SystemConfiguration;
 import org.springframework.util.Assert;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
@@ -20,7 +20,6 @@ import org.springframework.web.servlet.DispatcherServlet;
 import thirtytwo.degrees.halfpipe.jersey.HalfpipeResourceConfig;
 
 import javax.servlet.*;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -30,10 +29,6 @@ public class HalfpipeWebAppInitializer implements WebApplicationInitializer {
 
     static Object lock = new Object();
     static boolean initialized = false;
-
-    static {
-        System.setProperty("archaius.configurationSource.defaultFileName", HALFPIPE_PROPERTIES_FILENAME);
-    }
 
     public HalfpipeWebAppInitializer() {
     }
@@ -45,10 +40,10 @@ public class HalfpipeWebAppInitializer implements WebApplicationInitializer {
                 if (initialized) return;
 
                 initialized = true;
-                createConfig(sc);
+                createConfig((sc.getNamedDispatcher("default") == null));
 
                 // Create the root appcontext
-                AnnotationConfigWebApplicationContext rootCtx = createContext(PROP_CONFIG_CLASS);
+                AnnotationConfigWebApplicationContext rootCtx = createWebContext(PROP_CONFIG_CLASS);
                 rootCtx.refresh();
 
                 // Manage the lifecycle of the root appcontext
@@ -59,7 +54,7 @@ public class HalfpipeWebAppInitializer implements WebApplicationInitializer {
                 addFilter(sc, "webappMetricsFilter", new DefaultWebappMetricsFilter(), ROOT_URL_PATTERN);
 
                 // now the config for the Dispatcher servlet
-                AnnotationConfigWebApplicationContext webCtx = createContext(PROP_VIEW_CONFIG_CLASS);
+                AnnotationConfigWebApplicationContext webCtx = createWebContext(PROP_VIEW_CONFIG_CLASS);
 
                 // The main Spring MVC servlet.
                 ServletRegistration.Dynamic viewServlet = addServlet(sc, "viewServlet", new DispatcherServlet(webCtx), 1,
@@ -83,27 +78,13 @@ public class HalfpipeWebAppInitializer implements WebApplicationInitializer {
         }
     }
 
-    private void createConfig(ServletContext sc) {
-        if (DynamicPropertyFactory.isInitializedWithDefaultConfig() || ConfigurationManager.isConfigurationInstalled()) {
-            return; //TODO: why does this happen on exploded?
-        }
-        Map<String, Object> map = Maps.newHashMap();
-        map.put(PROP_INSTALL_DEFAULT_SERVLET, (sc.getNamedDispatcher("default") == null));
-        System.err.println("Config: "+map);
+    private AnnotationConfigWebApplicationContext createWebContext(String classConfigProperty) throws ClassNotFoundException {
+        AnnotationConfigWebApplicationContext ctx = new AnnotationConfigWebApplicationContext();
+        DynamicStringProperty className = getStringProp(classConfigProperty);
 
-        ConcurrentCompositeConfiguration configuration = new ConcurrentCompositeConfiguration();
-        configuration.addConfiguration(new ConcurrentMapConfiguration(map));
-        configuration.addConfiguration(new SystemConfiguration(), DynamicPropertyFactory.SYS_CONFIG_NAME);
-        //configuration.addConfiguration(new ConcurrentMapConfiguration(ClasspathPropertiesConfiguration.));
-        try {
-            DynamicURLConfiguration defaultURLConfig = new DynamicURLConfiguration();
-            configuration.addConfiguration(defaultURLConfig, DynamicPropertyFactory.URL_CONFIG_NAME);
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-
-        DynamicPropertyFactory.initWithConfigurationSource(configuration);
-
+        Class<?> appConfigClass = Class.forName(className.get());
+        ctx.register(appConfigClass);
+        return ctx;
     }
 
     private ServletRegistration.Dynamic addServlet(ServletContext servletContext, String servletName, Servlet servlet,
@@ -114,7 +95,7 @@ public class HalfpipeWebAppInitializer implements WebApplicationInitializer {
     private ServletRegistration.Dynamic addServlet(ServletContext servletContext, String servletName, Servlet servlet,
         int loadOnStartup, String... urlPatterns) {
             ServletRegistration.Dynamic reg = servletContext.addServlet(servletName, servlet);
-        Assert.notNull(reg, "Unable to create servlet "+servletName);
+        Assert.notNull(reg, "Unable to create servlet " + servletName);
         reg.setLoadOnStartup(loadOnStartup);
         Set<String> mappingConflicts = reg.addMapping(urlPatterns);
 
@@ -135,25 +116,5 @@ public class HalfpipeWebAppInitializer implements WebApplicationInitializer {
         //fr.setInitParameter("name", "value");
         fr.addMappingForUrlPatterns(null, true, urlPattern);
         return fr;
-    }
-
-    private AnnotationConfigWebApplicationContext createContext(String classConfigProperty) throws ClassNotFoundException {
-        AnnotationConfigWebApplicationContext ctx = new AnnotationConfigWebApplicationContext();
-        DynamicStringProperty className = getStringProp(classConfigProperty);
-
-        Class<?> appConfigClass = Class.forName(className.get());
-        ctx.register(appConfigClass);
-        return ctx;
-    }
-
-    private DynamicStringProperty getStringProp(String propName) {
-        DynamicStringProperty prop = getStringProp(propName, null);
-
-        Assert.hasText(prop.get(), propName + " must not be empty");
-        return prop;
-    }
-
-    private DynamicStringProperty getStringProp(String propName, String defaultValue) {
-        return DynamicPropertyFactory.getInstance().getStringProperty(propName, defaultValue);
     }
 }

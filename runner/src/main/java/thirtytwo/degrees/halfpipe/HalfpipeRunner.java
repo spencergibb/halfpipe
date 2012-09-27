@@ -7,7 +7,6 @@ import org.apache.commons.cli.*;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.*;
 import org.apache.tomcat.maven.runner.Tomcat7Runner;
-import org.springframework.core.io.ClassPathResource;
 
 import java.io.*;
 import java.net.URL;

@@ -23,12 +23,10 @@ public class HelloCommand extends Command {
         super("hello", "Say hello to the command line");
     }
 
-    @Override
     public Options getOptions() {
         return new Options().addOption("m", "more", true, "add more to hello");
     }
 
-    @Override
     public void run(CommandLine commandLine) {
         StringBuilder hello = new StringBuilder(sayer.hello());
         hello.append(" CLI");

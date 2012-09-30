@@ -1,14 +1,15 @@
 package thirtytwo.degrees.halfpipe.cli;
 
-import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.*;
 
 import java.io.PrintWriter;
 import java.util.Collection;
+import java.util.ListIterator;
 
 //see original https://github.com/codahale/dropwizard/blob/master/dropwizard-core/src/main/java/com/yammer/dropwizard/cli/UsagePrinter.java
 @SuppressWarnings("UseOfSystemOutOrSystemErr")
-public class UsagePrinter {
-    private UsagePrinter() {
+public class HelpUtils {
+    private HelpUtils() {
         // singleton
     }
 
@@ -61,4 +62,21 @@ public class UsagePrinter {
         }
         return builder.toString();
     }
+
+    static void addHelp(Options options) {
+        options.addOption("h", "help", false, "display help");
+    }
+
+
+    static class HelpParser extends GnuParser {
+        @Override
+        protected void processOption(String arg, ListIterator iter) throws ParseException {
+            try {
+                super.processOption(arg, iter);
+            } catch (UnrecognizedOptionException e) {
+                //ignore so I can parse help options regardless
+            }
+        }
+    }
+
 }

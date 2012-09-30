@@ -1,6 +1,7 @@
 package thirtytwo.degrees.halfpipe.cli;
 
 import static java.lang.String.format;
+import static thirtytwo.degrees.halfpipe.cli.HelpUtils.*;
 import org.apache.commons.cli.*;
 import org.springframework.util.Assert;
 
@@ -49,9 +50,9 @@ public abstract class Command {
         for (Option option: (Collection<Option>)getOptions().getOptions()) {
             options.addOption(option);
         }
-        options.addOption("h", "help", false, "display help");
+        addHelp(options);
         return options;
     }
 
-    public abstract void run(CommandLine commandLine);
+    public abstract void run(CommandLine commandLine) throws Exception;
 }

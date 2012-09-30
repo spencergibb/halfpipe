@@ -3,3 +3,4 @@ tomcat.8080
 .extract
 .idea
 *.iml
+.halfpipe

@@ -19,8 +19,6 @@ import java.util.Map;
 public class CommandRunner {
 
     public static void main(String[] args) throws Exception {
-        System.setProperty("one-jar.silent", "true");
-
         if (isHelp(args)) {
             Map<String, Command> byName = setup();
             printRootHelp(byName.values(), getProjectConfigClass());

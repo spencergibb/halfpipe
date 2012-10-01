@@ -62,8 +62,20 @@
         <url>http://github.com/32degrees/halfpipe/issues#issue/</url>
     </issueManagement>
 
-    <!--<repositories>
+    <repositories>
         <repository>
+            <!-- Release -->
+            <id>spring-release</id>
+            <name>Spring Maven RELEASE Repository</name>
+            <url>http://repo.springsource.org/repo</url>
+        </repository>
+        <repository>
+            <!-- Milestone/RC -->
+            <id>spring-milestone</id>
+            <name>Spring Maven MILESTONE Repository</name>
+            <url>http://repo.springsource.org/libs-milestone-local</url>
+        </repository>
+        <!--<repository>
             <id>sonatype-nexus-snapshots</id>
             <name>Sonatype Nexus Snapshots</name>
             <url>http://oss.sonatype.org/content/repositories/snapshots</url>
@@ -73,7 +85,7 @@
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
-        </repository>
-    </repositories>-->
+        </repository>-->
+    </repositories>
 
 </project>

@@ -45,9 +45,12 @@ public class HalfpipeConfiguration {
         DynamicPropertyFactory.initWithConfigurationSource(configuration);
     }
 
-    public static ApplicationContext createContext(String classConfigProperty) throws ClassNotFoundException {
-        Class<?> appConfigClass = getConfigClass(classConfigProperty);
-        AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(appConfigClass);
+    public static AnnotationConfigApplicationContext createContext(String classConfigProperty, boolean refresh) throws ClassNotFoundException {
+            Class<?> appConfigClass = getConfigClass(classConfigProperty);
+        AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
+        ctx.register(appConfigClass);
+        if (refresh)
+            ctx.refresh();
         return ctx;
     }
 

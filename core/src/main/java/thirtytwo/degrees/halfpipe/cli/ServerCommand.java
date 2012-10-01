@@ -9,6 +9,9 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.*;
 import org.apache.tomcat.JarScannerCallback;
 import org.apache.tomcat.util.scan.StandardJarScanner;
+import org.springframework.shell.core.CommandMarker;
+import org.springframework.shell.core.annotation.CliAvailabilityIndicator;
+import org.springframework.shell.core.annotation.CliCommand;
 
 import javax.servlet.ServletContext;
 import java.io.File;
@@ -20,10 +23,21 @@ import java.util.Set;
  * Date: 9/26/12
  * Time: 11:44 PM
  */
-public class ServerCommand extends Command {
+public class ServerCommand extends Command implements CommandMarker {
 
     protected ServerCommand() {
         super("server", "run halfpipe in tomcat http server");
+    }
+
+    @CliAvailabilityIndicator({"server"})
+    public boolean isCommandAvailable() {
+        return true;
+    }
+
+    @CliCommand(value = "server", help = "run halfpipe in tomcat http server")
+    public String server() throws Exception {
+        run(null);
+        return null;
     }
 
     @Override

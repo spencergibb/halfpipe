@@ -6,7 +6,9 @@ import static thirtytwo.degrees.halfpipe.cli.HelpUtils.*;
 
 import com.google.common.collect.Maps;
 import org.apache.commons.cli.*;
+import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -41,7 +43,7 @@ public class CommandRunner {
     }
 
     private static boolean isServer(String[] args) {
-        return args != null && args.length == 1 && args[0].equals("server");
+        return args.length == 1 && args[0].equals("server");
     }
 
     private static CommandLine getCmdLine(String[] args, Command command) throws ParseException {
@@ -51,14 +53,21 @@ public class CommandRunner {
 
     private static Map<String, Command> setup() throws ClassNotFoundException {
         createConfig(false);
-        ApplicationContext rootContext = createContext(PROP_CONFIG_CLASS);
+        AnnotationConfigApplicationContext rootContext = createContext(PROP_CONFIG_CLASS, false);
+        rootContext.registerBeanDefinition(ServerCommand.class.getSimpleName(), new RootBeanDefinition(ServerCommand.class));
+        ShellCommand shell = new ShellCommand();
+        shell.setApplicationContext(rootContext);
+        shell.init();
+        //rootContext.registerBeanDefinition(ShellCommand.class.getSimpleName(), new RootBeanDefinition(ShellCommand.class));
 
         Map<String,Command> commands = rootContext.getBeansOfType(Command.class);
 
         Map<String, Command> byName = Maps.newLinkedHashMap();
-        byName.put("server", new ServerCommand());
+        byName.put("server", commands.get(ServerCommand.class.getSimpleName()));
+        byName.put("shell", shell);
         for (Command command: commands.values()) {
-            byName.put(command.getName(), command);
+            if (!byName.containsKey(command.getName()))
+                byName.put(command.getName(), command);
         }
         return byName;
     }

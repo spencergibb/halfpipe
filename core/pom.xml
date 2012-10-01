@@ -109,6 +109,12 @@
             <version>${springframework.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.shell</groupId>
+            <artifactId>spring-shell</artifactId>
+            <version>1.0.0.RC1</version>
+        </dependency>
+
         <!-- CGLIB, only required and used for @Configuration usage -->
         <dependency>
             <groupId>cglib</groupId>

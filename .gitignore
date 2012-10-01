@@ -4,3 +4,4 @@ tomcat.8080
 .idea
 *.iml
 .halfpipe
+*.log

@@ -11,7 +11,8 @@ import java.beans.PropertyChangeListener;
 import java.net.*;
 
 /**
- * User: gibbsb
+ * see original https://github.com/grails/grails-core/blob/master/grails-plugin-tomcat/src/main/groovy/org/grails/plugins/tomcat/TomcatLoader.groovy
+ * User: spencergibb
  * Date: 9/29/12
  * Time: 11:38 PM
  */

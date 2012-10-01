@@ -93,7 +93,7 @@
                             </binlibs>
                             <!--<localOneJarTemplate>../core/lib/one-jar-boot-0.98.jar</localOneJarTemplate>-->
                             <manifestEntries>
-                                <One-Jar-Expand>binlibs/halfpipe-example.war</One-Jar-Expand>
+                                <One-Jar-Expand>binlib/halfpipe-example.war</One-Jar-Expand>
                                 <One-Jar-Expand-Dir>.halfpipe</One-Jar-Expand-Dir>
                                 <One-Jar-Show-Expand>true</One-Jar-Show-Expand>
                                 <!--<Main-Class>thirtytwo.degrees.halfpipe.cli.Boot</Main-Class>-->

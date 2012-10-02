@@ -1,51 +1,41 @@
 package thirtytwo.degrees.halfpipe.cli;
 
-import org.apache.commons.cli.CommandLine;
 import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.context.*;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.GenericApplicationContext;
-import org.springframework.shell.SimpleShellCommandLineOptions;
 import org.springframework.shell.converters.*;
 import org.springframework.shell.core.*;
 import org.springframework.util.StopWatch;
 
-import javax.annotation.PostConstruct;
+import java.io.IOException;
 import java.util.Map;
+import java.util.logging.Logger;
+
+import static org.springframework.shell.support.logging.HandlerUtils.*;
 
 /**
  * User: spencergibb
  * Date: 9/30/12
  * Time: 6:52 PM
- *
+ * <p/>
  * see org.springframework.shell.Bootstrap
  */
-public class ShellCommand extends Command implements ApplicationContextAware {
+public class Shell {
 
-    AnnotationConfigApplicationContext ctxt;
-    private ConfigurableApplicationContext ctx;
-    private JLineShellComponent shell;
-    private static StopWatch sw = new StopWatch("Spring Shell");
-    private static SimpleShellCommandLineOptions options;
+    protected AnnotationConfigApplicationContext ctxt;
+    protected ConfigurableApplicationContext ctx;
+    protected JLineShellComponent shell;
+    protected StopWatch sw = new StopWatch("Spring Shell");
+    protected ShellOptions options;
 
-    public void setApplicationContext(ApplicationContext ctxt) {
-        if (ctxt instanceof AnnotationConfigApplicationContext)
-            this.ctxt = (AnnotationConfigApplicationContext) ctxt;
-        else
-            throw new IllegalArgumentException("Not a GenericApplicationContext: "+ctxt.getClass());
-    }
-
-    @PostConstruct
-    public void init() {
+    public Shell(AnnotationConfigApplicationContext context) {
+        this.ctxt = context;
         createApplicationContext();
         shell = ctx.getBean("shell", JLineShellComponent.class);
         shell.setApplicationContext(ctx);
-        /*shell.setHistorySize(options.historySize);
-        if (options.executeThenQuit != null) {
-            shell.setPrintBanner(false);
-        }*/
 
         Map<String, CommandMarker> commands = BeanFactoryUtils.beansOfTypeIncludingAncestors(ctx, CommandMarker.class);
         for (CommandMarker command : commands.values()) {
@@ -58,26 +48,67 @@ public class ShellCommand extends Command implements ApplicationContextAware {
         }
     }
 
-    protected ShellCommand() {
-        super("shell", "run the halfpipe command shell");
-    }
+    public void start(String[] args) throws IOException {
+        sw.start();
+        options = new ShellOptions(args);
 
-    @Override
-    public void run(CommandLine commandLine) throws Exception {
-        shell.start();
-        shell.promptLoop();
-        ExitShellRequest exitShellRequest = shell.getExitShellRequest();
-        if (exitShellRequest == null) {
-            // shouldn't really happen, but we'll fallback to this anyway
-            exitShellRequest = ExitShellRequest.NORMAL_EXIT;
+        shell.setHistorySize(options.historySize);
+        if (options.executeThenQuit != null) {
+            shell.setPrintBanner(false);
         }
-        shell.waitForComplete();
 
-        ctx.close();
+        for (Map.Entry<String, String> entry : options.extraSystemProperties.entrySet()) {
+            System.setProperty(entry.getKey(), entry.getValue());
+        }
+        ExitShellRequest exitShellRequest;
+        try {
+            exitShellRequest = run(options.executeThenQuit);
+        } catch (RuntimeException t) {
+            throw t;
+        } finally {
+            flushAllHandlers(Logger.getLogger(""));
+        }
 
+        System.out.println();
         System.exit(exitShellRequest.getExitCode());
     }
 
+    protected ExitShellRequest run(String[] executeThenQuit) {
+
+        ExitShellRequest exitShellRequest;
+
+        if (null != executeThenQuit) {
+            boolean successful = false;
+            exitShellRequest = ExitShellRequest.FATAL_EXIT;
+
+            for (String cmd : executeThenQuit) {
+                successful = shell.executeCommand(cmd);
+                if (!successful)
+                    break;
+            }
+
+            //if all commands were successful, set the normal exit status
+            if (successful) {
+                exitShellRequest = ExitShellRequest.NORMAL_EXIT;
+            }
+        } else {
+            shell.start();
+            shell.promptLoop();
+            exitShellRequest = shell.getExitShellRequest();
+            if (exitShellRequest == null) {
+                // shouldn't really happen, but we'll fallback to this anyway
+                exitShellRequest = ExitShellRequest.NORMAL_EXIT;
+            }
+            shell.waitForComplete();
+        }
+
+        ctx.close();
+        sw.stop();
+        if (shell.isDevelopmentMode()) {
+            System.out.println("Total execution time: " + sw.getLastTaskTimeMillis() + " ms");
+        }
+        return exitShellRequest;
+    }
 
     protected void createApplicationContext() {
         // create parent/base ctx
@@ -116,7 +147,7 @@ public class ShellCommand extends Command implements ApplicationContextAware {
      */
     private ConfigurableApplicationContext initPluginApplicationContext(AnnotationConfigApplicationContext annctx) {
         return new ClassPathXmlApplicationContext(
-                new String[] { "classpath*:/META-INF/spring/spring-shell-plugin.xml" }, true, annctx);
+                new String[]{"classpath*:/META-INF/spring/spring-shell-plugin.xml"}, true, annctx);
     }
 
     protected void createAndRegister(GenericApplicationContext ctxt, Class clazz) {
@@ -128,8 +159,7 @@ public class ShellCommand extends Command implements ApplicationContextAware {
         rbd.setBeanClass(clazz);
         if (name != null) {
             ctxt.registerBeanDefinition(name, rbd);
-        }
-        else {
+        } else {
             ctxt.registerBeanDefinition(clazz.getSimpleName(), rbd);
         }
     }

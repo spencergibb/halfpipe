@@ -28,4 +28,6 @@ Features
     - TODO: Yeoman integration?
 - Dynamic Config [Archaius](https://github.com/Netflix/archaius)
     - TODO: config classes
+- TODO: Java [maven archetype](http://maven.apache.org/guides/mini/guide-creating-archetypes.html)
+- TODO: Scala [maven archetype](http://maven.apache.org/guides/mini/guide-creating-archetypes.html)
 - TODO: Service registry and loadbalancer [Eureka](https://github.com/Netflix/eureka)

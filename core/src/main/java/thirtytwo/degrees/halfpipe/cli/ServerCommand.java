@@ -23,11 +23,7 @@ import java.util.Set;
  * Date: 9/26/12
  * Time: 11:44 PM
  */
-public class ServerCommand extends Command implements CommandMarker {
-
-    protected ServerCommand() {
-        super("server", "run halfpipe in tomcat http server");
-    }
+public class ServerCommand implements CommandMarker {
 
     @CliAvailabilityIndicator({"server"})
     public boolean isCommandAvailable() {
@@ -36,11 +32,10 @@ public class ServerCommand extends Command implements CommandMarker {
 
     @CliCommand(value = "server", help = "run halfpipe in tomcat http server")
     public String server() throws Exception {
-        run(null);
-        return null;
+        //run(null);
+        return "currently the server command only works as a command line argument";
     }
 
-    @Override
     public void run(CommandLine commandLine) throws Exception {
         System.out.println("Starting Server");
 

@@ -6,7 +6,6 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.shell.core.CommandMarker;
 import org.springframework.shell.core.annotation.*;
 import org.springframework.stereotype.Component;
-import thirtytwo.degrees.halfpipe.cli.Command;
 import thirtytwo.degrees.halfpipe.example.resources.Sayer;
 
 import javax.inject.Inject;
@@ -17,14 +16,10 @@ import javax.inject.Inject;
  * Time: 10:07 PM
  */
 @Component
-public class HelloCommand extends Command implements CommandMarker {
+public class HelloCommand implements CommandMarker {
 
     @Inject
     Sayer sayer;
-
-    protected HelloCommand() {
-        super("hello", "Say hello to the command line");
-    }
 
     @CliAvailabilityIndicator({"hello"})
     public boolean isCommandAvailable() {
@@ -37,7 +32,7 @@ public class HelloCommand extends Command implements CommandMarker {
             String message,
 
             @CliOption(key = "more", mandatory = false,
-                    help = "Have some more to say while saying ehllo",
+                    help = "Have some more to say while saying hello",
                     specifiedDefaultValue="")
             String more)
     {
@@ -46,21 +41,7 @@ public class HelloCommand extends Command implements CommandMarker {
         if (!StringUtils.isBlank(more)) {
             hello.append(" "+more);
         }
-        return hello.toString();
-    }
-
-    public Options getOptions() {
-        return new Options().addOption("m", "more", true, "add more to hello");
-    }
-
-    public void run(CommandLine commandLine) {
-        StringBuilder hello = new StringBuilder(sayer.hello());
-        hello.append(" CLI");
-
-        if (commandLine.hasOption("more")) {
-            hello.append(" ");
-            hello.append(commandLine.getOptionValue("more"));
-        }
-        System.out.println(hello.toString());
+        System.out.println("\n\n\n\n"+hello+"\n\n\n\n");
+        return null;//hello.toString();
     }
 }

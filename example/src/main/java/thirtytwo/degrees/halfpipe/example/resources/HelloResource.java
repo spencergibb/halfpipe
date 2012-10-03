@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import thirtytwo.degrees.halfpipe.example.core.Hello;
 
 import javax.inject.Inject;
+import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
@@ -26,5 +27,12 @@ public class HelloResource {
     @Timed
     public Hello hello(@QueryParam("more") Optional<String> more) {
         return new Hello(sayer.hello(), "Resource"+more.or(""));
+    }
+
+    @POST
+    @Produces(MediaType.TEXT_PLAIN)
+    @Timed
+    public String receive(@Valid Hello hello) {
+        return "received to: "+hello.getTo() +" msg: "+hello.getHello();
     }
 }

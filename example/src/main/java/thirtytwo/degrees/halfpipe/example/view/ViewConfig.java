@@ -2,6 +2,7 @@ package thirtytwo.degrees.halfpipe.example.view;
 
 import org.springframework.context.annotation.*;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import thirtytwo.degrees.halfpipe.config.AbstractViewConfig;
 import thirtytwo.degrees.halfpipe.config.DefaultViewConfg;
 import thirtytwo.degrees.halfpipe.mgmt.view.MgmtControllers;
@@ -19,4 +20,9 @@ import thirtytwo.degrees.halfpipe.mgmt.view.MgmtControllers;
         @ComponentScan.Filter(Configuration.class)
 })
 public class ViewConfig extends AbstractViewConfig {
+    //TODO: is this needed, can I set a welcome page?
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/").setViewName("forward:/index.html");
+    }
 }

@@ -22,4 +22,8 @@ import thirtytwo.degrees.halfpipe.mgmt.view.MgmtControllers;
         @ComponentScan.Filter(Configuration.class)
 })
 public class ViewConfig extends AbstractViewConfig {
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/").setViewName("forward:/index.html");
+    }
 }

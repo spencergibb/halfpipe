@@ -6,6 +6,7 @@ import com.yammer.metrics.core.HealthCheck;
 import com.yammer.metrics.core.HealthCheckRegistry;
 import com.yammer.metrics.util.DeadlockHealthCheck;
 import org.codehaus.jackson.map.Module;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.context.annotation.*;
 import thirtytwo.degrees.halfpipe.jersey.*;
 
@@ -48,13 +49,28 @@ public class DefaultAppConfg {
     }
 
     @Bean @Scope("singleton")
-    public HalfpipeObjectMapperProvider objectMapperProvider(AnnotationSensitivePropertyNamingStrategy namingStrategy,
-                                                             List<Module> modules) {
-        return new HalfpipeObjectMapperProvider(namingStrategy, modules);
+    public InvalidEntityExceptionMapper invalidEntityExceptionMapper() {
+        return new InvalidEntityExceptionMapper();
+    }
+
+    @Bean @Scope("singleton")
+    public ObjectMapper objectMapper(AnnotationSensitivePropertyNamingStrategy namingStrategy,
+                                     List<Module> modules) {
+        return ObjectMapperFactory.create(namingStrategy, modules);
+    }
+
+    @Bean @Scope("singleton")
+    public HalfpipeObjectMapperProvider objectMapperProvider(ObjectMapper objectMapper) {
+        return new HalfpipeObjectMapperProvider(objectMapper);
     }
 
     @Bean @Scope("singleton")
     public AnnotationSensitivePropertyNamingStrategy jsonNamingStrategy() {
         return new AnnotationSensitivePropertyNamingStrategy();
+    }
+
+    @Bean @Scope("singleton")
+    public JacksonMessageBodyProvider jacksonMessageBodyProvider(ObjectMapper objectMapper) {
+        return new JacksonMessageBodyProvider(objectMapper);
     }
 }

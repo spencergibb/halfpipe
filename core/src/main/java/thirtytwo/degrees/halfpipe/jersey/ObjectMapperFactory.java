@@ -1,17 +1,23 @@
 package thirtytwo.degrees.halfpipe.jersey;
 
-import com.fasterxml.jackson.datatype.guava.GuavaModule;
-import org.codehaus.jackson.map.*;
+import org.codehaus.jackson.map.DeserializationConfig;
+import org.codehaus.jackson.map.Module;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.SerializationConfig;
+
+import javax.ws.rs.ext.ContextResolver;
+import javax.ws.rs.ext.Provider;
+import java.util.List;
 
 /**
  * User: spencergibb
- * Date: 9/24/12
- * Time: 5:10 PM
+ * Date: 9/22/12
+ * Time: 10:35 PM
  */
 public class ObjectMapperFactory {
-    public static ObjectMapper get(AnnotationSensitivePropertyNamingStrategy namingStrategy,
-                            GuavaExtrasModule guavaExtrasModule,
-                            GuavaModule guavaModule) {
+
+    public static ObjectMapper create(AnnotationSensitivePropertyNamingStrategy namingStrategy,
+                               List<Module> modules) {
         ObjectMapper mapper = new ObjectMapper();
         mapper.setPropertyNamingStrategy(namingStrategy);
 
@@ -19,9 +25,11 @@ public class ObjectMapperFactory {
         mapper.disable(SerializationConfig.Feature.WRITE_ENUMS_USING_TO_STRING);
         mapper.disable(DeserializationConfig.Feature.READ_ENUMS_USING_TO_STRING);
 
-        mapper.registerModule(guavaExtrasModule);
-        mapper.registerModule(guavaModule);
-        return mapper;
 
+        if (modules != null)
+            for (Module module: modules)
+                mapper.registerModule(module);
+
+        return mapper;
     }
 }

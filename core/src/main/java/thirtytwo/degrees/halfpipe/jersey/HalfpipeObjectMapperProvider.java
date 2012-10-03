@@ -17,19 +17,8 @@ public class HalfpipeObjectMapperProvider implements ContextResolver<ObjectMappe
 
     private ObjectMapper mapper;
 
-    public HalfpipeObjectMapperProvider(AnnotationSensitivePropertyNamingStrategy namingStrategy,
-                                        List<Module> modules) {
-        mapper = new ObjectMapper();
-        mapper.setPropertyNamingStrategy(namingStrategy);
-
-        mapper.disable(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES);
-        mapper.disable(SerializationConfig.Feature.WRITE_ENUMS_USING_TO_STRING);
-        mapper.disable(DeserializationConfig.Feature.READ_ENUMS_USING_TO_STRING);
-
-
-        if (modules != null)
-            for (Module module: modules)
-                mapper.registerModule(module);
+    public HalfpipeObjectMapperProvider(ObjectMapper mapper) {
+        this.mapper = mapper;
     }
 
     @Override

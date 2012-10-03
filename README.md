@@ -17,7 +17,7 @@ Features
 - Multilingual java/Scala
     - [scala-spring](https://github.com/ewolff/scala-spring), see [scala example](https://github.com/32degrees/halfpipe/tree/master/scala-example)
 - Guava integration
-- TODO: Validation
+- Validation
 - Commands
 - Jersey Metrics
     - Health Checks

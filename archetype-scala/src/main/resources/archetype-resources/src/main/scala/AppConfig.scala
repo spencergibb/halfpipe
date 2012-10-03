@@ -1,4 +1,7 @@
-package thirtytwo.degrees.halfpipe.scalaexample
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+package ${package}
 
 import org.springframework.context.annotation._
 import com.netflix.config.scala.DynamicProperties

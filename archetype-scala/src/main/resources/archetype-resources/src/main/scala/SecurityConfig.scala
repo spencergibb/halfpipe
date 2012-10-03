@@ -1,4 +1,4 @@
-package thirtytwo.degrees.halfpipe.scalaexample
+package ${package}
 
 import thirtytwo.degrees.halfpipe.security.web._
 

@@ -30,7 +30,7 @@ Features
 - Dynamic Config [Archaius](https://github.com/Netflix/archaius)
     - TODO: config classes
 - Java [maven archetype](http://maven.apache.org/archetype/maven-archetype-plugin/advanced-usage.html)
-- TODO: Scala [maven archetype](http://maven.apache.org/archetype/maven-archetype-plugin/advanced-usage.html)
+- Scala [maven archetype](http://maven.apache.org/archetype/maven-archetype-plugin/advanced-usage.html)
 - TODO: Service registry and loadbalancer [Eureka](https://github.com/Netflix/eureka)
 - TODO: upload to [sonatype](https://docs.sonatype.org/display/Repository/Sonatype+OSS+Maven+Repository+Usage+Guide)
 

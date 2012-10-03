@@ -23,7 +23,7 @@ import java.util.Set;
  * Date: 9/26/12
  * Time: 11:44 PM
  */
-public class ServerCommand implements CommandMarker {
+public class Server implements CommandMarker {
 
     @CliAvailabilityIndicator({"server"})
     public boolean isCommandAvailable() {

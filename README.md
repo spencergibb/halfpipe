@@ -28,6 +28,14 @@ Features
     - TODO: Yeoman integration?
 - Dynamic Config [Archaius](https://github.com/Netflix/archaius)
     - TODO: config classes
-- TODO: Java [maven archetype](http://maven.apache.org/guides/mini/guide-creating-archetypes.html)
-- TODO: Scala [maven archetype](http://maven.apache.org/guides/mini/guide-creating-archetypes.html)
+- TODO: Java [maven archetype](http://maven.apache.org/archetype/maven-archetype-plugin/advanced-usage.html)
+- TODO: Scala [maven archetype](http://maven.apache.org/archetype/maven-archetype-plugin/advanced-usage.html)
 - TODO: Service registry and loadbalancer [Eureka](https://github.com/Netflix/eureka)
+
+Examples
+-----
+To run the examples the main class is thirtytwo.degrees.halfpipe.cli.HalfpipeRunner
+- 'server' runs the tomcat server
+- empty args runs the interactive shell with custom commands loaded
+- in the examples try with 'hello' as the argument
+- you can also run the examples using your ide as a normal web project

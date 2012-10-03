@@ -8,10 +8,10 @@
     <name>Halfpipe</name>
     <url>http://halfpipe.32degre.es</url>
 
-
     <modules>
         <module>common</module>
         <module>core</module>
+        <module>onejar-maven</module>
         <module>example</module>
         <module>scala_2.9.1</module>
         <module>scala-example</module>
@@ -33,6 +33,87 @@
         <maven.tomcat.exec.war.mainClass>thirtytwo.degrees.halfpipe.HalfpipeRunner</maven.tomcat.exec.war.mainClass>
     </properties>
 
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>thirtytwo.degrees</groupId>
+                    <artifactId>onejar-maven-plugin</artifactId>
+                    <version>1.4.6-SNAPSHOT</version>
+                    <executions>
+                        <execution>
+                            <phase>package</phase>
+                            <configuration>
+                                <mainClass>thirtytwo.degrees.halfpipe.cli.HalfpipeRunner</mainClass>
+                                <onejarVersion>0.98</onejarVersion>
+                                <attachToBuild>true</attachToBuild>
+                                <filename>${project.build.finalName}.halfpipe.jar</filename>
+                                <binlibs>
+                                    <fileSet>
+                                        <directory>${project.build.directory}</directory>
+                                        <includes>
+                                            <include>${project.build.finalName}.war</include>
+                                        </includes>
+                                    </fileSet>
+                                </binlibs>
+                                <!--<localOneJarTemplate>../core/lib/one-jar-boot-0.98.jar</localOneJarTemplate>-->
+                                <manifestEntries>
+                                    <One-Jar-Expand>binlib/${project.build.finalName}.war</One-Jar-Expand>
+                                    <One-Jar-Expand-Dir>.halfpipe</One-Jar-Expand-Dir>
+                                    <One-Jar-Show-Expand>true</One-Jar-Show-Expand>
+                                    <!--<Main-Class>thirtytwo.degrees.halfpipe.cli.Boot</Main-Class>-->
+                                    <!--<One-Jar-Confirm-Expand>true</One-Jar-Confirm-Expand>-->
+                                </manifestEntries>
+                            </configuration>
+                            <goals>
+                                <goal>one-jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>make-a-jar</id>
+                            <phase>compile</phase>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>net.alchim31.maven</groupId>
+                    <artifactId>scala-maven-plugin</artifactId>
+                    <version>${scala.maven.version}</version>
+                    <executions>
+                        <execution>
+                            <id>compile</id>
+                            <goals>
+                                <goal>compile</goal>
+                            </goals>
+                            <phase>compile</phase>
+                        </execution>
+                        <execution>
+                            <id>test-compile</id>
+                            <goals>
+                                <goal>testCompile</goal>
+                            </goals>
+                            <phase>test-compile</phase>
+                        </execution>
+                        <execution>
+                            <phase>process-resources</phase>
+                            <goals>
+                                <goal>compile</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 
     <developers>
         <developer>

@@ -5,3 +5,4 @@ tomcat.8080
 *.iml
 .halfpipe
 *.log
+*.swp

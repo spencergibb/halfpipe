@@ -31,100 +31,14 @@
             </resource>
         </resources>
         <plugins>
-            <!-- http://tomcat.apache.org/maven-plugin-2.0-SNAPSHOT/tomcat7-maven-plugin/exec-war-mojo.html -->
             <plugin>
-                <groupId>org.apache.tomcat.maven</groupId>
-                <artifactId>tomcat7-maven-plugin</artifactId>
-                <version>${tomcat7.maven.version}</version>
-                <executions>
-                    <execution>
-                        <id>tomcat-run</id>
-                        <goals>
-                            <goal>exec-war-only</goal>
-                        </goals>
-                        <!--<phase>package</phase>-->
-                        <configuration>
-                            <path>/</path>
-                            <extraDependencies>
-                                <dependency>
-                                    <groupId>${project.groupId}</groupId>
-                                    <artifactId>halfpipe-runner</artifactId>
-                                    <version>${project.version}</version>
-                                </dependency>
-                                <dependency>
-                                    <groupId>commons-io</groupId>
-                                    <artifactId>commons-io</artifactId>
-                                    <version>2.4</version>
-                                </dependency>
-                                <dependency>
-                                    <groupId>commons-cli</groupId>
-                                    <artifactId>commons-cli</artifactId>
-                                    <version>1.2</version>
-                                </dependency>
-                            </extraDependencies>
-                            <!-- optional only if you want to use a preconfigured server.xml file
-                           <serverXml>src/main/tomcatconf/server.xml</serverXml> -->
-                            <!-- optional values which can be configurable
-                        <attachArtifactClassifier>default value is exec-war but you can customize</attachArtifactClassifier>
-                        <attachArtifactClassifierType>default value is jar</attachArtifactClassifierType> -->
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.dstovall</groupId>
+                <groupId>thirtytwo.degrees</groupId>
                 <artifactId>onejar-maven-plugin</artifactId>
-                <version>1.4.6-SNAPSHOT</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <configuration>
-                            <mainClass>thirtytwo.degrees.halfpipe.cli.CommandRunner</mainClass>
-                            <onejarVersion>0.98</onejarVersion>
-                            <attachToBuild>true</attachToBuild>
-                            <filename>${project.build.finalName}.halfpipe.jar</filename>
-                            <binlibs>
-                                <fileSet>
-                                    <directory>${project.build.directory}</directory>
-                                    <includes>
-                                        <include>halfpipe-example.war</include>
-                                    </includes>
-                                </fileSet>
-                            </binlibs>
-                            <!--<localOneJarTemplate>../core/lib/one-jar-boot-0.98.jar</localOneJarTemplate>-->
-                            <manifestEntries>
-                                <One-Jar-Expand>binlib/halfpipe-example.war</One-Jar-Expand>
-                                <One-Jar-Expand-Dir>.halfpipe</One-Jar-Expand-Dir>
-                                <One-Jar-Show-Expand>true</One-Jar-Show-Expand>
-                                <!--<Main-Class>thirtytwo.degrees.halfpipe.cli.Boot</Main-Class>-->
-                                <!--<One-Jar-Confirm-Expand>true</One-Jar-Confirm-Expand>-->
-                            </manifestEntries>
-                        </configuration>
-                        <goals>
-                            <goal>one-jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>make-a-jar</id>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
-    <!--<pluginRepositories>
-        <pluginRepository>
-            <id>onejar-maven-plugin.googlecode.com</id>
-            <url>http://onejar-maven-plugin.googlecode.com/svn/mavenrepo</url>
-        </pluginRepository>
-    </pluginRepositories>-->
 </project>

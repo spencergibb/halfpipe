@@ -7,7 +7,6 @@ import org.apache.commons.cli.*;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import java.util.Arrays;
 import java.util.ListIterator;
 
 /**
@@ -15,14 +14,14 @@ import java.util.ListIterator;
  * Date: 9/26/12
  * Time: 10:41 PM
  */
-public class CommandRunner {
+public class HalfpipeRunner {
 
     public static void main(String[] args) throws Exception {
         if (isHelp(args)) {
             Shell shell = getShell();
             shell.start(new String[]{"help"});
         } else if (isServer(args)) {
-            ServerCommand command = new ServerCommand();
+            Server command = new Server();
             command.run(null);
         } else {
             Shell shell = getShell();
@@ -37,7 +36,7 @@ public class CommandRunner {
     private static Shell getShell() throws ClassNotFoundException {
         createConfig(false);
         AnnotationConfigApplicationContext rootContext = createContext(PROP_CONFIG_CLASS, false);
-        rootContext.registerBeanDefinition(ServerCommand.class.getSimpleName(), new RootBeanDefinition(ServerCommand.class));
+        rootContext.registerBeanDefinition(Server.class.getSimpleName(), new RootBeanDefinition(Server.class));
         Shell shell = new Shell(rootContext);
 
         return shell;

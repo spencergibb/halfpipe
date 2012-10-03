@@ -7,14 +7,14 @@
     <packaging>war</packaging>
 
 	  <parent>
-         <groupId>thirtytwo.degrees</groupId>
+         <groupId>net.thirty2</groupId>
          <artifactId>halfpipe-parent</artifactId>
         <version>1.0-SNAPSHOT</version>
      </parent>
 
     <dependencies>
         <dependency>
-			<groupId>thirtytwo.degrees</groupId>
+			<groupId>net.thirty2</groupId>
             <artifactId>halfpipe-core</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
@@ -29,7 +29,7 @@
         </resources>
         <plugins>
             <plugin>
-                <groupId>thirtytwo.degrees</groupId>
+                <groupId>net.thirty2</groupId>
                 <artifactId>onejar-maven-plugin</artifactId>
             </plugin>
             <plugin>

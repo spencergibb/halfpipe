@@ -23,7 +23,7 @@ Features
     - Health Checks
     - web metrics
     - TODO: tomcat metrics
-    - TODO: spring metrics, including forking metrics-spring which is no longer maintained
+    - spring metrics, TODO: including forking metrics-spring which is no longer maintained
 - Spring command line [spring shell](http://www.springsource.org/spring-shell/)
     - TODO: Scala repl [via scala maven plugin](http://davidb.github.com/scala-maven-plugin/example_console.html)
     - TODO: Yeoman integration?

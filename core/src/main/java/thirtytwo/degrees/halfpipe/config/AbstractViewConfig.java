@@ -1,9 +1,12 @@
 package thirtytwo.degrees.halfpipe.config;
 
-import static thirtytwo.degrees.halfpipe.Halfpipe.*;
-
 import com.netflix.config.DynamicPropertyFactory;
-import org.springframework.web.servlet.config.annotation.*;
+import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+
+import static thirtytwo.degrees.halfpipe.Halfpipe.HALFPIPE_DEFAULT_SERVLET;
+import static thirtytwo.degrees.halfpipe.Halfpipe.PROP_INSTALL_DEFAULT_SERVLET;
 
 /**
  * User: spencergibb
@@ -25,6 +28,5 @@ public abstract class AbstractViewConfig extends WebMvcConfigurerAdapter {
         registry.addResourceHandler("/static/**")
                 .addResourceLocations("classpath:/static/");
     }
-
 
 }

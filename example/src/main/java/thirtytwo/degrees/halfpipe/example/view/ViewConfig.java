@@ -1,10 +1,12 @@
 package thirtytwo.degrees.halfpipe.example.view;
 
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import thirtytwo.degrees.halfpipe.config.AbstractViewConfig;
-import thirtytwo.degrees.halfpipe.config.DefaultViewConfg;
+import thirtytwo.degrees.halfpipe.config.MetricsConfig;
 import thirtytwo.degrees.halfpipe.mgmt.view.MgmtControllers;
 
 /**
@@ -19,6 +21,7 @@ import thirtytwo.degrees.halfpipe.mgmt.view.MgmtControllers;
 @ComponentScan(basePackageClasses = {ViewConfig.class, MgmtControllers.class}, excludeFilters = {
         @ComponentScan.Filter(Configuration.class)
 })
+@Import({MetricsConfig.class})
 public class ViewConfig extends AbstractViewConfig {
     //TODO: is this needed, can I set a welcome page?
     @Override

@@ -18,6 +18,7 @@ public class HalfpipeResourceConfig extends PackagesResourceConfig {
 
         setPropertiesAndFeatures(props);
         getFeatures().put(ResourceConfig.FEATURE_DISABLE_WADL, Boolean.TRUE);
-        getClasses().add(InstrumentedResourceMethodDispatchAdapter.class);
+        //Not needed with spring metrics
+        //getClasses().add(InstrumentedResourceMethodDispatchAdapter.class);
     }
 }

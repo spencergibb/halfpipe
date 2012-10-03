@@ -206,6 +206,12 @@
 
         <dependency>
             <groupId>com.yammer.metrics</groupId>
+            <artifactId>metrics-spring</artifactId>
+            <version>${metrics.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.yammer.metrics</groupId>
             <artifactId>metrics-jersey</artifactId>
             <version>${metrics.version}</version>
             <exclusions>

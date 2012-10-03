@@ -6,6 +6,7 @@ import org.springframework.context.annotation.*;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.stereotype.Controller;
 import thirtytwo.degrees.halfpipe.config.DefaultAppConfg;
+import thirtytwo.degrees.halfpipe.config.MetricsConfig;
 import thirtytwo.degrees.halfpipe.mgmt.resources.GCResource;
 
 import javax.inject.Named;
@@ -23,7 +24,7 @@ import javax.inject.Named;
     @Filter(Configuration.class)
 })
 @ImportResource("classpath:META-INF/spring/applicationContext-security.xml")
-@Import(DefaultAppConfg.class)
+@Import({DefaultAppConfg.class, MetricsConfig.class})
 public class AppConfig {
 
     //TODO: create a proxy that auto-populates a pojo full off values and watches for changes?

@@ -6,6 +6,7 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Halfpipe</name>
+    <description>Halfpipe web service framework</description>
     <url>http://halfpipe.32degre.es</url>
 
     <modules>
@@ -34,6 +35,36 @@
         <maven.tomcat.exec.war.mainClass>thirtytwo.degrees.halfpipe.HalfpipeRunner</maven.tomcat.exec.war.mainClass>
     </properties>
 
+    <profiles>
+        <profile>
+            <id>release-sign-artifacts</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.1</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
     <build>
         <plugins>
             <plugin>
@@ -41,7 +72,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.3.2</version>
                 <configuration>
-                   <source>1.6</source>
+                    <source>1.6</source>
                     <target>1.6</target>
                 </configuration>
             </plugin>

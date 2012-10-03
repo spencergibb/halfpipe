@@ -6,11 +6,12 @@ import javax.inject.Named
 import org.springframework.context.annotation.ComponentScan.Filter
 import org.springframework.stereotype.Controller
 import thirtytwo.degrees.halfpipe.DefaultScalaAppConfig
+import thirtytwo.degrees.halfpipe.config.MetricsConfig
 
 @Configuration
 @ComponentScan (basePackageClasses = Array (classOf[AppConfig]),
   excludeFilters = Array(new Filter (Array (classOf[Controller], classOf[Configuration]))))
-@Import(Array(classOf[DefaultScalaAppConfig], classOf[SecurityConfig]))
+@Import(Array(classOf[DefaultScalaAppConfig], classOf[SecurityConfig], classOf[MetricsConfig]))
 class AppConfig extends DynamicProperties {
 
   @Bean @Named("helloText")

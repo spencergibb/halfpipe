@@ -1,6 +1,10 @@
 package thirtytwo.degrees.halfpipe.config;
 
+import static thirtytwo.degrees.halfpipe.Halfpipe.*;
+
 import com.fasterxml.jackson.datatype.guava.GuavaModule;
+import com.netflix.config.DynamicPropertyFactory;
+import com.netflix.config.DynamicStringProperty;
 import com.yammer.metrics.HealthChecks;
 import com.yammer.metrics.Metrics;
 import com.yammer.metrics.core.HealthCheck;
@@ -13,6 +17,7 @@ import org.springframework.aop.framework.ProxyConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
+import thirtytwo.degrees.halfpipe.cli.HalfpipeBannerProvider;
 import thirtytwo.degrees.halfpipe.jersey.*;
 
 import javax.inject.Named;
@@ -25,6 +30,21 @@ import java.util.List;
  */
 @Configuration
 public class DefaultAppConfg {
+
+    @Bean @Named(PROP_BANNER_TEXT_FILE)
+    public DynamicStringProperty bannerTextFile() {
+        return DynamicPropertyFactory.getInstance().getStringProperty(PROP_BANNER_TEXT_FILE, "halfpipebanner.txt");
+    }
+
+    @Bean @Named(PROP_APP_NAME)
+    public DynamicStringProperty appName() {
+        return DynamicPropertyFactory.getInstance().getStringProperty(PROP_APP_NAME, "Halfpipe");
+    }
+
+    @Bean
+    public HalfpipeBannerProvider halfpipeBannerProvider() {
+        return new HalfpipeBannerProvider();
+    }
 
     @Bean @Scope("singleton")
     public OptionalQueryParamInjectableProvider optionalQueryParamInjectableProvider() {

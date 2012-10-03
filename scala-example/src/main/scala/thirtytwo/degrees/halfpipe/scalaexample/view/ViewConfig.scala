@@ -1,7 +1,7 @@
 package thirtytwo.degrees.halfpipe.scalaexample.view
 
-import org.springframework.context.annotation.{Bean, ComponentScan, Configuration}
-import thirtytwo.degrees.halfpipe.config.AbstractViewConfig
+import org.springframework.context.annotation.{Import, Bean, ComponentScan, Configuration}
+import thirtytwo.degrees.halfpipe.config.{MetricsConfig, AbstractViewConfig}
 import org.springframework.web.servlet.config.annotation.{ViewControllerRegistry, EnableWebMvc}
 import org.springframework.web.servlet.view.freemarker.{FreeMarkerViewResolver, FreeMarkerConfigurer}
 import thirtytwo.degrees.halfpipe.mgmt.view.MgmtControllers
@@ -14,6 +14,7 @@ import thirtytwo.degrees.halfpipe.mgmt.view.MgmtControllers
 @EnableWebMvc
 @Configuration
 @ComponentScan(basePackageClasses = Array(classOf[ViewConfig], classOf[MgmtControllers]))
+@Import(Array(classOf[MetricsConfig]))
 class ViewConfig extends AbstractViewConfig {
 
   /*@Bean

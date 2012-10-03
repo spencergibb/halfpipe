@@ -7,6 +7,8 @@
     <name>Halfpipe One-Jar Maven Plugin</name>
     <url>http://onejar-maven-plugin.googlecode.com/</url>
     <inceptionYear>2007</inceptionYear>
+
+    <!-- NOTICE: I forked this to include one-jar-boot-0.98 that is quiet by default -->
     
     <parent>
         <groupId>thirtytwo.degrees</groupId>

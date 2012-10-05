@@ -1,4 +1,4 @@
-package thirtytwo.degrees.halfpipe.config;
+package thirtytwo.degrees.halfpipe.context;
 
 import com.netflix.config.DynamicPropertyFactory;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
@@ -13,7 +13,7 @@ import static thirtytwo.degrees.halfpipe.Halfpipe.PROP_INSTALL_DEFAULT_SERVLET;
  * Date: 9/25/12
  * Time: 3:39 AM
  */
-public abstract class AbstractViewConfig extends WebMvcConfigurerAdapter {
+public abstract class AbstractViewContext extends WebMvcConfigurerAdapter {
     @Override
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
         if (DynamicPropertyFactory.getInstance().getBooleanProperty(PROP_INSTALL_DEFAULT_SERVLET, false).get()) {

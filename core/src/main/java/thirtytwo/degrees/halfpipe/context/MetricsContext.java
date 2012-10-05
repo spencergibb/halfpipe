@@ -1,4 +1,4 @@
-package thirtytwo.degrees.halfpipe.config;
+package thirtytwo.degrees.halfpipe.context;
 
 import com.yammer.metrics.core.MetricsRegistry;
 import com.yammer.metrics.spring.ExceptionMeteredAnnotationBeanPostProcessor;
@@ -18,7 +18,7 @@ import javax.inject.Named;
  * Time: 3:42 PM
  */
 @Configuration
-public class MetricsConfig {
+public class MetricsContext {
 
     @Bean
     @Scope("singleton")

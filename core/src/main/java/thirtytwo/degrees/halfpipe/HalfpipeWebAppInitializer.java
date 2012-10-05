@@ -17,6 +17,7 @@ import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.DispatcherServlet;
+import thirtytwo.degrees.halfpipe.configuration.Configuration;
 import thirtytwo.degrees.halfpipe.jersey.HalfpipeResourceConfig;
 
 import javax.servlet.*;
@@ -33,6 +34,9 @@ public class HalfpipeWebAppInitializer implements WebApplicationInitializer {
     public HalfpipeWebAppInitializer() {
     }
 
+    /*protected abstract Class<?> getConfigClass();
+    protected abstract Class<?> getViewConfigClass();*/
+
     @Override
     public void onStartup(ServletContext sc) throws ServletException {
         try {
@@ -43,8 +47,9 @@ public class HalfpipeWebAppInitializer implements WebApplicationInitializer {
                 createConfig((sc.getNamedDispatcher("default") == null));
 
                 // Create the root appcontext
-                AnnotationConfigWebApplicationContext rootCtx = createWebContext(PROP_CONFIG_CLASS);
+                AnnotationConfigWebApplicationContext rootCtx = createWebContext(Application.serverContextClass);
                 rootCtx.refresh();
+                Configuration config = rootCtx.getBean(Configuration.class);
 
                 // Manage the lifecycle of the root appcontext
                 sc.addListener(new ContextLoaderListener(rootCtx));
@@ -53,9 +58,9 @@ public class HalfpipeWebAppInitializer implements WebApplicationInitializer {
                 addFilter(sc, "springSecurityFilterChain", new DelegatingFilterProxy(), ROOT_URL_PATTERN);
                 addFilter(sc, "webappMetricsFilter", new DefaultWebappMetricsFilter(), ROOT_URL_PATTERN);
 
-                // now the config for the Dispatcher servlet
-                AnnotationConfigWebApplicationContext webCtx = createWebContext(PROP_VIEW_CONFIG_CLASS);
-
+                // now the context for the Dispatcher servlet
+                AnnotationConfigWebApplicationContext webCtx = createWebContext(Application.serverViewContextClass);
+                webCtx.setParent(rootCtx); //TODO: does setParent need to be done?
                 // The main Spring MVC servlet.
                 ServletRegistration.Dynamic viewServlet = addServlet(sc, "viewServlet", new DispatcherServlet(webCtx), 1,
                         getStringProp(PROP_VIEW_URL_PATTERN, ROOT_URL_PATTERN));
@@ -68,7 +73,7 @@ public class HalfpipeWebAppInitializer implements WebApplicationInitializer {
                 ServletRegistration.Dynamic jersey = addServlet(sc, "jersey-servlet", new SpringServlet(), 1,
                         getStringProp(HALFPIPE_URL_PATTERN, RESOURCE_URL_PATTERN));
                 jersey.setInitParameter(ServletContainer.RESOURCE_CONFIG_CLASS, HalfpipeResourceConfig.class.getName());
-                jersey.setInitParameter(PackagesResourceConfig.PROPERTY_PACKAGES, getStringProp(HALFPIPE_RESOURCE_PACKAGES).get());
+                jersey.setInitParameter(PackagesResourceConfig.PROPERTY_PACKAGES, config.resourcePackages.get());
                 jersey.setInitParameter(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE.toString());
             }
         } catch (Exception e) {
@@ -78,11 +83,8 @@ public class HalfpipeWebAppInitializer implements WebApplicationInitializer {
         }
     }
 
-    private AnnotationConfigWebApplicationContext createWebContext(String classConfigProperty) throws ClassNotFoundException {
+    private AnnotationConfigWebApplicationContext createWebContext(Class<?> appConfigClass) {
         AnnotationConfigWebApplicationContext ctx = new AnnotationConfigWebApplicationContext();
-        DynamicStringProperty className = getStringProp(classConfigProperty);
-
-        Class<?> appConfigClass = Class.forName(className.get());
         ctx.register(appConfigClass);
         return ctx;
     }

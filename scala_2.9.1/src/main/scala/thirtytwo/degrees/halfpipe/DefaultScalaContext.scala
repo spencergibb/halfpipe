@@ -1,6 +1,7 @@
 package thirtytwo.degrees.halfpipe
 
-import config.DefaultAppConfg
+import configuration.ScalaConfigBuilder
+import context.{BaseContext, DefaultContext}
 import org.springframework.context.annotation.{Import, Scope, Bean, Configuration}
 import com.codahale.jerkson.ScalaModule
 import com.codahale.jersey.inject.ScalaCollectionsQueryParamInjectableProvider
@@ -11,8 +12,8 @@ import com.codahale.jersey.inject.ScalaCollectionsQueryParamInjectableProvider
  * Time: 4:38 PM
  */
 @Configuration
-@Import(Array(classOf[DefaultAppConfg]))
-class DefaultScalaAppConfig {
+@Import(Array(classOf[BaseContext]))
+class DefaultScalaContext {
 
   @Bean @Scope("singleton")
   def jacksonScalaCollections() = new ScalaCollectionsQueryParamInjectableProvider()
@@ -20,4 +21,6 @@ class DefaultScalaAppConfig {
   @Bean @Scope("singleton")
   def scalaModule() = new ScalaModule(Thread.currentThread().getContextClassLoader)
 
+  @Bean @Scope("singleton")
+  def scalaConfigBuilder() = new ScalaConfigBuilder
 }

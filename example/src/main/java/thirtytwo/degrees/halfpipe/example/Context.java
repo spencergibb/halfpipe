@@ -1,15 +1,11 @@
 package thirtytwo.degrees.halfpipe.example;
 
-import com.netflix.config.DynamicPropertyFactory;
-import com.netflix.config.DynamicStringProperty;
 import org.springframework.context.annotation.*;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.stereotype.Controller;
-import thirtytwo.degrees.halfpipe.config.DefaultAppConfg;
-import thirtytwo.degrees.halfpipe.config.MetricsConfig;
+import thirtytwo.degrees.halfpipe.context.DefaultContext;
+import thirtytwo.degrees.halfpipe.context.MetricsContext;
 import thirtytwo.degrees.halfpipe.mgmt.resources.GCResource;
-
-import javax.inject.Named;
 
 /**
  * User: spencergibb
@@ -19,13 +15,13 @@ import javax.inject.Named;
  * http://static.springsource.org/spring/docs/3.1.x/spring-framework-reference/html/mvc.html#mvc-config-enable
  */
 @Configuration
-@ComponentScan(basePackageClasses = {AppConfig.class, GCResource.class}, excludeFilters = {
+@ComponentScan(basePackageClasses = {Context.class, GCResource.class}, excludeFilters = {
     @Filter(Controller.class),
     @Filter(Configuration.class)
 })
 @ImportResource("classpath:META-INF/spring/applicationContext-security.xml")
-@Import({DefaultAppConfg.class, MetricsConfig.class})
-public class AppConfig {
+@Import({DefaultContext.class, MetricsContext.class})
+public class Context {
 
     @Bean
     public GCResource garbageCollectionTask() {

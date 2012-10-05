@@ -1,12 +1,13 @@
 package thirtytwo.degrees.halfpipe.example.view;
 
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import thirtytwo.degrees.halfpipe.config.AbstractViewConfig;
-import thirtytwo.degrees.halfpipe.config.MetricsConfig;
+import thirtytwo.degrees.halfpipe.context.AbstractViewContext;
+import thirtytwo.degrees.halfpipe.context.MetricsContext;
 import thirtytwo.degrees.halfpipe.mgmt.view.MgmtControllers;
 
 /**
@@ -18,11 +19,11 @@ import thirtytwo.degrees.halfpipe.mgmt.view.MgmtControllers;
  */
 @EnableWebMvc
 @Configuration
-@ComponentScan(basePackageClasses = {ViewConfig.class, MgmtControllers.class}, excludeFilters = {
-        @ComponentScan.Filter(Configuration.class)
+@ComponentScan(basePackageClasses = {ViewContext.class, MgmtControllers.class}, excludeFilters = {
+        @Filter(Configuration.class)
 })
-@Import({MetricsConfig.class})
-public class ViewConfig extends AbstractViewConfig {
+@Import({MetricsContext.class})
+public class ViewContext extends AbstractViewContext {
     //TODO: is this needed, can I set a welcome page?
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {

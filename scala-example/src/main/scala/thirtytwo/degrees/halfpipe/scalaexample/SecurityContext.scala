@@ -22,7 +22,7 @@ import org.springframework.security.authentication.event.{LoggerListener => Auth
  * @author Luke Taylor
  */
 @Configuration
-class SecurityConfig {
+class SecurityContext {
 
   /**
    * The FilterChainProxy bean which is delegated to from web.xml

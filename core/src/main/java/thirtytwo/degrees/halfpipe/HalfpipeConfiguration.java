@@ -5,10 +5,8 @@ import static thirtytwo.degrees.halfpipe.Halfpipe.*;
 import com.google.common.collect.Maps;
 import com.netflix.config.*;
 import org.apache.commons.configuration.SystemConfiguration;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.util.Assert;
-import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
 import java.util.Map;
 
@@ -45,19 +43,12 @@ public class HalfpipeConfiguration {
         DynamicPropertyFactory.initWithConfigurationSource(configuration);
     }
 
-    public static AnnotationConfigApplicationContext createContext(String classConfigProperty, boolean refresh) throws ClassNotFoundException {
-            Class<?> appConfigClass = getConfigClass(classConfigProperty);
+    public static AnnotationConfigApplicationContext createContext(Class<?> contextClass, boolean refresh) throws ClassNotFoundException {
         AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
-        ctx.register(appConfigClass);
+        ctx.register(contextClass);
         if (refresh)
             ctx.refresh();
         return ctx;
-    }
-
-    public static Class<?> getConfigClass(String classConfigProperty) throws ClassNotFoundException {
-        DynamicStringProperty className = getStringProp(classConfigProperty);
-
-        return Class.forName(className.get());
     }
 
     public static DynamicStringProperty getStringProp(String propName) {

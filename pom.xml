@@ -123,7 +123,7 @@
                         <execution>
                             <phase>package</phase>
                             <configuration>
-                                <mainClass>thirtytwo.degrees.halfpipe.cli.HalfpipeRunner</mainClass>
+                                <mainClass>${mainClass}</mainClass>
                                 <onejarVersion>0.98</onejarVersion>
                                 <attachToBuild>true</attachToBuild>
                                 <filename>${project.build.finalName}.halfpipe.jar</filename>

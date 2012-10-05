@@ -8,15 +8,19 @@
     <url>http://halfpipe.32degre.es</url>
     <packaging>war</packaging>
 
-	  <parent>
-         <groupId>net.thirty2</groupId>
-         <artifactId>halfpipe-parent</artifactId>
+    <properties>
+        <mainClass>thirtytwo.degrees.halfpipe.example.ExampleApp</mainClass>
+    </properties>
+
+    <parent>
+        <groupId>net.thirty2</groupId>
+        <artifactId>halfpipe-parent</artifactId>
         <version>1.0-SNAPSHOT</version>
-     </parent>
+    </parent>
 
     <dependencies>
         <dependency>
-			  <groupId>${project.groupId}</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>halfpipe-core</artifactId>
             <version>${project.version}</version>
         </dependency>

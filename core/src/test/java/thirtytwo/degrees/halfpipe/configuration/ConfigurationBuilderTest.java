@@ -2,8 +2,7 @@ package thirtytwo.degrees.halfpipe.configuration;
 
 import com.netflix.config.PropertyWrapper;
 import org.junit.Test;
-import thirtytwo.degrees.halfpipe.config.DefaultAppConfg;
-import thirtytwo.degrees.halfpipe.config.MetricsConfig;
+import thirtytwo.degrees.halfpipe.context.MetricsContext;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -13,7 +12,7 @@ import static org.hamcrest.Matchers.*;
  * Date: 10/4/12
  * Time: 11:21 PM
  */
-public class ConfigurationFactoryTest {
+public class ConfigurationBuilderTest {
 
     @Test
     public void testGet() throws Exception {
@@ -21,7 +20,7 @@ public class ConfigurationFactoryTest {
 
         TestConfiguration config = new TestConfiguration();
         Configuration c = config;
-        ConfigurationFactory.build(config);
+        new ConfigurationBuilder().build(config);
 
         assertProp("config", config);
 
@@ -42,7 +41,7 @@ public class ConfigurationFactoryTest {
         assertProp("config.http.gzip", config.http.gzip);
         assertProp("config.http.gzip.enabled", config.http.gzip.enabled, true);
 
-        if (config.appConfigClass != MetricsConfig.class) {
+        if (config.appConfigClass != MetricsContext.class) {
             throw new Exception();
         }
     }

@@ -1,4 +1,4 @@
-package thirtytwo.degrees.halfpipe.config;
+package thirtytwo.degrees.halfpipe.context;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +13,6 @@ import thirtytwo.degrees.halfpipe.mgmt.view.MgmtControllers;
 @EnableWebMvc
 @Configuration
 @ComponentScan(basePackageClasses = MgmtControllers.class)
-public class DefaultViewConfg extends AbstractViewConfig {
+public class DefaultViewContext extends AbstractViewContext {
 
 }

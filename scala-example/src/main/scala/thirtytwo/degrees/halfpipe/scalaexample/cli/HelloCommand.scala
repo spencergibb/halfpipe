@@ -6,6 +6,7 @@ import org.springframework.shell.core.CommandMarker
 import org.apache.commons.lang.StringUtils
 import org.springframework.shell.core.annotation.{CliOption, CliCommand, CliAvailabilityIndicator}
 import org.springframework.stereotype.Component
+import thirtytwo.degrees.halfpipe.scalaexample.ExampleScalaConfig
 
 /**
  * User: spencergibb
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Component
  * Time: 9:53 PM
  */
 @Component
-class HelloCommand @Inject() (@Named("helloText") helloText: DString) extends CommandMarker {
+class HelloCommand @Inject() (config: ExampleScalaConfig) extends CommandMarker {
 
   @CliAvailabilityIndicator(Array("hello"))
   def isCommandAvailable = {
@@ -27,7 +28,7 @@ class HelloCommand @Inject() (@Named("helloText") helloText: DString) extends Co
              @CliOption(key = Array("more"), mandatory = false, help = "Have some more to say while saying hello",
              specifiedDefaultValue = "") more: String): String =
   {
-    val hello: StringBuilder = new StringBuilder(helloText.get())
+    val hello: StringBuilder = new StringBuilder(config.helloText.get())
     hello.append(" with this message, " + message)
     if (!StringUtils.isBlank(more)) {
       hello.append(" " + more)

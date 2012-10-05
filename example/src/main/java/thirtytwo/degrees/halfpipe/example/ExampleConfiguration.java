@@ -13,8 +13,4 @@ import thirtytwo.degrees.halfpipe.configuration.Configuration;
 public class ExampleConfiguration extends Configuration {
 
     public DynamicStringProperty helloText;
-
-    public ExampleConfiguration() {
-        System.out.println("example config");
-    }
 }

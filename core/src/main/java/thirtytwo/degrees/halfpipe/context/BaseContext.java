@@ -1,10 +1,6 @@
-package thirtytwo.degrees.halfpipe.config;
-
-import static thirtytwo.degrees.halfpipe.Halfpipe.*;
+package thirtytwo.degrees.halfpipe.context;
 
 import com.fasterxml.jackson.datatype.guava.GuavaModule;
-import com.netflix.config.DynamicPropertyFactory;
-import com.netflix.config.DynamicStringProperty;
 import com.yammer.metrics.HealthChecks;
 import com.yammer.metrics.Metrics;
 import com.yammer.metrics.core.HealthCheck;
@@ -20,10 +16,12 @@ import org.springframework.context.annotation.Scope;
 import thirtytwo.degrees.halfpipe.cli.HalfpipeBannerProvider;
 import thirtytwo.degrees.halfpipe.configuration.ConfigurationBeanPostProcessor;
 import thirtytwo.degrees.halfpipe.jackson.AnnotationSensitivePropertyNamingStrategy;
-import thirtytwo.degrees.halfpipe.jackson.DynamicPropertiesModule;
 import thirtytwo.degrees.halfpipe.jackson.GuavaExtrasModule;
 import thirtytwo.degrees.halfpipe.jackson.ObjectMapperFactory;
-import thirtytwo.degrees.halfpipe.jersey.*;
+import thirtytwo.degrees.halfpipe.jersey.HalfpipeObjectMapperProvider;
+import thirtytwo.degrees.halfpipe.jersey.InvalidEntityExceptionMapper;
+import thirtytwo.degrees.halfpipe.jersey.JacksonMessageBodyProvider;
+import thirtytwo.degrees.halfpipe.jersey.OptionalQueryParamInjectableProvider;
 
 import javax.inject.Named;
 import java.util.List;
@@ -34,7 +32,7 @@ import java.util.List;
  * Time: 4:34 PM
  */
 @Configuration
-public class DefaultAppConfg {
+public class BaseContext {
 
     @Bean
     public HalfpipeBannerProvider halfpipeBannerProvider() {

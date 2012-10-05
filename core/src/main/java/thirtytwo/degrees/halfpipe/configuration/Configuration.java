@@ -1,8 +1,7 @@
 package thirtytwo.degrees.halfpipe.configuration;
 
 import com.netflix.config.DynamicStringProperty;
-import thirtytwo.degrees.halfpipe.config.DefaultAppConfg;
-import thirtytwo.degrees.halfpipe.configuration.HttpConfiguration;
+import thirtytwo.degrees.halfpipe.context.DefaultContext;
 
 import javax.ws.rs.DefaultValue;
 
@@ -18,7 +17,9 @@ public class Configuration {
     @DefaultValue("halfpipebanner.txt")
     public DynamicStringProperty bannerFile;
 
+    public DynamicStringProperty resourcePackages;
+
     public HttpConfiguration http;
 
-    public Class<?> appConfigClass = DefaultAppConfg.class;
+    public Class<?> appConfigClass = DefaultContext.class;
 }

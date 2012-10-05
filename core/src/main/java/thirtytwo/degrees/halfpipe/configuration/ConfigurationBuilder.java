@@ -1,5 +1,6 @@
 package thirtytwo.degrees.halfpipe.configuration;
 
+import com.google.common.base.Throwables;
 import com.netflix.config.*;
 import org.apache.commons.lang.StringUtils;
 
@@ -13,12 +14,13 @@ import static org.springframework.util.ReflectionUtils.*;
  * Time: 11:19 PM
  * TODO: json config http://svn.apache.org/viewvc/commons/proper/configuration/branches/configuration2_experimental/src/main/java/org/apache/commons/configuration2/
  */
-public class ConfigurationFactory {
-    public static void build(Object config) throws Exception {
+public class ConfigurationBuilder {
+
+    public void build(Object config) throws Exception {
         //TODO: validate
         build(config, "");
     }
-    protected static void build(final Object config, final String context) throws Exception {
+    protected void build(final Object config, final String context) throws Exception {
         Class<?> configClass = config.getClass();
 
         doWithFields(configClass, new FieldCallback(){
@@ -87,21 +89,19 @@ public class ConfigurationFactory {
                         defaultValue = 0.0d;
                     }
                     field.set(config, props.getDoubleProperty(propName, defaultValue));
-                } else {
-                    if (field.get(config) == null) {
-                        try {
-                            Object fieldConfig = type.newInstance();
-                            build(fieldConfig, propName);
-                            field.set(config, fieldConfig);
-                        } catch (Exception e) {
-                            throw new RuntimeException(e);
-                        }
+                } else if (field.get(config) == null) {
+                    try {
+                        Object fieldConfig = type.newInstance();
+                        build(fieldConfig, propName);
+                        field.set(config, fieldConfig);
+                    } catch (Exception e) {
+                        Throwables.propagate(e);
                     }
                 }
             }});
     }
 
-    private static String getPropName(Field field, String context) {
+    protected String getPropName(Field field, String context) {
         if (StringUtils.isBlank(context))
             return field.getName();
 

@@ -4,7 +4,7 @@
 package ${package}.view
 
 import org.springframework.context.annotation.{Bean, ComponentScan, Configuration}
-import thirtytwo.degrees.halfpipe.config.AbstractViewConfig
+import thirtytwo.degrees.halfpipe.context.AbstractViewConfig
 import org.springframework.web.servlet.config.annotation.{ViewControllerRegistry, EnableWebMvc}
 import org.springframework.web.servlet.view.freemarker.{FreeMarkerViewResolver, FreeMarkerConfigurer}
 import thirtytwo.degrees.halfpipe.mgmt.view.MgmtControllers

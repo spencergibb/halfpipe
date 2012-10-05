@@ -19,14 +19,11 @@ public class Hello {
 
     Child child;
 
-    DynamicStringProperty myconfig;
-
     public Hello(@JsonProperty("hello") String hello, @JsonProperty("to") String to,
-                 @JsonProperty("child") Child child, @JsonProperty("myconfig") DynamicStringProperty myconfig) {
+                 @JsonProperty("child") Child child) {
         this.hello = hello;
         this.to = to;
         this.child = child;
-        this.myconfig = myconfig;
     }
 
     public String getHello() {
@@ -39,9 +36,5 @@ public class Hello {
 
     public Child getChild() {
         return child;
-    }
-
-    public DynamicStringProperty getMyconfig() {
-        return myconfig;
     }
 }

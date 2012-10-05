@@ -28,7 +28,7 @@ public class HelloResource {
     @Timed
     public Hello hello(@QueryParam("more") Optional<String> more,
                        @QueryParam("name") Optional<String> name) {
-        return new Hello(sayer.hello(), "Resource"+more.or(""), new Child(name, null), null);
+        return new Hello(sayer.hello(), "Resource"+more.or(""), new Child(name));
     }
 
     @POST
@@ -36,7 +36,6 @@ public class HelloResource {
     @Timed
     public String receive(@Valid Hello hello) {
         return "received to: "+hello.getTo() +" msg: "+hello.getHello()+
-               ": myconfig: "+hello.getMyconfig()+
                ": child: "+hello.getChild();
     }
 }

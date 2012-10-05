@@ -60,10 +60,10 @@ public class DefaultAppConfg {
         return new GuavaExtrasModule();
     }
 
-    @Bean @Scope("singleton")
+/*    @Bean @Scope("singleton")
     public DynamicPropertiesModule dynamicPropertiesModule() {
         return new DynamicPropertiesModule();
-    }
+    }*/
 
     @Bean @Scope("singleton")
     public GuavaModule guavaModule() {

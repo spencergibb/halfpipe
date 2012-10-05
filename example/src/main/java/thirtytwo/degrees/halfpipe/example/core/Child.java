@@ -13,27 +13,18 @@ import org.codehaus.jackson.annotate.JsonProperty;
 public class Child {
     Optional<String> name;
 
-    DynamicStringProperty childconfig;
-
-    public Child(@JsonProperty("name") Optional<String> name,
-                 @JsonProperty("childconfig") DynamicStringProperty childconfig ) {
+    public Child(@JsonProperty("name") Optional<String> name) {
         this.name = name;
-        this.childconfig = childconfig;
     }
 
     public Optional<String> getName() {
         return name;
     }
 
-    public DynamicStringProperty getChildconfig() {
-        return childconfig;
-    }
-
     @Override
     public String toString() {
         return new ToStringBuilder(this).
                 append("name", name).
-                append("childconfig", childconfig).
                 toString();
     }
 }

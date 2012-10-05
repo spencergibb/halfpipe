@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Scope;
 import javax.inject.Named;
 
 /**
- * User: gibbsb
+ * User: spencergibb
  * Date: 10/3/12
  * Time: 3:42 PM
  */

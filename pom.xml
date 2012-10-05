@@ -262,12 +262,6 @@
             <name>Spring Maven RELEASE Repository</name>
             <url>http://repo.springsource.org/repo</url>
         </repository>
-        <repository>
-            <!-- Milestone/RC -->
-            <id>spring-milestone</id>
-            <name>Spring Maven MILESTONE Repository</name>
-            <url>http://repo.springsource.org/libs-milestone-local</url>
-        </repository>
         <!--<repository>
             <id>sonatype-nexus-snapshots</id>
             <name>Sonatype Nexus Snapshots</name>

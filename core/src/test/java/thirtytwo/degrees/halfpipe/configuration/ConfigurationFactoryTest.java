@@ -3,6 +3,7 @@ package thirtytwo.degrees.halfpipe.configuration;
 import com.netflix.config.PropertyWrapper;
 import org.junit.Test;
 import thirtytwo.degrees.halfpipe.config.DefaultAppConfg;
+import thirtytwo.degrees.halfpipe.config.MetricsConfig;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -18,11 +19,13 @@ public class ConfigurationFactoryTest {
     public void testGet() throws Exception {
         System.setProperty("archaius.configurationSource.defaultFileName", "configurationFactoryTest.properties");
 
-        TestConfiguration config = ConfigurationFactory.get(TestConfiguration.class);
+        TestConfiguration config = new TestConfiguration();
+        Configuration c = config;
+        ConfigurationFactory.build(config);
 
         assertProp("config", config);
 
-        assertProp("config.name", config.name, "Test App");
+        assertProp("config.appName", config.appName, "Test App");
         assertProp("config.defaultIntProp", config.defaultIntProp, 1);
         assertProp("config.defaultBooleanProp", config.defaultBooleanProp, true);
         assertProp("config.defaultLongProp", config.defaultLongProp, 1L);
@@ -39,7 +42,9 @@ public class ConfigurationFactoryTest {
         assertProp("config.http.gzip", config.http.gzip);
         assertProp("config.http.gzip.enabled", config.http.gzip.enabled, true);
 
-        assertThat(config.appConfgClass, is(sameInstance(DefaultAppConfg.class)));
+        if (config.appConfigClass != MetricsConfig.class) {
+            throw new Exception();
+        }
     }
 
     private <T> void assertProp(String propName, PropertyWrapper<T> property, T expected) {

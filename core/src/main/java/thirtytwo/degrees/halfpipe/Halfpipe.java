@@ -11,8 +11,6 @@ public class Halfpipe {
     public static final String PROP_CONFIG_CLASS = "halfpipe.config.class";
     public static final String PROP_VIEW_CONFIG_CLASS = "halfpipe.view.config.class";
     public static final String PROP_VIEW_URL_PATTERN = "halfpipe.view.url.pattern";
-    public static final String PROP_BANNER_TEXT_FILE = "halfpipe.banner.text.file";
-    public static final String PROP_APP_NAME = "halfpipe.app.name";
     public static final String ROOT_URL_PATTERN = "/*";
     public static final String RESOURCE_URL_PATTERN = "/ws/*";
     public static final String HALFPIPE_URL_PATTERN = "halfpipe.url.pattern";

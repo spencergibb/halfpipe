@@ -3,6 +3,7 @@ package thirtytwo.degrees.halfpipe.example.resources;
 import com.netflix.config.DynamicStringProperty;
 import com.yammer.metrics.annotation.Timed;
 import org.springframework.stereotype.Service;
+import thirtytwo.degrees.halfpipe.example.ExampleConfiguration;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -15,11 +16,11 @@ import javax.inject.Named;
 @Service
 public class Sayer {
 
-    @Inject @Named("helloText")
-    DynamicStringProperty helloText;
+    @Inject
+    ExampleConfiguration config;
 
     @Timed
     public String hello() {
-        return helloText.get();
+        return config.helloText.get();
     }
 }

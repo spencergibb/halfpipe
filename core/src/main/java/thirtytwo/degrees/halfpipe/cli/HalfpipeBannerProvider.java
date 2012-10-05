@@ -2,19 +2,14 @@ package thirtytwo.degrees.halfpipe.cli;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
-import com.netflix.config.DynamicStringProperty;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.shell.plugin.BannerProvider;
 import org.springframework.shell.support.util.OsUtils;
-import org.springframework.shell.support.util.VersionUtils;
+import thirtytwo.degrees.halfpipe.configuration.Configuration;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 import java.net.URL;
-
-import static thirtytwo.degrees.halfpipe.Halfpipe.PROP_APP_NAME;
-import static thirtytwo.degrees.halfpipe.Halfpipe.PROP_BANNER_TEXT_FILE;
 
 /**
  * User: spencergibb
@@ -24,21 +19,18 @@ import static thirtytwo.degrees.halfpipe.Halfpipe.PROP_BANNER_TEXT_FILE;
 @Order(Ordered.LOWEST_PRECEDENCE-1)
 public class HalfpipeBannerProvider implements BannerProvider {
 
-    @Inject @Named(PROP_BANNER_TEXT_FILE)
-    DynamicStringProperty bannerTextFile;
-
-    @Inject @Named(PROP_APP_NAME)
-    DynamicStringProperty appName;
+    @Inject
+    Configuration config;
 
     public String getBanner() {
         StringBuilder sb = new StringBuilder();
         try {
-            URL resource = Resources.getResource(bannerTextFile.get());
+            URL resource = Resources.getResource(config.bannerFile.get());
             final String banner = Resources.toString(resource, Charsets.UTF_8);
             sb.append(banner);
         } catch (Exception e) {
             e.printStackTrace();  //TODO: handle catch
-            throw new IllegalStateException("File not fount "+bannerTextFile.get());
+            throw new IllegalStateException("File not fount "+config.bannerFile.get());
         }
         //sb.append(FileUtils.readBanner(HalfpipeBannerProvider.class, bannerTextFile.get()));
         //sb.append(getVersion()).append(OsUtils.LINE_SEPARATOR);
@@ -56,7 +48,7 @@ public class HalfpipeBannerProvider implements BannerProvider {
     }
 
     public String name() {
-        return appName.get();
+        return config.appName.get();
     }
 
     public static String versionInfo() {

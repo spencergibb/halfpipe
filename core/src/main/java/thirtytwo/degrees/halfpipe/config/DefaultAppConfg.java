@@ -18,6 +18,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import thirtytwo.degrees.halfpipe.cli.HalfpipeBannerProvider;
+import thirtytwo.degrees.halfpipe.configuration.ConfigurationBeanPostProcessor;
 import thirtytwo.degrees.halfpipe.jackson.AnnotationSensitivePropertyNamingStrategy;
 import thirtytwo.degrees.halfpipe.jackson.DynamicPropertiesModule;
 import thirtytwo.degrees.halfpipe.jackson.GuavaExtrasModule;
@@ -34,16 +35,6 @@ import java.util.List;
  */
 @Configuration
 public class DefaultAppConfg {
-
-    @Bean @Named(PROP_BANNER_TEXT_FILE)
-    public DynamicStringProperty bannerTextFile() {
-        return DynamicPropertyFactory.getInstance().getStringProperty(PROP_BANNER_TEXT_FILE, "halfpipebanner.txt");
-    }
-
-    @Bean @Named(PROP_APP_NAME)
-    public DynamicStringProperty appName() {
-        return DynamicPropertyFactory.getInstance().getStringProperty(PROP_APP_NAME, "Halfpipe");
-    }
 
     @Bean
     public HalfpipeBannerProvider halfpipeBannerProvider() {
@@ -122,6 +113,11 @@ public class DefaultAppConfg {
     @Bean @Scope("singleton") @Named("MetricsProxyConfig")
     public ProxyConfig proxyConfig() {
         return new ProxyConfig();
+    }
+
+    @Bean @Scope("singleton")
+    public ConfigurationBeanPostProcessor configurationBeanPostProcessor() {
+        return new ConfigurationBeanPostProcessor();
     }
 
 }

@@ -27,13 +27,6 @@ import javax.inject.Named;
 @Import({DefaultAppConfg.class, MetricsConfig.class})
 public class AppConfig {
 
-    //TODO: create a proxy that auto-populates a pojo full off values and watches for changes?
-    // https://github.com/Netflix/archaius/wiki/Getting-Started
-    @Bean @Named("helloText")
-    public DynamicStringProperty helloText() {
-        return DynamicPropertyFactory.getInstance().getStringProperty("hello.text", "Hello default text");
-    }
-
     @Bean
     public GCResource garbageCollectionTask() {
         return new GCResource();

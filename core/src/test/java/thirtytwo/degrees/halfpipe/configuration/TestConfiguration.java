@@ -2,6 +2,7 @@ package thirtytwo.degrees.halfpipe.configuration;
 
 import com.netflix.config.*;
 import thirtytwo.degrees.halfpipe.config.DefaultAppConfg;
+import thirtytwo.degrees.halfpipe.config.MetricsConfig;
 
 import javax.ws.rs.DefaultValue;
 
@@ -32,6 +33,6 @@ public class TestConfiguration extends Configuration {
 
     DynamicDoubleProperty doubleProp;
 
-    Class<DefaultAppConfg> appConfgClass = DefaultAppConfg.class;
+    Class<?> appConfigClass = MetricsConfig.class;
 
 }

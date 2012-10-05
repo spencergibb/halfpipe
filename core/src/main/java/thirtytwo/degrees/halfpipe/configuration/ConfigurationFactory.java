@@ -14,12 +14,12 @@ import static org.springframework.util.ReflectionUtils.*;
  * TODO: json config http://svn.apache.org/viewvc/commons/proper/configuration/branches/configuration2_experimental/src/main/java/org/apache/commons/configuration2/
  */
 public class ConfigurationFactory {
-    public static <T> T get(Class<T> configClass) throws Exception {
+    public static void build(Object config) throws Exception {
         //TODO: validate
-        return get(configClass, "");
+        build(config, "");
     }
-    protected static <T> T get(Class<T> configClass, final String context) throws Exception {
-        final T config = configClass.newInstance();
+    protected static void build(final Object config, final String context) throws Exception {
+        Class<?> configClass = config.getClass();
 
         doWithFields(configClass, new FieldCallback(){
             public void doWith(Field field) throws IllegalArgumentException, IllegalAccessException {
@@ -90,7 +90,8 @@ public class ConfigurationFactory {
                 } else {
                     if (field.get(config) == null) {
                         try {
-                            Object fieldConfig = get(type, propName);
+                            Object fieldConfig = type.newInstance();
+                            build(fieldConfig, propName);
                             field.set(config, fieldConfig);
                         } catch (Exception e) {
                             throw new RuntimeException(e);
@@ -98,8 +99,6 @@ public class ConfigurationFactory {
                     }
                 }
             }});
-
-        return config;
     }
 
     private static String getPropName(Field field, String context) {

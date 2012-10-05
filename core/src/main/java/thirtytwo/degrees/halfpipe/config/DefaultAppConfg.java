@@ -18,6 +18,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import thirtytwo.degrees.halfpipe.cli.HalfpipeBannerProvider;
+import thirtytwo.degrees.halfpipe.jackson.AnnotationSensitivePropertyNamingStrategy;
+import thirtytwo.degrees.halfpipe.jackson.DynamicPropertiesModule;
+import thirtytwo.degrees.halfpipe.jackson.GuavaExtrasModule;
+import thirtytwo.degrees.halfpipe.jackson.ObjectMapperFactory;
 import thirtytwo.degrees.halfpipe.jersey.*;
 
 import javax.inject.Named;
@@ -54,6 +58,11 @@ public class DefaultAppConfg {
     @Bean @Scope("singleton")
     public GuavaExtrasModule guavaExtrasModule() {
         return new GuavaExtrasModule();
+    }
+
+    @Bean @Scope("singleton")
+    public DynamicPropertiesModule dynamicPropertiesModule() {
+        return new DynamicPropertiesModule();
     }
 
     @Bean @Scope("singleton")

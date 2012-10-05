@@ -1,11 +1,9 @@
 package thirtytwo.degrees.halfpipe.jersey;
 
-import static com.google.common.collect.Iterables.*;
-import org.codehaus.jackson.map.*;
+import org.codehaus.jackson.map.ObjectMapper;
 
 import javax.ws.rs.ext.ContextResolver;
 import javax.ws.rs.ext.Provider;
-import java.util.List;
 
 /**
  * User: spencergibb

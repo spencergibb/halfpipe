@@ -1,4 +1,4 @@
-package thirtytwo.degrees.halfpipe.jersey;
+package thirtytwo.degrees.halfpipe.jackson;
 
 import org.codehaus.jackson.map.MapperConfig;
 import org.codehaus.jackson.map.PropertyNamingStrategy;

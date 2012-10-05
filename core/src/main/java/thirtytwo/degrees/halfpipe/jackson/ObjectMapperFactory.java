@@ -1,12 +1,11 @@
-package thirtytwo.degrees.halfpipe.jersey;
+package thirtytwo.degrees.halfpipe.jackson;
 
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.Module;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
+import thirtytwo.degrees.halfpipe.jackson.AnnotationSensitivePropertyNamingStrategy;
 
-import javax.ws.rs.ext.ContextResolver;
-import javax.ws.rs.ext.Provider;
 import java.util.List;
 
 /**

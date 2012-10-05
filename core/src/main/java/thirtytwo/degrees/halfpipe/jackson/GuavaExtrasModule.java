@@ -1,4 +1,4 @@
-package thirtytwo.degrees.halfpipe.jersey;
+package thirtytwo.degrees.halfpipe.jackson;
 
 import com.google.common.cache.CacheBuilderSpec;
 import com.google.common.net.HostAndPort;

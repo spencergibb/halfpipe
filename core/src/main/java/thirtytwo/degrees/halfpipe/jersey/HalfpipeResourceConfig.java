@@ -1,8 +1,7 @@
 package thirtytwo.degrees.halfpipe.jersey;
 
-import com.sun.jersey.api.core.*;
-import com.yammer.metrics.jersey.InstrumentedResourceMethodDispatchAdapter;
-import org.springframework.stereotype.Component;
+import com.sun.jersey.api.core.PackagesResourceConfig;
+import com.sun.jersey.api.core.ResourceConfig;
 
 import java.util.Map;
 

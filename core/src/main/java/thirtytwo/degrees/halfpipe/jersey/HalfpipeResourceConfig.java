@@ -2,6 +2,7 @@ package thirtytwo.degrees.halfpipe.jersey;
 
 import com.sun.jersey.api.core.PackagesResourceConfig;
 import com.sun.jersey.api.core.ResourceConfig;
+import com.yammer.metrics.jersey.InstrumentedResourceMethodDispatchAdapter;
 
 import java.util.Map;
 
@@ -17,7 +18,6 @@ public class HalfpipeResourceConfig extends PackagesResourceConfig {
 
         setPropertiesAndFeatures(props);
         getFeatures().put(ResourceConfig.FEATURE_DISABLE_WADL, Boolean.TRUE);
-        //Not needed with spring metrics
-        //getClasses().add(InstrumentedResourceMethodDispatchAdapter.class);
+        getClasses().add(InstrumentedResourceMethodDispatchAdapter.class);
     }
 }

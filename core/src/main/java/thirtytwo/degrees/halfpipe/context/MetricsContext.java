@@ -4,7 +4,6 @@ import com.yammer.metrics.core.MetricsRegistry;
 import com.yammer.metrics.spring.ExceptionMeteredAnnotationBeanPostProcessor;
 import com.yammer.metrics.spring.GaugeAnnotationBeanPostProcessor;
 import com.yammer.metrics.spring.MeteredAnnotationBeanPostProcessor;
-import com.yammer.metrics.spring.TimedAnnotationBeanPostProcessor;
 import org.springframework.aop.framework.ProxyConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

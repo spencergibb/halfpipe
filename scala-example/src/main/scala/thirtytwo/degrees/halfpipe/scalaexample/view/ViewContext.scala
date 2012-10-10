@@ -5,6 +5,7 @@ import thirtytwo.degrees.halfpipe.context.{MetricsContext, AbstractViewContext}
 import org.springframework.web.servlet.config.annotation.{ViewControllerRegistry, EnableWebMvc}
 import org.springframework.web.servlet.view.freemarker.{FreeMarkerViewResolver, FreeMarkerConfigurer}
 import thirtytwo.degrees.halfpipe.mgmt.view.MgmtControllers
+import org.springframework.context.annotation.ComponentScan.Filter
 
 /**
  * User: spencergibb
@@ -13,7 +14,8 @@ import thirtytwo.degrees.halfpipe.mgmt.view.MgmtControllers
  */
 @EnableWebMvc
 @Configuration
-@ComponentScan(basePackageClasses = Array(classOf[ViewContext], classOf[MgmtControllers]))
+@ComponentScan(basePackageClasses = Array(classOf[ViewContext], classOf[MgmtControllers]),
+  excludeFilters = Array(new Filter (Array (classOf[Configuration]))))
 @Import(Array(classOf[MetricsContext]))
 class ViewContext extends AbstractViewContext {
 

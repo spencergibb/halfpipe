@@ -2,12 +2,13 @@ package thirtytwo.degrees.halfpipe.scalaexample.resources
 
 import javax.ws.rs.{Produces, QueryParam, GET, Path}
 import org.springframework.stereotype.Component
-import javax.inject.{Named, Inject}
+import javax.inject.Inject
 import com.netflix.config.scala.{DynamicStringProperty => DString}
 import thirtytwo.degrees.halfpipe.scalaexample.core.Hello
 import javax.ws.rs.core.MediaType
 import com.yammer.metrics.annotation.Timed
 import thirtytwo.degrees.halfpipe.scalaexample.ExampleScalaConfig
+import org.springframework.beans.factory.annotation.Autowired
 
 /**
  * User: spencergibb
@@ -21,16 +22,18 @@ import thirtytwo.degrees.halfpipe.scalaexample.ExampleScalaConfig
 @Path("/hello")
 class HelloResource @Inject() (config: ExampleScalaConfig) {
 
+  println("heerree")
+
+  // TODO: spring proxies break resources in scala
   @GET
   @Path("/text")
   @Produces(Array(MediaType.TEXT_PLAIN))
-  @Timed
   def hellotext(@QueryParam("more") more: Option[String]) =
     config.helloText.get() + more.getOrElse("")
 
+  @Timed
   @GET
   @Produces(Array(MediaType.APPLICATION_JSON))
-  @Timed
   def hellojson(@QueryParam("more") more: Option[String]) =
     new Hello(config.helloText.get(), "Scala Resource"+more.getOrElse(""))
 }

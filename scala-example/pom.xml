@@ -8,6 +8,10 @@
     <url>http://halfpipe.32degre.es</url>
     <packaging>war</packaging>
 
+    <properties>
+        <mainClass>thirtytwo.degrees.halfpipe.scalaexample.ExampleScalaApp</mainClass>
+    </properties>
+
     <parent>
         <groupId>net.thirty2</groupId>
         <artifactId>halfpipe-parent</artifactId>

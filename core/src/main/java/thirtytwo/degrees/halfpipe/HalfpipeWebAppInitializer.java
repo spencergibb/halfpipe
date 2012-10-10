@@ -13,7 +13,7 @@ import com.yammer.metrics.web.DefaultWebappMetricsFilter;
 import org.apache.catalina.servlets.DefaultServlet;
 import org.springframework.util.Assert;
 import org.springframework.web.WebApplicationInitializer;
-import org.springframework.web.context.ContextLoaderListener;
+import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.DispatcherServlet;
@@ -49,10 +49,12 @@ public class HalfpipeWebAppInitializer implements WebApplicationInitializer {
                 // Create the root appcontext
                 AnnotationConfigWebApplicationContext rootCtx = createWebContext(Application.serverContextClass);
                 rootCtx.refresh();
-                Configuration config = rootCtx.getBean(Configuration.class);
 
-                // Manage the lifecycle of the root appcontext
-                sc.addListener(new ContextLoaderListener(rootCtx));
+                // rather than sc.addListener(new ContextLoaderListener(rootCtx));
+                // set the required servletcontext attribute to avoid loading beans twice
+                sc.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, rootCtx);
+
+                Configuration config = rootCtx.getBean(Configuration.class);
 
                 // Filters
                 addFilter(sc, "springSecurityFilterChain", new DelegatingFilterProxy(), ROOT_URL_PATTERN);

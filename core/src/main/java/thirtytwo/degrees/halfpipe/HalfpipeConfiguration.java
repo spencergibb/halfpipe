@@ -4,10 +4,16 @@ import static thirtytwo.degrees.halfpipe.Halfpipe.*;
 
 import com.google.common.collect.Maps;
 import com.netflix.config.*;
+import com.sun.jersey.api.core.PackagesResourceConfig;
+import com.sun.jersey.api.json.JSONConfiguration;
+import com.sun.jersey.spi.container.servlet.ServletContainer;
 import org.apache.commons.configuration.SystemConfiguration;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.util.Assert;
+import thirtytwo.degrees.halfpipe.configuration.Configuration;
+import thirtytwo.degrees.halfpipe.jersey.HalfpipeResourceConfig;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -16,6 +22,14 @@ import java.util.Map;
  * Time: 10:13 PM
  */
 public class HalfpipeConfiguration {
+
+    public static Map<String, Object> jerseyProperties(Configuration config) {
+        HashMap<String, Object> props = Maps.newHashMap();
+        props.put(ServletContainer.RESOURCE_CONFIG_CLASS, HalfpipeResourceConfig.class.getName());
+        props.put(PackagesResourceConfig.PROPERTY_PACKAGES, config.resourcePackages.get());
+        props.put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE.toString());
+        return props;
+    }
 
     public static void createConfig(boolean installDefaultServlet) {
         if (DynamicPropertyFactory.isInitializedWithDefaultConfig() || ConfigurationManager.isConfigurationInstalled()) {

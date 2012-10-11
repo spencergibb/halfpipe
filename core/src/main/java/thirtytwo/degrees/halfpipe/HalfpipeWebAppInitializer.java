@@ -5,9 +5,6 @@ import static thirtytwo.degrees.halfpipe.HalfpipeConfiguration.*;
 
 import com.netflix.config.DynamicPropertyFactory;
 import com.netflix.config.DynamicStringProperty;
-import com.sun.jersey.api.core.PackagesResourceConfig;
-import com.sun.jersey.api.json.JSONConfiguration;
-import com.sun.jersey.spi.container.servlet.ServletContainer;
 import com.sun.jersey.spi.spring.container.servlet.SpringServlet;
 import com.yammer.metrics.web.DefaultWebappMetricsFilter;
 import org.apache.catalina.servlets.DefaultServlet;
@@ -18,9 +15,9 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
 import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.DispatcherServlet;
 import thirtytwo.degrees.halfpipe.configuration.Configuration;
-import thirtytwo.degrees.halfpipe.jersey.HalfpipeResourceConfig;
 
 import javax.servlet.*;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -74,9 +71,10 @@ public class HalfpipeWebAppInitializer implements WebApplicationInitializer {
                 // Jersey Servlet
                 ServletRegistration.Dynamic jersey = addServlet(sc, "jersey-servlet", new SpringServlet(), 1,
                         getStringProp(HALFPIPE_URL_PATTERN, RESOURCE_URL_PATTERN));
-                jersey.setInitParameter(ServletContainer.RESOURCE_CONFIG_CLASS, HalfpipeResourceConfig.class.getName());
-                jersey.setInitParameter(PackagesResourceConfig.PROPERTY_PACKAGES, config.resourcePackages.get());
-                jersey.setInitParameter(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE.toString());
+
+                for (Map.Entry<String, Object> entry: jerseyProperties(config).entrySet()) {
+                    jersey.setInitParameter(entry.getKey(), entry.getValue().toString());
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

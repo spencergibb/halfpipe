@@ -9,6 +9,7 @@ import thirtytwo.degrees.halfpipe.DefaultScalaContext
 import thirtytwo.degrees.halfpipe.context.MetricsContext
 import thirtytwo.degrees.halfpipe.mgmt.resources.GCResource
 import thirtytwo.degrees.halfpipe.finagle.{FinagleClientCommand, FinagleCommand}
+import org.springframework.context.ApplicationContext
 
 @Configuration
 @ComponentScan (basePackageClasses = Array (classOf[Context], classOf[GCResource]),
@@ -19,6 +20,9 @@ class Context extends DynamicProperties {
   @Inject
   var config: ExampleScalaConfig = _
 
+  @Inject
+  var context: ApplicationContext = _
+
   @Bean @Named("helloText")
   def helloText() = dynamicStringProperty("hello.text", "Hello default")
 
@@ -26,7 +30,7 @@ class Context extends DynamicProperties {
   def garbageCollectionTask: GCResource = new GCResource
 
   @Bean
-  def finagleCommand: FinagleCommand = new FinagleCommand(config)
+  def finagleCommand: FinagleCommand = new FinagleCommand(config, context)
 
   @Bean
   def finagleClient: FinagleClientCommand = new FinagleClientCommand(config)

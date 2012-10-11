@@ -1,8 +1,7 @@
 package thirtytwo.degrees.halfpipe.finagle
 
 import com.sun.jersey.spi.container.{ContainerResponse, ContainerResponseWriter}
-import org.jboss.netty.channel.{ChannelFutureListener, Channel}
-import org.jboss.netty.handler.codec.http.{HttpResponseStatus, HttpVersion, DefaultHttpResponse, HttpResponse}
+import org.jboss.netty.handler.codec.http.{HttpResponseStatus, HttpResponse}
 import scala.collection.JavaConverters._
 import org.jboss.netty.buffer.{ChannelBufferOutputStream, ChannelBuffers}
 

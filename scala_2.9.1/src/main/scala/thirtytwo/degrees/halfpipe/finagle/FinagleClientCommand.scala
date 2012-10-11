@@ -53,7 +53,16 @@ class FinagleClientCommand (config: Configuration) extends CommandMarker {
     // compose the Filter with the client:
     val client: Service[HttpRequest, HttpResponse] = handleErrors andThen clientWithoutErrorHandling
 
-    println("))) Issuing two requests in parallel: ")
+    val authorizedRequest = new DefaultHttpRequest(
+      HttpVersion.HTTP_1_1, HttpMethod.GET, "/hello")
+
+    val req = client(authorizedRequest) onSuccess { response =>
+      val responseString = response.getContent.toString(CharsetUtil.UTF_8)
+      println("))) Received result for hello request: " + responseString)
+    }
+    req.apply()
+
+    /*println("))) Issuing two requests in parallel: ")
     val request1 = makeAuthorizedRequest(client)
     val request2 = makeUnauthorizedRequest(client)
 
@@ -67,7 +76,7 @@ class FinagleClientCommand (config: Configuration) extends CommandMarker {
       case e: Exception => {
         println("caught "+e.getClass+" "+e.getMessage)
       }
-    }
+    }*/
 
     return null
   }

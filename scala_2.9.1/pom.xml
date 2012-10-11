@@ -127,6 +127,19 @@
             <scope>test</scope>
         </dependency>
 
+
+        <dependency>
+            <groupId>com.twitter</groupId>
+            <artifactId>finagle-core</artifactId>
+            <version>${finagle.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.twitter</groupId>
+            <artifactId>finagle-http</artifactId>
+            <version>${finagle.version}</version>
+        </dependency>
+
     </dependencies>
 
     <build>

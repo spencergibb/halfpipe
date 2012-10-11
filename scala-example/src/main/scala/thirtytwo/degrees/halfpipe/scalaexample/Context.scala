@@ -2,12 +2,13 @@ package thirtytwo.degrees.halfpipe.scalaexample
 
 import org.springframework.context.annotation._
 import com.netflix.config.scala.DynamicProperties
-import javax.inject.Named
+import javax.inject.{Inject, Named}
 import org.springframework.context.annotation.ComponentScan.Filter
 import org.springframework.stereotype.Controller
 import thirtytwo.degrees.halfpipe.DefaultScalaContext
 import thirtytwo.degrees.halfpipe.context.MetricsContext
 import thirtytwo.degrees.halfpipe.mgmt.resources.GCResource
+import thirtytwo.degrees.halfpipe.finagle.{FinagleClientCommand, FinagleCommand}
 
 @Configuration
 @ComponentScan (basePackageClasses = Array (classOf[Context], classOf[GCResource]),
@@ -15,9 +16,18 @@ import thirtytwo.degrees.halfpipe.mgmt.resources.GCResource
 @Import(Array(classOf[DefaultScalaContext], classOf[SecurityContext], classOf[MetricsContext]))
 class Context extends DynamicProperties {
 
+  @Inject
+  var config: ExampleScalaConfig = _
+
   @Bean @Named("helloText")
   def helloText() = dynamicStringProperty("hello.text", "Hello default")
 
   @Bean
   def garbageCollectionTask: GCResource = new GCResource
+
+  @Bean
+  def finagleCommand: FinagleCommand = new FinagleCommand(config)
+
+  @Bean
+  def finagleClient: FinagleClientCommand = new FinagleClientCommand(config)
 }

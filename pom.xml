@@ -33,8 +33,7 @@
         <tomcat7.maven.version>2.0</tomcat7.maven.version>
         <scala.version>2.9.1</scala.version>
         <scala.maven.version>3.1.0</scala.maven.version>
-        <tomcat.jar.finalName>${project.artifactId}-${project.version}-halfpipe.jar</tomcat.jar.finalName>
-        <maven.tomcat.exec.war.mainClass>thirtytwo.degrees.halfpipe.HalfpipeRunner</maven.tomcat.exec.war.mainClass>
+        <finagle.version>5.3.9</finagle.version>
     </properties>
 
     <profiles>
@@ -261,6 +260,16 @@
             <id>spring-release</id>
             <name>Spring Maven RELEASE Repository</name>
             <url>http://repo.springsource.org/repo</url>
+        </repository>
+        <repository>
+            <id>twitter</id>
+            <url>http://maven.twttr.com</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
         </repository>
         <!--<repository>
             <id>sonatype-nexus-snapshots</id>

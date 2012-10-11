@@ -11,10 +11,11 @@ import javax.ws.rs.DefaultValue;
  * Time: 11:18 PM
  */
 public class HttpConfiguration {
-    DynamicIntProperty port;
+    @DefaultValue("8080")
+    public DynamicIntProperty port;
 
     @DefaultValue("/*")
-    DynamicStringProperty rootPath;
+    public DynamicStringProperty rootPath;
 
-    GzipConfiguration gzip;
+    public GzipConfiguration gzip;
 }

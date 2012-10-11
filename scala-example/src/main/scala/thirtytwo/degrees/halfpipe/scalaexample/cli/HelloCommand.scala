@@ -17,10 +17,9 @@ import thirtytwo.degrees.halfpipe.scalaexample.ExampleScalaConfig
 class HelloCommand @Inject() (config: ExampleScalaConfig) extends CommandMarker {
 
   @CliAvailabilityIndicator(Array("hello"))
-  def isCommandAvailable = {
-    true
-  }
+  def isCommandAvailable = true
 
+  //TODO: write a scala dsl instead of shell annotations
   @CliCommand(value = Array("hello"), help = "Say hello to the shell")
   def hello(
              @CliOption(key = Array("message"), mandatory = true, help = "The hello world message")

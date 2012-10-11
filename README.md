@@ -14,6 +14,7 @@ Features
     - data
     - integration
     - TODO: quiet spring logging?
+- TODO: [Finagle](http://twitter.github.com/finagle/) integrational ala [finagle resteasy](https://github.com/opower/finagle-resteasy)
 - Multilingual java/Scala
     - [scala-spring](https://github.com/ewolff/scala-spring), see [scala example](https://github.com/32degrees/halfpipe/tree/master/scala-example)
 - Guava integration
@@ -28,7 +29,8 @@ Features
     - TODO: Scala repl [via scala maven plugin](http://davidb.github.com/scala-maven-plugin/example_console.html)
     - TODO: Yeoman integration?
 - Dynamic Config [Archaius](https://github.com/Netflix/archaius)
-    - TODO: config classes
+    - config classes
+    - TODO: flush out configuration for: http, logginc, etc...
 - Java [maven archetype](http://maven.apache.org/archetype/maven-archetype-plugin/advanced-usage.html)
 - Scala [maven archetype](http://maven.apache.org/archetype/maven-archetype-plugin/advanced-usage.html)
 - TODO: Service registry and loadbalancer [Eureka](https://github.com/Netflix/eureka)

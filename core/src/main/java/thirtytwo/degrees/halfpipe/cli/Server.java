@@ -39,6 +39,7 @@ public class Server implements CommandMarker {
     public void run(CommandLine commandLine) throws Exception {
         System.out.println("Starting Server");
 
+        Tomcat tomcat = new Tomcat();
         if (isOneJar()) {
             System.out.println("in one-jar");
 
@@ -48,9 +49,8 @@ public class Server implements CommandMarker {
             //String baseDir = userDir+File.separator+".halfpipe/binlibs/halfpipe-example.war";
             System.out.println("baseDir: " + baseDir);
 
-            Tomcat tomcat = new Tomcat();
             Context context = tomcat.addWebapp("", baseDir);
-            System.setProperty("tomcat.util.scan.DefaultJarScanner.jarsToSkip", "*.jar");
+            //System.setProperty("tomcat.util.scan.DefaultJarScanner.jarsToSkip", "*.jar");
             StandardJarScanner jarScanner = new StandardJarScanner() {
                 @Override
                 public void scan(ServletContext context, ClassLoader classloader, JarScannerCallback callback, Set<String> jarsToSkip) {
@@ -67,18 +67,16 @@ public class Server implements CommandMarker {
             TomcatLoader loader = new TomcatLoader(classLoader);
             loader.setContainer(context);
             context.setLoader(loader);
-            tomcat.start();
-            waitIndefinitely();
-
         } else {
             System.out.println("starting dev");
             String baseDir = getWebappDir();
-            Tomcat tomcat = new Tomcat();
             tomcat.addWebapp("", baseDir);
-            tomcat.start();
-            waitIndefinitely();
 
         }
+        System.out.println("staring tomcat");
+        tomcat.start();
+        System.out.println("waiting for connections");
+        waitIndefinitely();
     }
 
     private String getWebappDir() {

@@ -21,5 +21,7 @@ public class Configuration {
 
     public HttpConfiguration http;
 
+    public LoggingConfiguration logging;
+
     public Class<?> appConfigClass = DefaultContext.class;
 }

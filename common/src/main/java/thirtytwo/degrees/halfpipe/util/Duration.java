@@ -103,6 +103,10 @@ public class Duration {
         return new Duration(parseCount(duration), parseUnit(duration));
     }
 
+    public static Duration valueOf(String duration) {
+        return parse(duration);
+    }
+
     private final long count;
     private final TimeUnit unit;
 

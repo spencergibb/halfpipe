@@ -86,6 +86,10 @@ public class Size {
         return new Size(parseCount(size), parseUnit(size));
     }
 
+    public static Size valueOf(String size) {
+        return parse(size);
+    }
+
     private final long count;
     private final SizeUnit unit;
 

@@ -47,7 +47,7 @@ public abstract class Application<C, VC> {
             AnnotationConfigWebApplicationContext rootContext = createWebContext(contextClass); //TODO: fix shell
             rootContext.refresh();
 
-            Logging.configure();
+            Logging.configure(config(rootContext).logging);
 
             LOG.info("Starting {}", config(rootContext).appName.get());
 

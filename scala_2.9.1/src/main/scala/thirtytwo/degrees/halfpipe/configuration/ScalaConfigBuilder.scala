@@ -18,43 +18,43 @@ class ScalaConfigBuilder extends ConfigurationBuilder {
   class StringBuilder extends PropBuilder[DynamicStringProperty, String] {
     def getPropType = classOf[DynamicStringProperty]
     def defaultVal() = ""
-    def convert(s: String) = s
-    def getProp(propName: String, defaultVal: String) = new DynamicStringProperty(propName, defaultVal)
+    def convert(s: String, valueClass:Class[_]) = s
+    def getProp(propName: String, defaultVal: String, valueClass:Class[_]) = new DynamicStringProperty(propName, defaultVal)
   }
 
   class IntBuilder extends PropBuilder[DynamicIntProperty, Int] {
     def getPropType = classOf[DynamicIntProperty]
     def defaultVal() = 0
-    def convert(s: String) = s.toInt
-    def getProp(propName: String, defaultVal: Int) = new DynamicIntProperty(propName, defaultVal)
+    def convert(s: String, valueClass:Class[_]) = s.toInt
+    def getProp(propName: String, defaultVal: Int, valueClass:Class[_]) = new DynamicIntProperty(propName, defaultVal)
   }
 
   class BooleanBuilder extends PropBuilder[DynamicBooleanProperty, Boolean] {
     def getPropType = classOf[DynamicBooleanProperty]
     def defaultVal() = false
-    def convert(s: String) = s.toBoolean
-    def getProp(propName: String, defaultVal: Boolean) = new DynamicBooleanProperty(propName, defaultVal)
+    def convert(s: String, valueClass:Class[_]) = s.toBoolean
+    def getProp(propName: String, defaultVal: Boolean, valueClass:Class[_]) = new DynamicBooleanProperty(propName, defaultVal)
   }
 
   class LongBuilder extends PropBuilder[DynamicLongProperty, Long] {
     def getPropType = classOf[DynamicLongProperty]
     def defaultVal() = 0
-    def convert(s: String) = s.toLong
-    def getProp(propName: String, defaultVal: Long) = new DynamicLongProperty(propName, defaultVal)
+    def convert(s: String, valueClass:Class[_]) = s.toLong
+    def getProp(propName: String, defaultVal: Long, valueClass:Class[_]) = new DynamicLongProperty(propName, defaultVal)
   }
 
   class FloatBuilder extends PropBuilder[DynamicFloatProperty, Float] {
     def getPropType = classOf[DynamicFloatProperty]
     def defaultVal() = 0.0f
-    def convert(s: String) = s.toFloat
-    def getProp(propName: String, defaultVal: Float) = new DynamicFloatProperty(propName, defaultVal)
+    def convert(s: String, valueClass:Class[_]) = s.toFloat
+    def getProp(propName: String, defaultVal: Float, valueClass:Class[_]) = new DynamicFloatProperty(propName, defaultVal)
   }
 
   class DoubleBuilder extends PropBuilder[DynamicDoubleProperty, Double] {
     def getPropType = classOf[DynamicDoubleProperty]
     def defaultVal() = 0.0d
-    def convert(s: String) = s.toDouble
-    def getProp(propName: String, defaultVal: Double) = new DynamicDoubleProperty(propName, defaultVal)
+    def convert(s: String, valueClass:Class[_]) = s.toDouble
+    def getProp(propName: String, defaultVal: Double, valueClass:Class[_]) = new DynamicDoubleProperty(propName, defaultVal)
   }
 
   builders.add(new StringBuilder)

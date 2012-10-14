@@ -6,7 +6,9 @@ import com.netflix.config.*;
 import org.apache.commons.lang.StringUtils;
 
 import javax.ws.rs.DefaultValue;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.List;
 
 import static org.springframework.util.ReflectionUtils.*;
@@ -18,72 +20,90 @@ import static org.springframework.util.ReflectionUtils.*;
  */
 public class ConfigurationBuilder {
 
-
-    public interface PropBuilder<P, T> {
-        static final DynamicPropertyFactory PROPS = DynamicPropertyFactory.getInstance();
-        Class<P> getPropType();
-        T defaultVal();
-        T convert(String s);
-        P getProp(String propName, T defaultVal);
+    public static abstract class PropBuilder<P, T> {
+        abstract Class<P> getPropType();
+        abstract T defaultVal();
+        abstract T convert(String s, Class<?> valueClass) throws Exception;
+        abstract P getProp(String propName, T defaultVal, Class<?> valueClass);
+        DynamicPropertyFactory props() {
+            return DynamicPropertyFactory.getInstance();
+        }
     }
 
-    class StringBuilder implements PropBuilder<DynamicStringProperty, String> {
+    class StringBuilder extends PropBuilder<DynamicStringProperty, String> {
         public Class<DynamicStringProperty> getPropType() { return DynamicStringProperty.class; }
         public String defaultVal() { return null; }
-        public String convert(String s) { return s; }
+        public String convert(String s, Class<?> valueClass) { return s; }
 
-        public DynamicStringProperty getProp(String propName, String defaultVal) {
-            return PROPS.getStringProperty(propName, defaultVal);
+        public DynamicStringProperty getProp(String propName, String defaultVal, Class<?> valueClass) {
+            return props().getStringProperty(propName, defaultVal);
         }
     }
 
-    class IntBuilder implements PropBuilder<DynamicIntProperty, Integer> {
+    class IntBuilder extends PropBuilder<DynamicIntProperty, Integer> {
         public Class<DynamicIntProperty> getPropType() { return DynamicIntProperty.class; }
-        public Integer defaultVal() { return 0; }
-        public Integer convert(String s) { return Integer.parseInt(s); }
+        public Integer defaultVal() { return Integer.MIN_VALUE; }
+        public Integer convert(String s, Class<?> valueClass) { return Integer.parseInt(s); }
 
-        public DynamicIntProperty getProp(String propName, Integer defaultVal) {
-            return PROPS.getIntProperty(propName, defaultVal);
+        public DynamicIntProperty getProp(String propName, Integer defaultVal, Class<?> valueClass) {
+            return props().getIntProperty(propName, defaultVal);
         }
     }
 
-    class BooleanBuilder implements PropBuilder<DynamicBooleanProperty, Boolean> {
+    class BooleanBuilder extends PropBuilder<DynamicBooleanProperty, Boolean> {
         public Class<DynamicBooleanProperty> getPropType() { return DynamicBooleanProperty.class; }
         public Boolean defaultVal() { return false; }
-        public Boolean convert(String s) { return Boolean.parseBoolean(s); }
+        public Boolean convert(String s, Class<?> valueClass) { return Boolean.parseBoolean(s); }
 
-        public DynamicBooleanProperty getProp(String propName, Boolean defaultVal) {
-            return PROPS.getBooleanProperty(propName, defaultVal);
+        public DynamicBooleanProperty getProp(String propName, Boolean defaultVal, Class<?> valueClass) {
+            return props().getBooleanProperty(propName, defaultVal);
         }
     }
 
-    class LongBuilder implements PropBuilder<DynamicLongProperty, Long> {
+    class LongBuilder extends PropBuilder<DynamicLongProperty, Long> {
         public Class<DynamicLongProperty> getPropType() { return DynamicLongProperty.class; }
-        public Long defaultVal() { return 0L; }
-        public Long convert(String s) { return Long.parseLong(s); }
+        public Long defaultVal() { return Long.MIN_VALUE; }
+        public Long convert(String s, Class<?> valueClass) { return Long.parseLong(s); }
 
-        public DynamicLongProperty getProp(String propName, Long defaultVal) {
-            return PROPS.getLongProperty(propName, defaultVal);
+        public DynamicLongProperty getProp(String propName, Long defaultVal, Class<?> valueClass) {
+            return props().getLongProperty(propName, defaultVal);
         }
     }
 
-    class FloatBuilder implements PropBuilder<DynamicFloatProperty, Float> {
+    class FloatBuilder extends PropBuilder<DynamicFloatProperty, Float> {
         public Class<DynamicFloatProperty> getPropType() { return DynamicFloatProperty.class; }
-        public Float defaultVal() { return 0.0f; }
-        public Float convert(String s) { return Float.parseFloat(s); }
+        public Float defaultVal() { return Float.NaN; }
+        public Float convert(String s, Class<?> valueClass) { return Float.parseFloat(s); }
 
-        public DynamicFloatProperty getProp(String propName, Float defaultVal) {
-            return PROPS.getFloatProperty(propName, defaultVal);
+        public DynamicFloatProperty getProp(String propName, Float defaultVal, Class<?> valueClass) {
+            return props().getFloatProperty(propName, defaultVal);
         }
     }
 
-    class DoubleBuilder implements PropBuilder<DynamicDoubleProperty, Double> {
+    class DoubleBuilder extends PropBuilder<DynamicDoubleProperty, Double> {
         public Class<DynamicDoubleProperty> getPropType() { return DynamicDoubleProperty.class; }
-        public Double defaultVal() { return 0.0d; }
-        public Double convert(String s) { return Double.parseDouble(s); }
+        public Double defaultVal() { return Double.NaN; }
+        public Double convert(String s, Class<?> valueClass) { return Double.parseDouble(s); }
 
-        public DynamicDoubleProperty getProp(String propName, Double defaultVal) {
-            return PROPS.getDoubleProperty(propName, defaultVal);
+        public DynamicDoubleProperty getProp(String propName, Double defaultVal, Class<?> valueClass) {
+            return props().getDoubleProperty(propName, defaultVal);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    class GenericBuilder extends PropBuilder<DynamicProp, Object> {
+        Class<DynamicProp> getPropType() {
+            return (Class<DynamicProp>) DynamicProp.class;
+        }
+
+        Object defaultVal() { return null; }
+
+        Object convert(String s, Class<?> valueClass) throws Exception {
+            return DynamicProp.convert(valueClass, s);
+        }
+
+        DynamicProp<Object> getProp(String propName, Object defaultVal, Class<?> valueClass) {
+            return new DynamicProp<Object>(propName, defaultVal, valueClass);
         }
     }
 
@@ -96,6 +116,7 @@ public class ConfigurationBuilder {
         builders.add(new LongBuilder());
         builders.add(new FloatBuilder());
         builders.add(new DoubleBuilder());
+        builders.add(new GenericBuilder());
     }
 
     public void build(Object config) throws Exception {
@@ -116,16 +137,21 @@ public class ConfigurationBuilder {
                 for (PropBuilder propBuilder: builders) {
                     if (propBuilder.getPropType().isAssignableFrom(type)) {
                         makeAccessible(field);
-                        Object defaultValue;
+                        Object defaultValue = null;
                         //TODO: use spring converters
                         DefaultValue annotation = field.getAnnotation(DefaultValue.class);
+                        Class<?> valueClass = DynamicProp.getValueClass(field.getGenericType());
                         if (annotation != null) {
-                            defaultValue = propBuilder.convert(annotation.value());
+                            try {
+                                defaultValue = propBuilder.convert(annotation.value(), valueClass);
+                            } catch (Exception e) {
+                                Throwables.propagate(e);
+                            }
                         } else {
                             defaultValue = propBuilder.defaultVal();
                         }
 
-                        field.set(config, propBuilder.getProp(propName, defaultValue));
+                        field.set(config, propBuilder.getProp(propName, defaultValue, valueClass));
 
                         fieldSet = true;
                         break;

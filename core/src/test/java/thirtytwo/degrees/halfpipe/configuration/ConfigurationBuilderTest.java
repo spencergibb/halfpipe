@@ -3,9 +3,12 @@ package thirtytwo.degrees.halfpipe.configuration;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
+import ch.qos.logback.classic.Level;
 import com.netflix.config.PropertyWrapper;
 import org.junit.Test;
 import thirtytwo.degrees.halfpipe.context.MetricsContext;
+import thirtytwo.degrees.halfpipe.util.Duration;
+import thirtytwo.degrees.halfpipe.util.Size;
 
 /**
  * User: spencergibb
@@ -42,9 +45,32 @@ public class ConfigurationBuilderTest {
         assertProp("config.http.gzip", config.http.gzip);
         assertProp("config.http.gzip.enabled", config.http.gzip.enabled, true);
 
+        assertProp("config.level", config.level);
+        assertProp("config.level", config.level, Level.INFO);
+
+        assertProp("config.defaultLevel", config.defaultLevel);
+        assertProp("config.defaultLevel", config.defaultLevel, Level.WARN);
+
+        assertProp("config.size", config.size);
+        assertProp("config.size", config.size, Size.bytes(1));
+
+        assertProp("config.defaultSize", config.defaultSize);
+        assertProp("config.defaultSize", config.defaultSize, Size.bytes(2));
+
+        assertProp("config.duration", config.duration);
+        assertProp("config.duration", config.duration, Duration.minutes(1));
+
+        assertProp("config.defaultDuration", config.defaultDuration);
+        assertProp("config.defaultDuration", config.defaultDuration, Duration.minutes(2));
+
         if (config.appConfigClass != MetricsContext.class) {
             throw new Exception();
         }
+    }
+
+    private <T> void assertProp(String propName, DynamicProp<T> property, T expected) {
+        assertProp(propName, property);
+        assertThat(propName +" is bad", property.getValue(), is(expected));
     }
 
     private <T> void assertProp(String propName, PropertyWrapper<T> property, T expected) {

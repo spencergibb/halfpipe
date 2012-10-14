@@ -7,11 +7,11 @@ import ch.qos.logback.classic.filter.ThresholdFilter;
 import ch.qos.logback.classic.jul.LevelChangePropagator;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.ConsoleAppender;
-import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
 import com.yammer.metrics.logback.InstrumentedAppender;
 import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
+import thirtytwo.degrees.halfpipe.configuration.LoggingConfiguration;
 
 import java.util.Map;
 import java.util.TimeZone;
@@ -27,14 +27,19 @@ public class Logging {
         root.detachAndStopAllAppenders();
 
         LoggerContext context = root.getLoggerContext();
-        root.addAppender(consoleLogger(context, Level.WARN, Optional.<String>absent(), TimeZone.getDefault()));
+        root.addAppender(consoleLogger(context, Level.WARN, null, TimeZone.getDefault()));
     }
 
-    //TODO: params as config?
-    private static ConsoleAppender<ILoggingEvent> consoleLogger(LoggerContext context, Level level, Optional<String> logFormat, TimeZone timeZone) {
+    private static ConsoleAppender<ILoggingEvent> consoleLogger(LoggerContext context, LoggingConfiguration.ConsoleConf config)
+    {
+        return consoleLogger(context, config.threshold.get(), config.logFormat.get(), TimeZone.getDefault()); //TODO: config
+    }
+
+    private static ConsoleAppender<ILoggingEvent> consoleLogger(LoggerContext context, Level level, String logFormat, TimeZone timeZone)
+    {
         final LogFormatter formatter = new LogFormatter(context, timeZone);
-        for (String format : logFormat.asSet()) {
-            formatter.setPattern(format);
+        if (logFormat != null) {
+            formatter.setPattern(logFormat);
         }
         formatter.start();
 
@@ -50,7 +55,7 @@ public class Logging {
         return appender;
     }
 
-    public static void configure() {
+    public static void configure(LoggingConfiguration config) {
         //hijackJDKLogging
         SLF4JBridgeHandler.removeHandlersForRootLogger();
         SLF4JBridgeHandler.install();
@@ -64,7 +69,7 @@ public class Logging {
 
         root.getLoggerContext().addListener(propagator);
 
-        root.setLevel(Level.WARN); //TODO: config
+        root.setLevel(config.level.get());
 
         Map<String, Level> loggers = Maps.newHashMap(); //TODO: config
         loggers.put("org.springframework.shell", Level.INFO);
@@ -74,8 +79,9 @@ public class Logging {
             ((Logger) LoggerFactory.getLogger(entry.getKey())).setLevel(entry.getValue());
         }
 
-        if (true) { //TODO: config console enabled
-            root.addAppender(AsyncAppender.wrap(consoleLogger(root.getLoggerContext(), Level.INFO, Optional.<String>absent(), TimeZone.getDefault())));
+        if (config.console.enabled.get()) {
+                root.addAppender(AsyncAppender.wrap(consoleLogger(root.getLoggerContext(),
+                    config.console)));
         }
 
         final InstrumentedAppender appender = new InstrumentedAppender();

@@ -2,7 +2,7 @@
 ====================
 
 HTTP+JSON Services using industry best Java libraries.
-Spring enabled, with embedded tomcat or finagle.  Partial fork of [dropwizard](http://dropwizard.codahale.com/).
+Spring enabled, with embedded tomcat or finagle.  Fork of [dropwizard](http://dropwizard.codahale.com/).
 
 Features
 -----

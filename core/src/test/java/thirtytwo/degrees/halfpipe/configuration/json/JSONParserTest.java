@@ -25,7 +25,8 @@ public class JSONParserTest {
             "     \"boolean\" : true,"+
             "     \"null\"    : null,"+
             "     \"array\"   : [ 1, 2, 3 ],"+
-            "     \"map\"     : { \"foo\" : \"bar\" }"+
+            "     \"map\"     : { \"foo\" : \"bar\" },"+
+            "     \"nested\"  : [ { \"foo0\" : \"bar0\" }, { \"foo1\" : \"bar1\" } ]"+
             "}";
 
     @Test

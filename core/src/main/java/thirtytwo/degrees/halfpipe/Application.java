@@ -67,7 +67,8 @@ public abstract class Application<C, VC> {
     }
 
     private String findConfig(String[] args) {
-        return find(newArrayList(args), containsPattern(".*\\.json$"), null);
+        String config = find(newArrayList(args), containsPattern(".*\\.json$|.*\\.yml|.*\\.yaml$"), null);
+        return config;
     }
 
     /**

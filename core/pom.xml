@@ -283,6 +283,12 @@
             <version>2.5</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>1.11</version>
+        </dependency>
+
         <!--<dependency>
             <groupId>one-jar</groupId>
             <artifactId>one-jar-boot</artifactId>

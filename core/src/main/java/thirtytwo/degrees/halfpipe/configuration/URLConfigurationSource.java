@@ -8,12 +8,15 @@ import java.net.URL;
 import java.util.*;
 import java.util.Map.Entry;
 
+import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration.FileConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.netflix.config.PollResult;
 import com.netflix.config.PolledConfigurationSource;
 import thirtytwo.degrees.halfpipe.configuration.json.JSONConfiguration;
+import thirtytwo.degrees.halfpipe.configuration.yaml.YamlConfiguration;
 
 /**
  * A polled configuration source based on a set of URLs. For each poll,
@@ -145,14 +148,11 @@ public class URLConfigurationSource implements PolledConfigurationSource {
         Map<String, Object> map = new HashMap<String, Object>();
         for (URL url: configUrls) {
 
-            if (url.toString().endsWith(".json")) {
-                JSONConfiguration config = new JSONConfiguration();
-                config.load(url);
-                Iterator<String> keys = config.getKeys();
-                while (keys.hasNext()) {
-                    String key = keys.next();
-                    map.put(key, config.getProperty(key));
-                }
+            String urlString = url.toString();
+            if (urlString.endsWith(".json")) {
+                loadConfig(map, new JSONConfiguration(url));
+            } else if (urlString.endsWith(".yaml") || urlString.endsWith(".yml")) {
+                loadConfig(map, new YamlConfiguration(url));
             } else {
                 Properties props = new Properties();
                 InputStream fin = url.openStream();
@@ -164,6 +164,15 @@ public class URLConfigurationSource implements PolledConfigurationSource {
             }
         }
         return PollResult.createFull(map);
+    }
+
+    private void loadConfig(Map<String, Object> map, FileConfiguration config) throws ConfigurationException {
+        config.load();
+        Iterator<String> keys = config.getKeys();
+        while (keys.hasNext()) {
+            String key = keys.next();
+            map.put(key, config.getProperty(key));
+        }
     }
 
     @Override

@@ -31,8 +31,8 @@ Features
     - TODO: Yeoman integration?
 - Dynamic Config [Archaius](https://github.com/Netflix/archaius)
     - config classes
-    - dynamic reload of json config files
-    - TODO: yaml config files?
+    - dynamic reload of config files
+    - yaml or json config files
     - TODO: flush out configuration for: http, logginc, etc...
 - Java [maven archetype](http://maven.apache.org/archetype/maven-archetype-plugin/advanced-usage.html)
 - Scala [maven archetype](http://maven.apache.org/archetype/maven-archetype-plugin/advanced-usage.html)

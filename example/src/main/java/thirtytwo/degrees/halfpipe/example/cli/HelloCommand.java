@@ -34,7 +34,10 @@ public class HelloCommand implements CommandMarker {
             @CliOption(key = "more", mandatory = false,
                     help = "Have some more to say while saying hello",
                     specifiedDefaultValue="")
-            String more)
+            String more,
+
+            @CliOption(key = {"", "config"}, mandatory = false, help = "config file")
+            String config )
     {
         StringBuilder hello = new StringBuilder(sayer.hello());
         hello.append(" with this message, "+message);

@@ -32,6 +32,6 @@ class HelloCommand @Inject() (config: ExampleScalaConfig) extends CommandMarker 
     if (!StringUtils.isBlank(more)) {
       hello.append(" " + more)
     }
-    return hello
+    return hello.toString()
   }
 }

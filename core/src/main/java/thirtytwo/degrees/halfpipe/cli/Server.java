@@ -13,6 +13,7 @@ import org.apache.tomcat.util.scan.StandardJarScanner;
 import org.springframework.shell.core.CommandMarker;
 import org.springframework.shell.core.annotation.CliAvailabilityIndicator;
 import org.springframework.shell.core.annotation.CliCommand;
+import org.springframework.shell.core.annotation.CliOption;
 import thirtytwo.degrees.halfpipe.configuration.Configuration;
 import thirtytwo.degrees.halfpipe.configuration.ConfigurationBuilder;
 import thirtytwo.degrees.halfpipe.logging.Log;
@@ -41,7 +42,10 @@ public class Server implements CommandMarker {
     }
 
     @CliCommand(value = "server", help = "run halfpipe in tomcat http server")
-    public String server() throws Exception {
+    public String server(
+            @CliOption(key = {"", "config"}, mandatory = true, help = "config file")
+            String config ) throws Exception
+    {
         run(null);
         //return "currently the server command only works as a command line argument";
         return null;

@@ -2,7 +2,7 @@ package thirtytwo.degrees.halfpipe.finagle
 
 import thirtytwo.degrees.halfpipe.HalfpipeConfiguration._
 import scala.collection.JavaConverters._
-import org.springframework.shell.core.annotation.{CliCommand, CliAvailabilityIndicator}
+import org.springframework.shell.core.annotation.{CliOption, CliCommand, CliAvailabilityIndicator}
 import org.jboss.netty.handler.codec.http.HttpVersion._
 import org.jboss.netty.handler.codec.http.HttpResponseStatus._
 import org.jboss.netty.buffer.ChannelBuffers.copiedBuffer
@@ -101,7 +101,7 @@ class FinagleCommand (config: Configuration, context: ApplicationContext) extend
   }
 
   @CliCommand(value = Array("finagle server"), help = "run finagle server")
-  def finagleServer(): String = {
+  def finagleServer(@CliOption(key = Array(""), mandatory = true) configFile:String): String = {
     val handleExceptions = new HandleExceptions
     val authorize = new Authorize
     val respond = new Respond

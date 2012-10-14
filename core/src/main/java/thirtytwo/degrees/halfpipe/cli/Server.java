@@ -12,6 +12,8 @@ import org.apache.tomcat.util.scan.StandardJarScanner;
 import org.springframework.shell.core.CommandMarker;
 import org.springframework.shell.core.annotation.CliAvailabilityIndicator;
 import org.springframework.shell.core.annotation.CliCommand;
+import thirtytwo.degrees.halfpipe.configuration.Configuration;
+import thirtytwo.degrees.halfpipe.configuration.ConfigurationBuilder;
 
 import javax.servlet.ServletContext;
 import java.io.File;
@@ -40,6 +42,9 @@ public class Server implements CommandMarker {
         System.out.println("Starting Server");
 
         Tomcat tomcat = new Tomcat();
+
+        //new ConfigurationBuilder().build(new Configuration());
+
         if (isOneJar()) {
             System.out.println("in one-jar");
 

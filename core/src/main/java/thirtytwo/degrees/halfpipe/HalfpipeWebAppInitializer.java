@@ -31,9 +31,6 @@ public class HalfpipeWebAppInitializer implements WebApplicationInitializer {
     public HalfpipeWebAppInitializer() {
     }
 
-    /*protected abstract Class<?> getConfigClass();
-    protected abstract Class<?> getViewConfigClass();*/
-
     @Override
     public void onStartup(ServletContext sc) throws ServletException {
         try {
@@ -41,7 +38,7 @@ public class HalfpipeWebAppInitializer implements WebApplicationInitializer {
                 if (initialized) return;
 
                 initialized = true;
-                createConfig((sc.getNamedDispatcher("default") == null));
+                createConfig((sc.getNamedDispatcher("default") == null), Application.configFileName);
 
                 // Create the root appcontext
                 AnnotationConfigWebApplicationContext rootCtx = createWebContext(Application.serverContextClass);
@@ -61,16 +58,17 @@ public class HalfpipeWebAppInitializer implements WebApplicationInitializer {
                 AnnotationConfigWebApplicationContext webCtx = createWebContext(Application.serverViewContextClass);
                 webCtx.setParent(rootCtx); //TODO: does setParent need to be done?
                 // The main Spring MVC servlet.
+                String viewPattern = config.http.viewPattern.get();
                 ServletRegistration.Dynamic viewServlet = addServlet(sc, "viewServlet", new DispatcherServlet(webCtx), 1,
-                        getStringProp(PROP_VIEW_URL_PATTERN, ROOT_URL_PATTERN));
+                        viewPattern);
 
                 if (DynamicPropertyFactory.getInstance().getBooleanProperty(PROP_INSTALL_DEFAULT_SERVLET, false).get()) {
-                    addServlet(sc, HALFPIPE_DEFAULT_SERVLET, new DefaultServlet(), 1, ROOT_URL_PATTERN);
+                    addServlet(sc, HALFPIPE_DEFAULT_SERVLET, new DefaultServlet(), 1, viewPattern);
                 }
 
                 // Jersey Servlet
                 ServletRegistration.Dynamic jersey = addServlet(sc, "jersey-servlet", new SpringServlet(), 1,
-                        getStringProp(HALFPIPE_URL_PATTERN, RESOURCE_URL_PATTERN));
+                        config.http.resourcePattern.get());
 
                 for (Map.Entry<String, Object> entry: jerseyProperties(config).entrySet()) {
                     jersey.setInitParameter(entry.getKey(), entry.getValue().toString());
@@ -87,11 +85,6 @@ public class HalfpipeWebAppInitializer implements WebApplicationInitializer {
         AnnotationConfigWebApplicationContext ctx = new AnnotationConfigWebApplicationContext();
         ctx.register(appConfigClass);
         return ctx;
-    }
-
-    private ServletRegistration.Dynamic addServlet(ServletContext servletContext, String servletName, Servlet servlet,
-                                                   int loadOnStartup, DynamicStringProperty urlPattern) {
-        return addServlet(servletContext, servletName, servlet, loadOnStartup, urlPattern.get());
     }
 
     private ServletRegistration.Dynamic addServlet(ServletContext servletContext, String servletName, Servlet servlet,

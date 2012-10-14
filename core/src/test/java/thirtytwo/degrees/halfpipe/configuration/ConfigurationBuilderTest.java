@@ -1,11 +1,11 @@
 package thirtytwo.degrees.halfpipe.configuration;
 
+import static org.hamcrest.MatcherAssert.*;
+import static org.hamcrest.Matchers.*;
+
 import com.netflix.config.PropertyWrapper;
 import org.junit.Test;
 import thirtytwo.degrees.halfpipe.context.MetricsContext;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
 
 /**
  * User: spencergibb
@@ -36,7 +36,7 @@ public class ConfigurationBuilderTest {
 
         assertProp("config.http", config.http);
         assertProp("config.http.port", config.http.port, 80);
-        assertProp("config.http.rootPath", config.http.rootPath, "/*");
+        assertProp("config.http.viewPattern", config.http.viewPattern, "/*");
 
         assertProp("config.http.gzip", config.http.gzip);
         assertProp("config.http.gzip.enabled", config.http.gzip.enabled, true);

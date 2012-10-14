@@ -1,5 +1,6 @@
 package thirtytwo.degrees.halfpipe.configuration;
 
+import static thirtytwo.degrees.halfpipe.Halfpipe.*;
 import com.netflix.config.DynamicIntProperty;
 import com.netflix.config.DynamicStringProperty;
 
@@ -14,8 +15,11 @@ public class HttpConfiguration {
     @DefaultValue("8080")
     public DynamicIntProperty port;
 
-    @DefaultValue("/*")
-    public DynamicStringProperty rootPath;
+    @DefaultValue(ROOT_URL_PATTERN)
+    public DynamicStringProperty viewPattern;
+
+    @DefaultValue(RESOURCE_URL_PATTERN)
+    public DynamicStringProperty resourcePattern;
 
     public GzipConfiguration gzip;
 }

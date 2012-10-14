@@ -7,12 +7,15 @@ import com.netflix.config.*;
 import com.sun.jersey.api.core.PackagesResourceConfig;
 import com.sun.jersey.api.json.JSONConfiguration;
 import com.sun.jersey.spi.container.servlet.ServletContainer;
+import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.SystemConfiguration;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.util.Assert;
 import thirtytwo.degrees.halfpipe.configuration.Configuration;
 import thirtytwo.degrees.halfpipe.jersey.HalfpipeResourceConfig;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,7 +34,7 @@ public class HalfpipeConfiguration {
         return props;
     }
 
-    public static void createConfig(boolean installDefaultServlet) {
+    public static void createConfig(boolean installDefaultServlet, String configFile) throws ConfigurationException {
         if (DynamicPropertyFactory.isInitializedWithDefaultConfig() || ConfigurationManager.isConfigurationInstalled()) {
             System.err.println("WARNING!!! Trying to initialze config again");
             return; //TODO: why does this happen on exploded?
@@ -44,6 +47,13 @@ public class HalfpipeConfiguration {
         System.err.println("Config: "+map);
 
         ConcurrentCompositeConfiguration configuration = new ConcurrentCompositeConfiguration();
+
+        if (!StringUtils.isBlank(configFile)) {
+            thirtytwo.degrees.halfpipe.configuration.json.JSONConfiguration jsonConfig = new thirtytwo.degrees.halfpipe.configuration.json.JSONConfiguration(); // this is your original configuration
+            jsonConfig.load(new File(configFile));
+            configuration.addConfiguration(new ConcurrentMapConfiguration(jsonConfig));
+        }
+
         configuration.addConfiguration(new ConcurrentMapConfiguration(map));
         configuration.addConfiguration(new SystemConfiguration(), DynamicPropertyFactory.SYS_CONFIG_NAME);
         //configuration.addConfiguration(new ConcurrentMapConfiguration(ClasspathPropertiesConfiguration.));

@@ -1,18 +1,21 @@
 package thirtytwo.degrees.halfpipe;
 
 import static thirtytwo.degrees.halfpipe.Halfpipe.*;
+import static com.netflix.config.sources.URLConfigurationSource.*;
 
 import com.google.common.collect.Maps;
-import com.netflix.config.*;
+import com.netflix.config.ConcurrentCompositeConfiguration;
+import com.netflix.config.ConcurrentMapConfiguration;
+import com.netflix.config.ConfigurationManager;
+import com.netflix.config.DynamicPropertyFactory;
 import com.sun.jersey.api.core.PackagesResourceConfig;
 import com.sun.jersey.api.json.JSONConfiguration;
 import com.sun.jersey.spi.container.servlet.ServletContainer;
-import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.SystemConfiguration;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.util.Assert;
 import thirtytwo.degrees.halfpipe.configuration.Configuration;
+import thirtytwo.degrees.halfpipe.configuration.DynamicURLConfiguration;
 import thirtytwo.degrees.halfpipe.jersey.HalfpipeResourceConfig;
 
 import java.io.File;
@@ -34,7 +37,7 @@ public class HalfpipeConfiguration {
         return props;
     }
 
-    public static void createConfig(boolean installDefaultServlet, String configFile) throws ConfigurationException {
+    public static void createConfig(boolean installDefaultServlet, String configFile) throws Exception {
         if (DynamicPropertyFactory.isInitializedWithDefaultConfig() || ConfigurationManager.isConfigurationInstalled()) {
             System.err.println("WARNING!!! Trying to initialze config again");
             return; //TODO: why does this happen on exploded?
@@ -49,9 +52,15 @@ public class HalfpipeConfiguration {
         ConcurrentCompositeConfiguration configuration = new ConcurrentCompositeConfiguration();
 
         if (!StringUtils.isBlank(configFile)) {
-            thirtytwo.degrees.halfpipe.configuration.json.JSONConfiguration jsonConfig = new thirtytwo.degrees.halfpipe.configuration.json.JSONConfiguration(); // this is your original configuration
-            jsonConfig.load(new File(configFile));
-            configuration.addConfiguration(new ConcurrentMapConfiguration(jsonConfig));
+            File file = new File(configFile);
+            String url = file.toURI().toURL().toString();
+            System.out.println(url);
+            String urls = System.getProperty(CONFIG_URL, null);
+            if (urls == null) {
+                System.setProperty(CONFIG_URL, url);
+            } else {
+                System.setProperty(CONFIG_URL, urls+","+url);
+            }
         }
 
         configuration.addConfiguration(new ConcurrentMapConfiguration(map));
@@ -74,16 +83,4 @@ public class HalfpipeConfiguration {
             ctx.refresh();
         return ctx;
     }
-
-    public static DynamicStringProperty getStringProp(String propName) {
-        DynamicStringProperty prop = getStringProp(propName, null);
-
-        Assert.hasText(prop.get(), propName + " must not be empty");
-        return prop;
-    }
-
-    public static DynamicStringProperty getStringProp(String propName, String defaultValue) {
-        return DynamicPropertyFactory.getInstance().getStringProperty(propName, defaultValue);
-    }
-
 }

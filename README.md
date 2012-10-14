@@ -2,7 +2,7 @@
 ====================
 
 HTTP+JSON Services using industry best Java libraries.
-Spring enabled, with embedded tomcat.  Inspired by [dropwizard](http://dropwizard.codahale.com/).
+Spring enabled, with embedded tomcat or finagle.  Inspired by [dropwizard](http://dropwizard.codahale.com/).
 
 Features
 -----
@@ -14,7 +14,8 @@ Features
     - data
     - integration
     - TODO: quiet spring logging?
-- TODO: [Finagle](http://twitter.github.com/finagle/) integrational ala [finagle resteasy](https://github.com/opower/finagle-resteasy)
+- [Finagle](http://twitter.github.com/finagle/) integrational ala [finagle resteasy](https://github.com/opower/finagle-resteasy)
+    - TODO: Finagle client integration
 - Multilingual java/Scala
     - [scala-spring](https://github.com/ewolff/scala-spring), see [scala example](https://github.com/32degrees/halfpipe/tree/master/scala-example)
 - Guava integration
@@ -30,6 +31,8 @@ Features
     - TODO: Yeoman integration?
 - Dynamic Config [Archaius](https://github.com/Netflix/archaius)
     - config classes
+    - dynamic reload of json config files
+    - TODO: yaml config files?
     - TODO: flush out configuration for: http, logginc, etc...
 - Java [maven archetype](http://maven.apache.org/archetype/maven-archetype-plugin/advanced-usage.html)
 - Scala [maven archetype](http://maven.apache.org/archetype/maven-archetype-plugin/advanced-usage.html)

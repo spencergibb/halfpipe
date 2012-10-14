@@ -105,7 +105,6 @@ public class YamlConfiguration extends AbstractHierarchicalFileConfiguration {
         } else if (yaml instanceof SequenceNode) {
             SequenceNode sequenceNode = (SequenceNode) yaml;
             //System.out.println("writing sequence with size: "+sequenceNode.getValue().size());
-            int i=0;
             List<Object> list = Lists.newArrayList();
             for (org.yaml.snakeyaml.nodes.Node node : sequenceNode.getValue()) {
                 if (node instanceof ScalarNode) {
@@ -146,6 +145,7 @@ public class YamlConfiguration extends AbstractHierarchicalFileConfiguration {
         throw new NotImplementedException("save is not implemented");
     }
 
+    @SuppressWarnings({"unchecked", "unused"})
     public <T> List<T> getList(Class<T> klass, String key) {
         return (List<T>)getList(key);
     }

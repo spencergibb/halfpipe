@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringEscapeUtils;
  * @author Emmanuel Bourg
  * @version $Revision: 1152739 $, $Date: 2011-08-01 04:09:32 -0700 (Mon, 01 Aug 2011) $
  */
+@SuppressWarnings({"unchecked", "unused"})
 class JSONParser implements JSONParserConstants {
 
     /**

@@ -94,6 +94,7 @@ public abstract class Application<C, VC> {
             throw new IllegalStateException("Can not figure out Context types parameterization for "+getClass().getName());
     }
 
+    @SuppressWarnings("unchecked")
     private Class<?> getWiringClass(Type typeArgument) {
         if (typeArgument instanceof Class<?>) {
             Class klass = Class.class.cast(typeArgument);

@@ -204,6 +204,7 @@ public class JSONConfiguration extends AbstractHierarchicalFileConfiguration
     /**
      * Append a value to the writer, indented according to a specific level.
      */
+    @SuppressWarnings("unchecked")
     private void printValue(PrintWriter out, int indentLevel, Object value)
     {
         String padding = StringUtils.repeat(" ", indentLevel * INDENT_SIZE);
@@ -288,6 +289,7 @@ public class JSONConfiguration extends AbstractHierarchicalFileConfiguration
         return '"' + StringEscapeUtils.escapeJava(s) + '"';
     }
 
+    @SuppressWarnings({"unchecked", "unused"})
     public <T> List<T> getList(Class<T> klass, String key) {
         return (List<T>)getList(key);
     }

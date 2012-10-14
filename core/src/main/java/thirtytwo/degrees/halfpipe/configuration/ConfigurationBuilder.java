@@ -102,6 +102,8 @@ public class ConfigurationBuilder {
         //TODO: validate
         build(config, "");
     }
+
+    @SuppressWarnings("unchecked")
     protected void build(final Object config, final String context) throws Exception {
         Class<?> configClass = config.getClass();
 

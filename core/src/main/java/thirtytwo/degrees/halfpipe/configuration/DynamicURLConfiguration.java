@@ -8,6 +8,7 @@ import com.netflix.config.FixedDelayPollingScheduler;
  * {@link com.netflix.config.FixedDelayPollingScheduler}.
  *
  */
+@SuppressWarnings("unchecked")
 public class DynamicURLConfiguration extends DynamicConfiguration {
 
     /**

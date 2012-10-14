@@ -41,7 +41,7 @@ public class HelloCommand implements CommandMarker {
         if (!StringUtils.isBlank(more)) {
             hello.append(" "+more);
         }
-        System.out.println("\n\n\n\n"+hello+"\n\n\n\n");
-        return null;//hello.toString();
+        //System.out.println("\n\n\n\n"+hello+"\n\n\n\n");
+        return hello.toString();
     }
 }

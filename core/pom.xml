@@ -247,6 +247,12 @@
             <artifactId>metrics-web</artifactId>
             <version>${metrics.version}</version>
         </dependency>
+        <dependency>
+
+            <groupId>com.yammer.metrics</groupId>
+            <artifactId>metrics-logback</artifactId>
+            <version>${metrics.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>com.fasterxml.jackson</groupId>
@@ -289,6 +295,31 @@
             <version>1.11</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jul-to-slf4j</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>log4j-over-slf4j</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
         <!--<dependency>
             <groupId>one-jar</groupId>
             <artifactId>one-jar-boot</artifactId>

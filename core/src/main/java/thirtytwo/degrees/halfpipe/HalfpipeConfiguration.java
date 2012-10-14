@@ -18,6 +18,7 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
 import thirtytwo.degrees.halfpipe.configuration.Configuration;
 import thirtytwo.degrees.halfpipe.configuration.DynamicURLConfiguration;
 import thirtytwo.degrees.halfpipe.jersey.HalfpipeResourceConfig;
+import thirtytwo.degrees.halfpipe.logging.Log;
 
 import java.io.File;
 import java.util.HashMap;
@@ -29,6 +30,7 @@ import java.util.Map;
  * Time: 10:13 PM
  */
 public class HalfpipeConfiguration {
+    private static final Log LOG = Log.forThisClass();
 
     public static Map<String, Object> jerseyProperties(Configuration config) {
         HashMap<String, Object> props = Maps.newHashMap();
@@ -40,7 +42,7 @@ public class HalfpipeConfiguration {
 
     public static void createConfig(String configFile) throws Exception {
         if (DynamicPropertyFactory.isInitializedWithDefaultConfig() || ConfigurationManager.isConfigurationInstalled()) {
-            System.err.println("WARNING!!! Trying to initialze config again");
+            LOG.warn("Trying to initialze config again");
             return; //TODO: why does this happen on exploded?
         }
 
@@ -51,7 +53,7 @@ public class HalfpipeConfiguration {
         if (!StringUtils.isBlank(configFile)) {
             File file = new File(configFile);
             String url = file.toURI().toURL().toString();
-            System.out.println(url);
+            LOG.debug("config file url {}", url);
             String urls = System.getProperty(CONFIG_URL, null);
             if (urls == null) {
                 System.setProperty(CONFIG_URL, url);

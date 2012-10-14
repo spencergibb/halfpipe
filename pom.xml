@@ -17,8 +17,8 @@
         <module>example</module>
         <module>scala_2.9.1</module>
         <module>scala-example</module>
-        <module>archetype-java</module>
-        <module>archetype-scala</module>
+<!--        <module>archetype-java</module>
+        <module>archetype-scala</module>-->
     </modules>
 
     <properties>
@@ -34,6 +34,8 @@
         <scala.version>2.9.1</scala.version>
         <scala.maven.version>3.1.0</scala.maven.version>
         <finagle.version>5.3.9</finagle.version>
+        <logback.version>1.0.7</logback.version>
+        <slf4j.version>1.6.6</slf4j.version>
     </properties>
 
     <profiles>

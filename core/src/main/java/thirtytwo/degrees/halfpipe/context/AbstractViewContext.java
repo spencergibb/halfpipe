@@ -1,12 +1,8 @@
 package thirtytwo.degrees.halfpipe.context;
 
-import com.netflix.config.DynamicPropertyFactory;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-
-import static thirtytwo.degrees.halfpipe.Halfpipe.HALFPIPE_DEFAULT_SERVLET;
-import static thirtytwo.degrees.halfpipe.Halfpipe.PROP_INSTALL_DEFAULT_SERVLET;
 
 /**
  * User: spencergibb

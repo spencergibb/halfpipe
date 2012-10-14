@@ -15,6 +15,7 @@ import org.springframework.shell.core.annotation.CliAvailabilityIndicator;
 import org.springframework.shell.core.annotation.CliCommand;
 import thirtytwo.degrees.halfpipe.configuration.Configuration;
 import thirtytwo.degrees.halfpipe.configuration.ConfigurationBuilder;
+import thirtytwo.degrees.halfpipe.logging.Log;
 
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
@@ -29,6 +30,7 @@ import java.util.Set;
  * Time: 11:44 PM
  */
 public class Server implements CommandMarker {
+    private static final Log LOG = Log.forThisClass();
 
     @Inject
     Configuration config;
@@ -40,13 +42,12 @@ public class Server implements CommandMarker {
 
     @CliCommand(value = "server", help = "run halfpipe in tomcat http server")
     public String server() throws Exception {
-        //run(null);
-        return "currently the server command only works as a command line argument";
+        run(null);
+        //return "currently the server command only works as a command line argument";
+        return null;
     }
 
     public void run(CommandLine commandLine) throws Exception {
-        System.out.println("Starting Server");
-
         setupTomcatHome();
 
         Tomcat tomcat = new Tomcat();
@@ -64,20 +65,20 @@ public class Server implements CommandMarker {
         //TODO serverXml config?
 
         if (isOneJar()) {
-            System.out.println("in one-jar");
+            LOG.info("running in bundled mode");
 
             File warFile = findWarFile();
 
             String baseDir = warFile.getAbsolutePath();
             //String baseDir = userDir+File.separator+".halfpipe/binlibs/halfpipe-example.war";
-            System.out.println("baseDir: " + baseDir);
+            LOG.debug("baseDir: {}", baseDir);
 
             Context context = tomcat.addWebapp("", baseDir);
             //System.setProperty("tomcat.util.scan.DefaultJarScanner.jarsToSkip", "*.jar");
             StandardJarScanner jarScanner = new StandardJarScanner() {
                 @Override
                 public void scan(ServletContext context, ClassLoader classloader, JarScannerCallback callback, Set<String> jarsToSkip) {
-                    System.out.println("scanning classloader: " + classloader);
+                    LOG.debug("scanning classloader: {}", classloader);
                     super.scan(context, classloader, callback, jarsToSkip); //TODO: implement .scan
                 }
             };
@@ -86,19 +87,19 @@ public class Server implements CommandMarker {
             context.setReloadable(false);
             //https://github.com/grails/grails-core/blob/master/grails-plugin-tomcat/src/main/groovy/org/grails/plugins/tomcat/InlineExplodedTomcatServer.groovy
             ClassLoader classLoader = getClass().getClassLoader();
-            System.out.println("setting classloader: " + classLoader);
+            LOG.debug("setting classloader: {}", classLoader);
             TomcatLoader loader = new TomcatLoader(classLoader);
             loader.setContainer(context);
             context.setLoader(loader);
         } else {
-            System.out.println("starting dev");
+            LOG.info("running in exploded mode");
             String baseDir = getWebappDir();
             tomcat.addWebapp("", baseDir);
 
         }
-        System.out.println("staring tomcat");
+        LOG.info("staring tomcat on port {}", config.http.port.get());
         tomcat.start();
-        System.out.println("waiting for connections");
+        LOG.info("waiting for connections on port {}", config.http.port.get());
         waitIndefinitely();
     }
 
@@ -128,11 +129,11 @@ public class Server implements CommandMarker {
         });
         Collection<File> files = FileUtils.listFiles(new File(userDir), filter, TrueFileFilter.INSTANCE);
         if (files.isEmpty()) {
-            System.err.println("No directory!");
+            LOG.error("No exploded war directory!");
             System.exit(1);
         }
         if (files.size() > 1) {
-            System.err.println("More than one file! " + files);
+            LOG.warn("More than one exploded dir! {}", files);
         }
         File file = files.iterator().next();
         //String baseDir = userDir+File.separator+"src"+File.separator+"main"+File.separator+"webapp";
@@ -143,11 +144,11 @@ public class Server implements CommandMarker {
         String userDir = getHalfpipeDir();
         Collection<File> files = FileUtils.listFiles(new File(userDir), new RegexFileFilter(".*\\.war"), TrueFileFilter.INSTANCE);
         if (files.isEmpty()) {
-            System.err.println("No directory!");
+            LOG.error("No war file found");
             System.exit(1);
         }
         if (files.size() > 1) {
-            System.err.println("More than one file! " + files);
+            LOG.warn("More than one war file: {}", files);
         }
         return getFirst(files, null);
     }

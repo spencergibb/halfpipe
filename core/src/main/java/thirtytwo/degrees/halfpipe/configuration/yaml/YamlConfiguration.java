@@ -9,6 +9,7 @@ import org.yaml.snakeyaml.nodes.MappingNode;
 import org.yaml.snakeyaml.nodes.NodeTuple;
 import org.yaml.snakeyaml.nodes.ScalarNode;
 import org.yaml.snakeyaml.nodes.SequenceNode;
+import thirtytwo.degrees.halfpipe.logging.Log;
 
 import java.io.File;
 import java.io.Reader;
@@ -22,6 +23,7 @@ import java.util.List;
  * Time: 7:31 PM
  */
 public class YamlConfiguration extends AbstractHierarchicalFileConfiguration {
+    private static final Log LOG = Log.forThisClass();
 
     /**
      * Creates an empty YamlConfiguration object which can be
@@ -89,13 +91,13 @@ public class YamlConfiguration extends AbstractHierarchicalFileConfiguration {
     private void build(org.yaml.snakeyaml.nodes.Node yaml, Node parent) {
         if (yaml instanceof MappingNode) {
             final MappingNode mappingNode = (MappingNode) yaml;
-            //System.out.println("writing map with size: "+mappingNode.getValue().size());
+            LOG.debug("writing map with size: {}", mappingNode.getValue().size());
             for (NodeTuple tuple : mappingNode.getValue()) {
                 Node node = new Node();
                 if (tuple.getKeyNode() instanceof ScalarNode) {
                     ScalarNode scalarNode = (ScalarNode) tuple.getKeyNode();
                     String keyValue = scalarNode.getValue();
-                    //System.out.println("keyValue: "+keyValue);
+                    LOG.debug("keyValue: {}", keyValue);
                     node.setName(keyValue);
                 }
                 parent.addChild(node);
@@ -104,7 +106,7 @@ public class YamlConfiguration extends AbstractHierarchicalFileConfiguration {
             }
         } else if (yaml instanceof SequenceNode) {
             SequenceNode sequenceNode = (SequenceNode) yaml;
-            //System.out.println("writing sequence with size: "+sequenceNode.getValue().size());
+            LOG.debug("writing sequence with size: {}", sequenceNode.getValue().size());
             List<Object> list = Lists.newArrayList();
             for (org.yaml.snakeyaml.nodes.Node node : sequenceNode.getValue()) {
                 if (node instanceof ScalarNode) {
@@ -126,7 +128,7 @@ public class YamlConfiguration extends AbstractHierarchicalFileConfiguration {
 
     private Object getScalarValue(ScalarNode scalarNode) {
         final String className = scalarNode.getTag().getClassName();
-        //System.out.println("writing scalar with tag: "+className+", value: "+scalarNode.getValue());
+        LOG.debug("writing scalar with tag: {}, value: {}", className, scalarNode.getValue());
         if ("bool".equals(className)) {
             return Boolean.parseBoolean(scalarNode.getValue());
         } else if ("int".equals(className)) {

@@ -15,6 +15,7 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
 import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.DispatcherServlet;
 import thirtytwo.degrees.halfpipe.configuration.Configuration;
+import thirtytwo.degrees.halfpipe.logging.Log;
 
 import javax.servlet.*;
 import java.util.Map;
@@ -24,6 +25,7 @@ import java.util.Set;
  * http://rockhoppertech.com/blog/spring-mvc-configuration-without-xml/
  */
 public class HalfpipeWebAppInitializer implements WebApplicationInitializer {
+    private static final Log LOG = Log.forThisClass();
 
     static Object lock = new Object();
     static boolean initialized = false;
@@ -59,11 +61,6 @@ public class HalfpipeWebAppInitializer implements WebApplicationInitializer {
                 ServletRegistration.Dynamic viewServlet = addServlet(sc, "viewServlet", new DispatcherServlet(webCtx), 1,
                         viewPattern);
 
-                if (DynamicPropertyFactory.getInstance().getBooleanProperty(PROP_INSTALL_DEFAULT_SERVLET, false).get()) {
-                    System.err.println("\n\n\nINSTALLING DEFAULT SERVLET");
-                    addServlet(sc, HALFPIPE_DEFAULT_SERVLET, new DefaultServlet(), 1, viewPattern);
-                }
-
                 // Jersey Servlet
                 ServletRegistration.Dynamic jersey = addServlet(sc, "jersey-servlet", new SpringServlet(), 1,
                         config.http.resourcePattern.get());
@@ -88,7 +85,7 @@ public class HalfpipeWebAppInitializer implements WebApplicationInitializer {
 
         if (!mappingConflicts.isEmpty()) {
             for (String s : mappingConflicts) {
-                System.err.println("Mapping conflict: " + s);
+                LOG.warn("Mapping conflict: {}", s);
             }
             throw new IllegalStateException(
                     "'"+servletName+"' cannot be mapped to '/' under Tomcat versions <= 7.0.14");

@@ -6,13 +6,14 @@ import static com.google.common.collect.Lists.*;
 import static thirtytwo.degrees.halfpipe.HalfpipeConfiguration.*;
 
 import com.google.common.base.Throwables;
-import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.Assert;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import thirtytwo.degrees.halfpipe.cli.Server;
 import thirtytwo.degrees.halfpipe.cli.Shell;
+import thirtytwo.degrees.halfpipe.logging.Log;
+import thirtytwo.degrees.halfpipe.logging.Logging;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -23,6 +24,11 @@ import java.lang.reflect.Type;
  * Time: 10:41 PM
  */
 public abstract class Application<C, VC> {
+    private static final Log LOG = Log.forThisClass();
+
+    static {
+        Logging.bootstrap();
+    }
 
     //TODO: find a better way to pass these to HalfpipeWebAppInitializer, sysprops?
     static AnnotationConfigWebApplicationContext rootContext;
@@ -41,18 +47,22 @@ public abstract class Application<C, VC> {
             AnnotationConfigWebApplicationContext rootContext = createWebContext(contextClass); //TODO: fix shell
             rootContext.refresh();
 
-            if (isServer(args)) {
-                Application.rootContext = rootContext;
+            Logging.configure();
 
-                Server server = rootContext.getBean(Server.class);
-                server.run(null);
-            } else {
-                Shell shell = getShell(rootContext);
-                shell.start(args);
-            }
+            LOG.info("Starting {}", config(rootContext).appName.get());
+
+            Application.rootContext = rootContext;
+
+            Shell shell = getShell(rootContext);
+            shell.start(args);
+
         } catch (Exception e) {
             Throwables.propagate(e);
         }
+    }
+
+    private thirtytwo.degrees.halfpipe.configuration.Configuration config(AnnotationConfigWebApplicationContext rootContext) {
+        return rootContext.getBean(thirtytwo.degrees.halfpipe.configuration.Configuration.class);
     }
 
     protected boolean isServer(String[] args) {

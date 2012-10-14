@@ -2,10 +2,9 @@ package thirtytwo.degrees.halfpipe.cli;
 
 import org.apache.catalina.*;
 import org.apache.catalina.util.LifecycleBase;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.naming.resources.DirContextURLStreamHandler;
 import org.apache.naming.resources.DirContextURLStreamHandlerFactory;
+import thirtytwo.degrees.halfpipe.logging.Log;
 
 import java.beans.PropertyChangeListener;
 import java.net.*;
@@ -17,8 +16,7 @@ import java.net.*;
  * Time: 11:38 PM
  */
 public class TomcatLoader extends LifecycleBase implements Loader {
-
-    private static Log log = LogFactory.getLog(TomcatLoader.class.getName());
+    private static final Log LOG = Log.forThisClass();
 
     private static boolean first = true;
 
@@ -36,13 +34,13 @@ public class TomcatLoader extends LifecycleBase implements Loader {
     public void addPropertyChangeListener(PropertyChangeListener listener) {}
 
     public void addRepository(String repository) {
-        log.warn("Call to addRepository($repository) was ignored.");
+        LOG.warn("Call to addRepository($repository) was ignored.");
     }
 
     public void backgroundProcess() {}
 
     public String[] findRepositories() {
-        log.warn("Call to findRepositories() returned null.");
+        LOG.warn("Call to findRepositories() returned null.");
         return null;
     }
 
@@ -69,14 +67,14 @@ public class TomcatLoader extends LifecycleBase implements Loader {
                 URL.setURLStreamHandlerFactory(streamHandlerFactory);
             } catch (Exception e) {
                 // Log and continue anyway, this is not critical
-                log.error("Error registering jndi stream handler", e);
+                LOG.error("Error registering jndi stream handler", e);
             } catch (Throwable t) {
                 // This is likely a dual registration
-                log.info("Dual registration of jndi stream handler: " + t.getMessage());
+                LOG.info("Dual registration of jndi stream handler: " + t.getMessage());
             }
         }
 
-        System.out.println("binding classloader: "+classLoader);
+        LOG.debug("binding classloader: {}", classLoader);
         DirContextURLStreamHandler.bind(classLoader, container.getResources());
     }
 

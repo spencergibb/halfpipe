@@ -9,6 +9,7 @@ import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.shell.converters.*;
 import org.springframework.shell.core.*;
 import org.springframework.util.StopWatch;
+import thirtytwo.degrees.halfpipe.logging.Log;
 
 import java.io.IOException;
 import java.util.Map;
@@ -24,6 +25,7 @@ import static org.springframework.shell.support.logging.HandlerUtils.*;
  * see org.springframework.shell.Bootstrap
  */
 public class Shell {
+    private static final Log LOG = Log.forThisClass();
 
     protected AnnotationConfigApplicationContext ctxt;
     protected ConfigurableApplicationContext ctx;
@@ -53,9 +55,9 @@ public class Shell {
         options = new ShellOptions(args);
 
         shell.setHistorySize(options.historySize);
-        if (options.executeThenQuit != null) {
+        /*if (options.executeThenQuit != null) {
             shell.setPrintBanner(false);
-        }
+        }*/
 
         for (Map.Entry<String, String> entry : options.extraSystemProperties.entrySet()) {
             System.setProperty(entry.getKey(), entry.getValue());
@@ -81,6 +83,9 @@ public class Shell {
             boolean successful = false;
             exitShellRequest = ExitShellRequest.FATAL_EXIT;
 
+            HalfpipeBannerProvider provider = ctx.getBean(HalfpipeBannerProvider.class);
+            LOG.info(provider.getBanner());
+
             for (String cmd : executeThenQuit) {
                 successful = shell.executeCommand(cmd);
                 if (!successful)
@@ -104,9 +109,8 @@ public class Shell {
 
         ctx.close();
         sw.stop();
-        if (shell.isDevelopmentMode()) {
-            System.out.println("Total execution time: " + sw.getLastTaskTimeMillis() + " ms");
-        }
+
+        LOG.debug("Total execution time: {} ms", sw.getLastTaskTimeMillis());
         return exitShellRequest;
     }
 

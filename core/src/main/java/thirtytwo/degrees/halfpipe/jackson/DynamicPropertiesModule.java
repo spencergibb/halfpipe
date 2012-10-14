@@ -9,6 +9,7 @@ import org.codehaus.jackson.Version;
 import org.codehaus.jackson.map.*;
 import org.codehaus.jackson.map.annotate.JsonCachable;
 import org.codehaus.jackson.type.JavaType;
+import thirtytwo.degrees.halfpipe.logging.Log;
 
 import java.io.IOException;
 
@@ -18,6 +19,8 @@ import java.io.IOException;
  * Time: 10:16 PM
  */
 public class DynamicPropertiesModule extends Module {
+    private static final Log LOG = Log.forThisClass();
+
     @JsonCachable
     private static class DynamicStringPropertyDeserializer extends JsonDeserializer<DynamicStringProperty> {
         @Override
@@ -38,7 +41,7 @@ public class DynamicPropertiesModule extends Module {
                 parsingContext = parsingContext.getParent();
             }
 
-            System.out.println("path: "+ path);
+            LOG.debug("path: {}", path);
             return DynamicPropertyFactory.getInstance().getStringProperty(path.toString(), jp.getText());
             //return HostAndPort.fromString(jp.getText());
         }

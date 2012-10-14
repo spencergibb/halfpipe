@@ -28,13 +28,12 @@ import java.util.*;
 
 import javax.servlet.ServletContext;
 
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
 import org.apache.tomcat.JarScanner;
 import org.apache.tomcat.JarScannerCallback;
 import org.apache.tomcat.util.file.Matcher;
 import org.apache.tomcat.util.res.StringManager;
 import org.apache.tomcat.util.scan.Constants;
+import thirtytwo.degrees.halfpipe.logging.Log;
 
 /**
  * The default {@link JarScanner} implementation scans the WEB-INF/lib directory
@@ -51,8 +50,9 @@ import org.apache.tomcat.util.scan.Constants;
  * All of the extensions may be controlled via configuration.
  */
 public class StandardJarScanner implements JarScanner {
+    private static final Log LOG = Log.forThisClass();
 
-    private static final Log log = LogFactory.getLog(StandardJarScanner.class);
+    //private static final Log log = LogFactory.getLog(StandardJarScanner.class);
 
     private static final Set<String> defaultJarsToSkip = new HashSet<String>();
 
@@ -122,9 +122,9 @@ public class StandardJarScanner implements JarScanner {
     @Override
     public void scan(ServletContext context, ClassLoader classloader,
                      JarScannerCallback callback, Set<String> jarsToSkip) {
-        System.err.println(new Date()+" starting scan of webinf/lib");
-        if (log.isTraceEnabled()) {
-            log.trace(sm.getString("jarScan.webinflibStart"));
+        LOG.debug("starting scan of webinf/lib");
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(sm.getString("jarScan.webinflibStart"));
         }
 
         Set<String> ignoredJars;
@@ -148,9 +148,9 @@ public class StandardJarScanner implements JarScanner {
                         !Matcher.matchPath(ignoredJarsTokens,
                                 path.substring(path.lastIndexOf('/')+1))) {
                     // Need to scan this JAR
-                    System.err.println(new Date()+" scanning jar "+path);
-                    if (log.isDebugEnabled()) {
-                        log.debug(sm.getString("jarScan.webinflibJarScan", path));
+                    LOG.debug("scanning jar "+path);
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug(sm.getString("jarScan.webinflibJarScan", path));
                     }
                     URL url = null;
                     try {
@@ -164,25 +164,25 @@ public class StandardJarScanner implements JarScanner {
                         }
                         process(callback, url);
                     } catch (IOException e) {
-                        System.err.println(new Date()+" warning scanning webinf/lib ");
+                        LOG.debug("warning scanning webinf/lib ");
                         e.printStackTrace();
-                        log.warn(sm.getString("jarScan.webinflibFail", url), e);
+                        LOG.warn(sm.getString("jarScan.webinflibFail", url), e);
                     }
                 } else {
-                    System.err.println(new Date()+" skipping jar "+path);
-                    if (log.isTraceEnabled()) {
-                        log.trace(sm.getString("jarScan.webinflibJarNoScan", path));
+                    LOG.debug("skipping jar "+path);
+                    if (LOG.isTraceEnabled()) {
+                        LOG.trace(sm.getString("jarScan.webinflibJarNoScan", path));
                     }
                 }
             }
         }
-        System.err.println(new Date()+" done scan of webinf/lib");
+        LOG.debug("done scan of webinf/lib");
 
         // Scan the classpath
         if (scanClassPath) {
-            System.err.println(new Date()+" scanning classpath");
-            if (log.isTraceEnabled()) {
-                log.trace(sm.getString("jarScan.classloaderStart"));
+            LOG.debug("scanning classpath");
+            if (LOG.isTraceEnabled()) {
+                LOG.trace(sm.getString("jarScan.classloaderStart"));
             }
 
             ClassLoader loader =
@@ -201,22 +201,22 @@ public class StandardJarScanner implements JarScanner {
                                 !(Matcher.matchPath(ignoredJarsTokens, jarName) ||
                                         urls[i].toString().contains(
                                                 Constants.WEB_INF_LIB + jarName))) {
-                            System.err.println(new Date()+" scanning classpath url "+urls[i]);
-                            if (log.isDebugEnabled()) {
-                                log.debug(sm.getString("jarScan.classloaderJarScan", urls[i]));
+                            LOG.debug("scanning classpath url "+urls[i]);
+                            if (LOG.isDebugEnabled()) {
+                                LOG.debug(sm.getString("jarScan.classloaderJarScan", urls[i]));
                             }
                             try {
                                 process(callback, urls[i]);
                             } catch (IOException ioe) {
-                                System.err.println(new Date()+" warning scanning classpath url "+urls[i]);
+                                LOG.debug("warning scanning classpath url "+urls[i]);
                                 ioe.printStackTrace();
-                                log.warn(sm.getString(
-                                        "jarScan.classloaderFail",urls[i]), ioe);
+                                LOG.warn(sm.getString(
+                                        "jarScan.classloaderFail", urls[i]), ioe);
                             }
                         } else {
-                            System.err.println(new Date()+" skipping classpath url "+urls[i]);
-                            if (log.isTraceEnabled()) {
-                                log.trace(sm.getString("jarScan.classloaderJarNoScan", urls[i]));
+                            LOG.debug("skipping classpath url "+urls[i]);
+                            if (LOG.isTraceEnabled()) {
+                                LOG.trace(sm.getString("jarScan.classloaderJarNoScan", urls[i]));
                             }
                         }
                     }
@@ -225,7 +225,7 @@ public class StandardJarScanner implements JarScanner {
             }
 
         }
-        System.err.println(new Date()+" done scanning classpath");
+        LOG.debug("done scanning classpath");
     }
 
     /*
@@ -235,9 +235,9 @@ public class StandardJarScanner implements JarScanner {
     private void process(JarScannerCallback callback, URL url)
             throws IOException {
 
-        System.err.println(new Date()+" scanning jar url "+url);
-        if (log.isTraceEnabled()) {
-            log.trace(sm.getString("jarScan.jarUrlStart", url));
+        LOG.debug("scanning jar url "+url);
+        if (LOG.isTraceEnabled()) {
+            LOG.trace(sm.getString("jarScan.jarUrlStart", url));
         }
 
         URLConnection conn = url.openConnection();

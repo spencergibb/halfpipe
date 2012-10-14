@@ -2,6 +2,7 @@ package thirtytwo.degrees.halfpipe.example.health;
 
 import com.yammer.metrics.core.HealthCheck;
 import org.springframework.stereotype.Service;
+import thirtytwo.degrees.halfpipe.logging.Log;
 
 import java.util.Date;
 
@@ -12,6 +13,7 @@ import java.util.Date;
  */
 @Service
 public class HelloHealthCheck extends HealthCheck {
+    private static final Log LOG = Log.forThisClass();
 
     public HelloHealthCheck() {
         super("hello");
@@ -19,7 +21,7 @@ public class HelloHealthCheck extends HealthCheck {
 
     @Override
     protected Result check() throws Exception {
-        System.out.println(new Date() +" works");
+        LOG.warn("new Date() {} works", new Date());
         return Result.healthy("The Date class works!");
     }
 }

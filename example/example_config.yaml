@@ -1,1 +1,4 @@
 helloText: "Hello from yaml config file"
+
+http:
+  port: 8080

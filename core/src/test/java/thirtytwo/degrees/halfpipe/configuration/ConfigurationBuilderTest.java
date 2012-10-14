@@ -35,6 +35,7 @@ public class ConfigurationBuilderTest {
         assertProp("config.doubleProp", config.doubleProp, 1.0d);
 
         assertProp("config.http", config.http);
+        assertThat("config.http.protocol is bad", config.http.protocol.get(), is(nullValue()));
         assertProp("config.http.port", config.http.port, 80);
         assertProp("config.http.viewPattern", config.http.viewPattern, "/*");
 

@@ -16,11 +16,7 @@ import static thirtytwo.degrees.halfpipe.Halfpipe.PROP_INSTALL_DEFAULT_SERVLET;
 public abstract class AbstractViewContext extends WebMvcConfigurerAdapter {
     @Override
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
-        if (DynamicPropertyFactory.getInstance().getBooleanProperty(PROP_INSTALL_DEFAULT_SERVLET, false).get()) {
-            configurer.enable(HALFPIPE_DEFAULT_SERVLET);
-        } else {
-            configurer.enable();
-        }
+        configurer.enable();
     }
 
     @Override

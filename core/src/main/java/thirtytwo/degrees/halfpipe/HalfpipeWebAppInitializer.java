@@ -38,11 +38,8 @@ public class HalfpipeWebAppInitializer implements WebApplicationInitializer {
                 if (initialized) return;
 
                 initialized = true;
-                createConfig((sc.getNamedDispatcher("default") == null), Application.configFileName);
 
-                // Create the root appcontext
-                AnnotationConfigWebApplicationContext rootCtx = createWebContext(Application.serverContextClass);
-                rootCtx.refresh();
+                AnnotationConfigWebApplicationContext rootCtx = Application.rootContext;
 
                 // rather than sc.addListener(new ContextLoaderListener(rootCtx));
                 // set the required servletcontext attribute to avoid loading beans twice
@@ -63,6 +60,7 @@ public class HalfpipeWebAppInitializer implements WebApplicationInitializer {
                         viewPattern);
 
                 if (DynamicPropertyFactory.getInstance().getBooleanProperty(PROP_INSTALL_DEFAULT_SERVLET, false).get()) {
+                    System.err.println("\n\n\nINSTALLING DEFAULT SERVLET");
                     addServlet(sc, HALFPIPE_DEFAULT_SERVLET, new DefaultServlet(), 1, viewPattern);
                 }
 
@@ -79,12 +77,6 @@ public class HalfpipeWebAppInitializer implements WebApplicationInitializer {
             sc.log("Unable to initialize Halfpipe web application", e);
             throw new ServletException("Unable to initialize Halfpipe web application", e);
         }
-    }
-
-    private AnnotationConfigWebApplicationContext createWebContext(Class<?> appConfigClass) {
-        AnnotationConfigWebApplicationContext ctx = new AnnotationConfigWebApplicationContext();
-        ctx.register(appConfigClass);
-        return ctx;
     }
 
     private ServletRegistration.Dynamic addServlet(ServletContext servletContext, String servletName, Servlet servlet,

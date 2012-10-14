@@ -21,5 +21,13 @@ public class HttpConfiguration {
     @DefaultValue(RESOURCE_URL_PATTERN)
     public DynamicStringProperty resourcePattern;
 
+    /**
+     * HTTP/1.1 or org.apache.coyote.http11.Http11NioProtocol
+     */
+    public DynamicStringProperty protocol;
+
+    @DefaultValue("ISO-8859-1")
+    public DynamicStringProperty uriEncoding;
+
     public GzipConfiguration gzip;
 }

@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import thirtytwo.degrees.halfpipe.cli.HalfpipeBannerProvider;
+import thirtytwo.degrees.halfpipe.cli.Server;
 import thirtytwo.degrees.halfpipe.configuration.ConfigurationBeanPostProcessor;
 import thirtytwo.degrees.halfpipe.jackson.AnnotationSensitivePropertyNamingStrategy;
 import thirtytwo.degrees.halfpipe.jackson.GuavaExtrasModule;
@@ -116,6 +117,11 @@ public class BaseContext {
     @Bean @Scope("singleton")
     public ConfigurationBeanPostProcessor configurationBeanPostProcessor() {
         return new ConfigurationBeanPostProcessor();
+    }
+
+    @Bean @Scope("singleton")
+    public Server server() {
+        return new Server();
     }
 
 }

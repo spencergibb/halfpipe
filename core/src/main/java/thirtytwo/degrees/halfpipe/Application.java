@@ -10,6 +10,7 @@ import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.Assert;
+import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import thirtytwo.degrees.halfpipe.cli.Server;
 import thirtytwo.degrees.halfpipe.cli.Shell;
 
@@ -24,9 +25,8 @@ import java.lang.reflect.Type;
 public abstract class Application<C, VC> {
 
     //TODO: find a better way to pass these to HalfpipeWebAppInitializer, sysprops?
-    public static Class<?> serverContextClass;
-    public static Class<?> serverViewContextClass;
-    public static String configFileName;
+    static AnnotationConfigWebApplicationContext rootContext;
+    static Class<?> serverViewContextClass;
 
     protected Class<C> contextClass;
     protected Class<VC> viewContextClass;
@@ -34,16 +34,20 @@ public abstract class Application<C, VC> {
     public void run(String[] args) {
         try {
             getContextClasses();
+            Application.serverViewContextClass = viewContextClass;
+
+            createConfig(findConfig(args));
+
+            AnnotationConfigWebApplicationContext rootContext = createWebContext(contextClass); //TODO: fix shell
+            rootContext.refresh();
+
             if (isServer(args)) {
-                Application.serverContextClass = this.contextClass;
-                Application.serverViewContextClass = this.viewContextClass;
+                Application.rootContext = rootContext;
 
-                Application.configFileName = findConfig(args);
-
-                Server command = new Server();
-                command.run(null);
+                Server server = rootContext.getBean(Server.class);
+                server.run(null);
             } else {
-                Shell shell = getShell(args);
+                Shell shell = getShell(rootContext);
                 shell.start(args);
             }
         } catch (Exception e) {
@@ -55,20 +59,17 @@ public abstract class Application<C, VC> {
         return args.length >= 1 && args[0].equals("server");
     }
 
-    protected Shell getShell(String[] args) throws Exception {
+    protected Shell getShell(AnnotationConfigWebApplicationContext rootContext) throws Exception {
+        AnnotationConfigApplicationContext shellContext = new AnnotationConfigApplicationContext();
+        shellContext.setParent(rootContext);
 
-        String configFile = findConfig(args);
-        createConfig(false, configFile);
-        AnnotationConfigApplicationContext rootContext = createContext(contextClass, false); //TODO: fix shell
-        rootContext.registerBeanDefinition(Server.class.getSimpleName(), new RootBeanDefinition(Server.class));
-        Shell shell = new Shell(rootContext);
+        Shell shell = new Shell(shellContext);
 
         return shell;
     }
 
     private String findConfig(String[] args) {
-        String config = find(newArrayList(args), containsPattern(".*\\.json$|.*\\.yml|.*\\.yaml$"), null);
-        return config;
+        return find(newArrayList(args), containsPattern(".*\\.json$|.*\\.yml|.*\\.yaml$"), null);
     }
 
     /**

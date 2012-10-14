@@ -29,7 +29,7 @@ public class ConfigurationBuilder {
 
     class StringBuilder implements PropBuilder<DynamicStringProperty, String> {
         public Class<DynamicStringProperty> getPropType() { return DynamicStringProperty.class; }
-        public String defaultVal() { return ""; }
+        public String defaultVal() { return null; }
         public String convert(String s) { return s; }
 
         public DynamicStringProperty getProp(String propName, String defaultVal) {

@@ -3,6 +3,7 @@ package thirtytwo.degrees.halfpipe.cli;
 import static com.google.common.collect.Iterables.*;
 
 import org.apache.catalina.Context;
+import org.apache.catalina.connector.Connector;
 import org.apache.catalina.startup.Tomcat;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.io.FileUtils;
@@ -15,8 +16,10 @@ import org.springframework.shell.core.annotation.CliCommand;
 import thirtytwo.degrees.halfpipe.configuration.Configuration;
 import thirtytwo.degrees.halfpipe.configuration.ConfigurationBuilder;
 
+import javax.inject.Inject;
 import javax.servlet.ServletContext;
 import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Set;
 
@@ -26,6 +29,9 @@ import java.util.Set;
  * Time: 11:44 PM
  */
 public class Server implements CommandMarker {
+
+    @Inject
+    Configuration config;
 
     @CliAvailabilityIndicator({"server"})
     public boolean isCommandAvailable() {
@@ -41,9 +47,21 @@ public class Server implements CommandMarker {
     public void run(CommandLine commandLine) throws Exception {
         System.out.println("Starting Server");
 
+        setupTomcatHome();
+
         Tomcat tomcat = new Tomcat();
 
-        //new ConfigurationBuilder().build(new Configuration());
+        Connector connector = new Connector(config.http.protocol.get());
+        connector.setPort(config.http.port.get());
+        connector.setURIEncoding(config.http.uriEncoding.get());
+
+        tomcat.getService().addConnector(connector);
+        tomcat.setConnector(connector);
+
+        //TODO https config
+        //TODO use naming config
+        //TODO ajp config
+        //TODO serverXml config?
 
         if (isOneJar()) {
             System.out.println("in one-jar");
@@ -84,6 +102,20 @@ public class Server implements CommandMarker {
         waitIndefinitely();
     }
 
+    private void setupTomcatHome() {
+        String basedir = getHalfpipeDir() + File.separator + "tomcat";
+        File home = new File(basedir);
+        home.mkdirs();
+        if (!home.isAbsolute()) {
+            try {
+                basedir = home.getCanonicalPath();
+            } catch (IOException e) {
+                basedir = home.getAbsolutePath();
+            }
+        }
+        System.setProperty( "catalina.base", basedir);
+    }
+
     private String getWebappDir() {
         String userDir = System.getProperty("user.dir");
         AndFileFilter filter = new AndFileFilter();
@@ -108,7 +140,7 @@ public class Server implements CommandMarker {
     }
 
     private File findWarFile() {
-        String userDir = System.getProperty("user.dir") + File.separator + ".halfpipe";
+        String userDir = getHalfpipeDir();
         Collection<File> files = FileUtils.listFiles(new File(userDir), new RegexFileFilter(".*\\.war"), TrueFileFilter.INSTANCE);
         if (files.isEmpty()) {
             System.err.println("No directory!");
@@ -118,6 +150,10 @@ public class Server implements CommandMarker {
             System.err.println("More than one file! " + files);
         }
         return getFirst(files, null);
+    }
+
+    private String getHalfpipeDir() {
+        return System.getProperty("user.dir") + File.separator + ".halfpipe";
     }
 
     private boolean isOneJar() {

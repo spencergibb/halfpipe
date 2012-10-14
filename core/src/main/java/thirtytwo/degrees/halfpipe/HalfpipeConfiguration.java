@@ -14,6 +14,7 @@ import com.sun.jersey.spi.container.servlet.ServletContainer;
 import org.apache.commons.configuration.SystemConfiguration;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import thirtytwo.degrees.halfpipe.configuration.Configuration;
 import thirtytwo.degrees.halfpipe.configuration.DynamicURLConfiguration;
 import thirtytwo.degrees.halfpipe.jersey.HalfpipeResourceConfig;
@@ -37,17 +38,13 @@ public class HalfpipeConfiguration {
         return props;
     }
 
-    public static void createConfig(boolean installDefaultServlet, String configFile) throws Exception {
+    public static void createConfig(String configFile) throws Exception {
         if (DynamicPropertyFactory.isInitializedWithDefaultConfig() || ConfigurationManager.isConfigurationInstalled()) {
             System.err.println("WARNING!!! Trying to initialze config again");
             return; //TODO: why does this happen on exploded?
         }
 
         System.setProperty("archaius.configurationSource.defaultFileName", HALFPIPE_PROPERTIES_FILENAME);
-
-        Map<String, Object> map = Maps.newHashMap();
-        map.put(PROP_INSTALL_DEFAULT_SERVLET, installDefaultServlet);
-        System.err.println("Config: "+map);
 
         ConcurrentCompositeConfiguration configuration = new ConcurrentCompositeConfiguration();
 
@@ -63,9 +60,7 @@ public class HalfpipeConfiguration {
             }
         }
 
-        configuration.addConfiguration(new ConcurrentMapConfiguration(map));
         configuration.addConfiguration(new SystemConfiguration(), DynamicPropertyFactory.SYS_CONFIG_NAME);
-        //configuration.addConfiguration(new ConcurrentMapConfiguration(ClasspathPropertiesConfiguration.));
         try {
             DynamicURLConfiguration defaultURLConfig = new DynamicURLConfiguration();
             configuration.addConfiguration(defaultURLConfig, DynamicPropertyFactory.URL_CONFIG_NAME);
@@ -76,11 +71,9 @@ public class HalfpipeConfiguration {
         DynamicPropertyFactory.initWithConfigurationSource(configuration);
     }
 
-    public static AnnotationConfigApplicationContext createContext(Class<?> contextClass, boolean refresh) throws ClassNotFoundException {
-        AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
-        ctx.register(contextClass);
-        if (refresh)
-            ctx.refresh();
+    public static AnnotationConfigWebApplicationContext createWebContext(Class<?> appConfigClass) {
+        AnnotationConfigWebApplicationContext ctx = new AnnotationConfigWebApplicationContext();
+        ctx.register(appConfigClass);
         return ctx;
     }
 }

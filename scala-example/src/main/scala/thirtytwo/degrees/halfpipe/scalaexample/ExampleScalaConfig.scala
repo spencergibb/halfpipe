@@ -2,7 +2,9 @@ package thirtytwo.degrees.halfpipe.scalaexample
 
 import thirtytwo.degrees.halfpipe.configuration.Configuration
 import com.netflix.config.scala.{DynamicStringProperty => DString}
+import com.netflix.config.scala.{DynamicIntProperty => DInt}
 import org.springframework.stereotype.Component
+import javax.ws.rs.DefaultValue
 
 /**
  * User: spencergibb
@@ -12,4 +14,7 @@ import org.springframework.stereotype.Component
 @Component
 class ExampleScalaConfig extends Configuration {
   var helloText: DString = _
+
+  @DefaultValue("2000")
+  var helloInt: DInt = _
 }

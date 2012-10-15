@@ -13,7 +13,6 @@ Features
     - [java security, not xml](http://blog.springsource.org/2011/08/01/spring-security-configuration-with-scala/), see [scala example](https://github.com/32degrees/halfpipe/tree/master/scala-example)
     - data
     - integration
-    - TODO: quiet spring logging?
 - [Finagle](http://twitter.github.com/finagle/) integrational ala [finagle resteasy](https://github.com/opower/finagle-resteasy)
     - TODO: Finagle client integration
 - Multilingual java/Scala

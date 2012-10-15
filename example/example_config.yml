@@ -2,3 +2,6 @@ helloText: "Hello from yaml config file"
 
 http:
   port: 8080
+
+logging:
+  level: WARN

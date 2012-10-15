@@ -6,6 +6,8 @@ import static org.hamcrest.Matchers.*;
 import ch.qos.logback.classic.Level;
 import com.netflix.config.PropertyWrapper;
 import org.junit.Test;
+import org.springframework.core.convert.support.DefaultConversionService;
+import thirtytwo.degrees.halfpipe.configuration.convert.StringToTimeZoneConverter;
 import thirtytwo.degrees.halfpipe.context.MetricsContext;
 import thirtytwo.degrees.halfpipe.util.Duration;
 import thirtytwo.degrees.halfpipe.util.Size;
@@ -23,7 +25,9 @@ public class ConfigurationBuilderTest {
 
         TestConfiguration config = new TestConfiguration();
         Configuration c = config;
-        new ConfigurationBuilder().build(config);
+        DefaultConversionService conversionService = new DefaultConversionService();
+        conversionService.addConverter(new StringToTimeZoneConverter());
+        new ConfigurationBuilder(conversionService).build(config);
 
         assertProp("config", config);
 

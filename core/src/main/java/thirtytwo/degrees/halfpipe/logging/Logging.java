@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.TimeZone;
 
 /**
- * User: gibbsb
+ * User: spencergibb
  * Date: 10/14/12
  * Time: 3:49 AM
  */
@@ -30,9 +30,10 @@ public class Logging {
         root.addAppender(consoleLogger(context, Level.WARN, null, TimeZone.getDefault()));
     }
 
-    private static ConsoleAppender<ILoggingEvent> consoleLogger(LoggerContext context, LoggingConfiguration.ConsoleConf config)
+    private static ConsoleAppender<ILoggingEvent> consoleLogger(LoggerContext context, LoggingConfiguration.ConsoleConfiguration config)
     {
-        return consoleLogger(context, config.threshold.get(), config.logFormat.get(), TimeZone.getDefault()); //TODO: config
+        return consoleLogger(context, config.threshold.get(), config.logFormat.get(),
+                config.timeZone.get());
     }
 
     private static ConsoleAppender<ILoggingEvent> consoleLogger(LoggerContext context, Level level, String logFormat, TimeZone timeZone)

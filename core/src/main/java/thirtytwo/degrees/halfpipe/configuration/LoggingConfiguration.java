@@ -1,13 +1,11 @@
 package thirtytwo.degrees.halfpipe.configuration;
 
-import static thirtytwo.degrees.halfpipe.Halfpipe.*;
-
 import ch.qos.logback.classic.Level;
 import com.netflix.config.DynamicBooleanProperty;
-import com.netflix.config.DynamicIntProperty;
 import com.netflix.config.DynamicStringProperty;
 
 import javax.ws.rs.DefaultValue;
+import java.util.TimeZone;
 
 /**
  * User: spencergibb
@@ -16,7 +14,7 @@ import javax.ws.rs.DefaultValue;
  */
 public class LoggingConfiguration {
 
-    public static class ConsoleConf {
+    public static class ConsoleConfiguration {
         @DefaultValue("true")
         public DynamicBooleanProperty enabled;
 
@@ -24,9 +22,12 @@ public class LoggingConfiguration {
         public DynamicProp<Level> threshold;
 
         public DynamicStringProperty logFormat;
+
+        @DefaultValue("UTC")
+        public DynamicProp<TimeZone> timeZone;
     }
 
-    public ConsoleConf console;
+    public ConsoleConfiguration console;
 
     @DefaultValue("WARN")
     public DynamicProp<Level> level;

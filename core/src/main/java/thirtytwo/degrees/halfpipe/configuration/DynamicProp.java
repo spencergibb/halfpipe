@@ -1,12 +1,14 @@
 package thirtytwo.degrees.halfpipe.configuration;
 
-import static org.springframework.util.ReflectionUtils.findMethod;
+import static org.springframework.util.ReflectionUtils.*;
 
 import com.netflix.config.DynamicProperty;
-import com.netflix.config.PropertyWrapper;
 import org.springframework.util.Assert;
 
-import java.lang.reflect.*;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 
 /**
  * User: spencergibb
@@ -62,7 +64,11 @@ public class DynamicProp<V> {
             return defaultValue;
         }
 
-        return convert(valueClass, val);
+        //TODO: another static hack
+        if (ConfigurationBuilder.conversions.canConvert(val.getClass(), valueClass)) {
+            return ConfigurationBuilder.conversions.convert(val, valueClass);
+        }
+        throw new IllegalArgumentException("Unable to convert '"+val+" to type "+valueClass);
     }
 
     @SuppressWarnings("unchecked")

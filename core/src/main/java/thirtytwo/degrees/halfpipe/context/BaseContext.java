@@ -13,9 +13,12 @@ import org.springframework.aop.framework.ProxyConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
+import org.springframework.context.support.ConversionServiceFactoryBean;
+import org.springframework.core.convert.converter.Converter;
 import thirtytwo.degrees.halfpipe.cli.HalfpipeBannerProvider;
 import thirtytwo.degrees.halfpipe.cli.Server;
 import thirtytwo.degrees.halfpipe.configuration.ConfigurationBeanPostProcessor;
+import thirtytwo.degrees.halfpipe.configuration.convert.StringToTimeZoneConverter;
 import thirtytwo.degrees.halfpipe.jackson.AnnotationSensitivePropertyNamingStrategy;
 import thirtytwo.degrees.halfpipe.jackson.GuavaExtrasModule;
 import thirtytwo.degrees.halfpipe.jackson.ObjectMapperFactory;
@@ -26,6 +29,7 @@ import thirtytwo.degrees.halfpipe.jersey.OptionalQueryParamInjectableProvider;
 
 import javax.inject.Named;
 import java.util.List;
+import java.util.Set;
 
 /**
  * User: spencergibb
@@ -122,6 +126,18 @@ public class BaseContext {
     @Bean @Scope("singleton")
     public Server server() {
         return new Server();
+    }
+
+    @Bean @Scope("singleton")
+    public StringToTimeZoneConverter stringToTimeZoneConverter() {
+        return new StringToTimeZoneConverter();
+    }
+
+    @Bean @Scope("singleton")
+    public ConversionServiceFactoryBean conversionServiceFactoryBean(Set<Converter> converters) {
+        ConversionServiceFactoryBean factoryBean = new ConversionServiceFactoryBean();
+        factoryBean.setConverters(converters);
+        return factoryBean;
     }
 
 }

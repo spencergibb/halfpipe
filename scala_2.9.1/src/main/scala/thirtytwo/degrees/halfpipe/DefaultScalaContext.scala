@@ -5,6 +5,7 @@ import context.{BaseContext, DefaultContext}
 import org.springframework.context.annotation.{Import, Scope, Bean, Configuration}
 import com.codahale.jerkson.ScalaModule
 import com.codahale.jersey.inject.ScalaCollectionsQueryParamInjectableProvider
+import org.springframework.core.convert.ConversionService
 
 /**
  * User: spencergibb
@@ -22,5 +23,5 @@ class DefaultScalaContext {
   def scalaModule() = new ScalaModule(Thread.currentThread().getContextClassLoader)
 
   @Bean @Scope("singleton")
-  def scalaConfigBuilder() = new ScalaConfigBuilder
+  def scalaConfigBuilder(conversionService:ConversionService) = new ScalaConfigBuilder(conversionService)
 }

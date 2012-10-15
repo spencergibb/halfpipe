@@ -3,11 +3,8 @@ package thirtytwo.degrees.halfpipe;
 import static thirtytwo.degrees.halfpipe.Halfpipe.*;
 import static thirtytwo.degrees.halfpipe.HalfpipeConfiguration.*;
 
-import com.netflix.config.DynamicPropertyFactory;
-import com.netflix.config.DynamicStringProperty;
 import com.sun.jersey.spi.spring.container.servlet.SpringServlet;
 import com.yammer.metrics.web.DefaultWebappMetricsFilter;
-import org.apache.catalina.servlets.DefaultServlet;
 import org.springframework.util.Assert;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.WebApplicationContext;
@@ -58,8 +55,7 @@ public class HalfpipeWebAppInitializer implements WebApplicationInitializer {
                 webCtx.setParent(rootCtx); //TODO: does setParent need to be done?
                 // The main Spring MVC servlet.
                 String viewPattern = config.http.viewPattern.get();
-                ServletRegistration.Dynamic viewServlet = addServlet(sc, "viewServlet", new DispatcherServlet(webCtx), 1,
-                        viewPattern);
+                addServlet(sc, "viewServlet", new DispatcherServlet(webCtx), 1, viewPattern);
 
                 // Jersey Servlet
                 ServletRegistration.Dynamic jersey = addServlet(sc, "jersey-servlet", new SpringServlet(), 1,

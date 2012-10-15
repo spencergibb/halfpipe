@@ -13,7 +13,7 @@ import java.math.BigInteger;
 import java.util.List;
 
 /**
- * User: gibbsb
+ * User: spencergibb
  * Date: 10/13/12
  * Time: 3:11 PM
  */

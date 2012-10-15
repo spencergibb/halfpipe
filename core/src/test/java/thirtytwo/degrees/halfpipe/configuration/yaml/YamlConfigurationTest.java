@@ -11,7 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * User: gibbsb
+ * User: spencergibb
  * Date: 10/13/12
  * Time: 7:44 PM
  */

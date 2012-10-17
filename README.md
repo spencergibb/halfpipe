@@ -32,6 +32,7 @@ Features
     - config classes
     - dynamic reload of config files
     - yaml or json config files
+    - callbacks when config property changes
     - TODO: validate config
     - TODO: flush out configuration for: http, logginc, etc...
 - Java [maven archetype](http://maven.apache.org/archetype/maven-archetype-plugin/advanced-usage.html)

@@ -1,8 +1,8 @@
 package thirtytwo.degrees.halfpipe.configuration;
 
 import static thirtytwo.degrees.halfpipe.Halfpipe.*;
-import com.netflix.config.DynamicIntProperty;
-import com.netflix.config.DynamicStringProperty;
+
+import com.netflix.config.*;
 
 import javax.ws.rs.DefaultValue;
 
@@ -11,7 +11,10 @@ import javax.ws.rs.DefaultValue;
  * Date: 10/4/12
  * Time: 11:18 PM
  */
+@PropertyCallback(HttpConfiguration.Callback.class)
 public class HttpConfiguration {
+
+    @PropertyCallback(PortCallback.class)
     @DefaultValue("8080")
     public DynamicIntProperty port;
 
@@ -30,4 +33,18 @@ public class HttpConfiguration {
     public DynamicStringProperty uriEncoding;
 
     public GzipConfiguration gzip;
+
+    public static class PortCallback extends AbstractCallback<HttpConfiguration> {
+        @Override
+        public void run() {
+            System.err.println("http port changed to "+prop.getValue());
+        }
+    }
+
+    public static class Callback extends AbstractCallback<HttpConfiguration> {
+        @Override
+        public void run() {
+            System.err.println("property named: "+prop.getName()+" changed to "+prop.getValue());
+        }
+    }
 }

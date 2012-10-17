@@ -7,11 +7,10 @@ import com.google.common.collect.Lists;
 import com.netflix.config.*;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.util.Assert;
 
-import javax.inject.Inject;
 import javax.ws.rs.DefaultValue;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
+import java.lang.reflect.*;
 import java.util.List;
 /**
  * User: spencergibb
@@ -22,7 +21,7 @@ import java.util.List;
 public class ConfigurationBuilder {
     public static ConversionService conversions;
 
-    public abstract class PropBuilder<P, T> {
+    public abstract class PropBuilder<P extends PropertyWrapper, T> {
         abstract Class<P> getPropType();
         abstract T defaultVal();
 
@@ -35,6 +34,7 @@ public class ConfigurationBuilder {
         }
 
         abstract P getProp(String propName, T defaultVal, Class<?> valueClass);
+
         DynamicPropertyFactory props() {
             return DynamicPropertyFactory.getInstance();
         }
@@ -97,7 +97,7 @@ public class ConfigurationBuilder {
     @SuppressWarnings("unchecked")
     class GenericBuilder extends PropBuilder<DynamicProp, Object> {
         Class<DynamicProp> getPropType() {
-            return (Class<DynamicProp>) DynamicProp.class;
+            return DynamicProp.class;
         }
 
         Object defaultVal() { return null; }
@@ -124,13 +124,14 @@ public class ConfigurationBuilder {
     }
 
     public void build(Object config) throws Exception {
-        //TODO: validate
+        //TODO: validate configuration
         build(config, "");
     }
 
     @SuppressWarnings("unchecked")
     protected void build(final Object config, final String context) throws Exception {
         Class<?> configClass = config.getClass();
+        final PropertyCallback classPropertyCallback = configClass.getAnnotation(PropertyCallback.class);
 
         doWithFields(configClass, new FieldCallback(){
             public void doWith(Field field) throws IllegalArgumentException, IllegalAccessException {
@@ -144,7 +145,7 @@ public class ConfigurationBuilder {
                         Object defaultValue = null;
                         //TODO: use spring converters
                         DefaultValue annotation = field.getAnnotation(DefaultValue.class);
-                        Class<?> valueClass = DynamicProp.getValueClass(field.getGenericType());
+                        Class<?> valueClass = getValueClass(field.getGenericType());
                         try {
                             if (valueClass == null) {
                                 // look for the return type of the get method?
@@ -161,7 +162,13 @@ public class ConfigurationBuilder {
                             Throwables.propagate(e);
                         }
 
-                        field.set(config, propBuilder.getProp(propName, defaultValue, valueClass));
+                        PropertyWrapper<?> property = propBuilder.getProp(propName, defaultValue, valueClass);
+
+                        PropertyCallback propertyCallback = field.getAnnotation(PropertyCallback.class);
+                        addCallback(config, property, propertyCallback);
+                        addCallback(config, property, classPropertyCallback);
+
+                        field.set(config, property);
 
                         fieldSet = true;
                         break;
@@ -180,10 +187,59 @@ public class ConfigurationBuilder {
             }});
     }
 
+    @SuppressWarnings("unchecked")
+    private void addCallback(Object config, PropertyWrapper<?> property, PropertyCallback propertyCallback) {
+        if (propertyCallback == null)
+            return;
+        try {
+            Class callbackClass = propertyCallback.value();
+
+            Runnable callback = (Runnable) callbackClass.newInstance();
+
+            if (callback instanceof AbstractCallback) {
+                AbstractCallback abstractCallback = AbstractCallback.class.cast(callback);
+                abstractCallback.setConfig(config);
+                abstractCallback.setProp(property);
+            }
+
+            property.addCallback(callback);
+        } catch (Exception e) {
+            Throwables.propagate(e);
+        }
+    }
+
     protected String getPropName(Field field, String context) {
         if (StringUtils.isBlank(context))
             return field.getName();
 
         return context+"."+field.getName();
     }
+
+    @SuppressWarnings("unchecked")
+    //TODO: combine with Application.getContextClasses
+    public static Class<?> getValueClass(Type t) {
+        Class<?> originalType;
+
+        if (t instanceof ParameterizedType) {
+            originalType = (Class<?>) ((ParameterizedType)t).getRawType();
+        } else {
+            originalType = (Class<?>) t;
+        }
+        Class<?> valueClass = null;
+        while (t instanceof Class<?>) {
+            t = ((Class<?>) t).getGenericSuperclass();
+        }
+        if (t instanceof ParameterizedType) {
+            // should typically have one of type parameters (first one) that matches:
+            ParameterizedType parameterizedType = (ParameterizedType) t;
+            Type[] typeArguments = parameterizedType.getActualTypeArguments();
+            Assert.isTrue(typeArguments != null && typeArguments.length >= 1, originalType.getName() +
+                    " does not have one at least one Value type as type parameter");
+
+            valueClass = (Class<?>)typeArguments[0];
+        }
+
+        return valueClass;
+    }
+
 }

@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import collection.JavaConverters._
 import javax.inject.Inject
 import thirtytwo.degrees.halfpipe.scalaexample.ExampleScalaConfig
+import thirtytwo.degrees.halfpipe.logging.Logging
 
 /**
  * User: spencergibb
@@ -12,12 +13,12 @@ import thirtytwo.degrees.halfpipe.scalaexample.ExampleScalaConfig
  * Time: 4:19 PM
  */
 @Controller
-class HelloController @Inject() (config: ExampleScalaConfig) {
+class HelloController @Inject() (config: ExampleScalaConfig) extends Logging {
 
   @RequestMapping(Array("/hello"))
   def hello() = {
-    println("HelloController: Passing through..."+config)
+    log.info("HelloController: Passing through... {}, {}, {}", "arg1", "arg2", config.helloText.get())
     val halloVal = "hello controller "+config.appName.get()
-    Map("hello" -> halloVal) asJava
+    Map("hello" -> halloVal).asJava
   }
 }

@@ -22,8 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired
 @Path("/hello")
 class HelloResource @Inject() (config: ExampleScalaConfig) {
 
-  println("heerree")
-
   // TODO: spring proxies break resources in scala
   @GET
   @Path("/text")

@@ -7,15 +7,15 @@ import com.netflix.config.PropertyWrapper;
  * Date: 10/17/12
  * Time: 2:00 PM
  */
-public abstract class AbstractCallback<C> implements Runnable {
+public abstract class AbstractCallback<C, V> implements Runnable {
     protected C config;
-    protected PropertyWrapper<?> prop;
+    protected PropertyWrapper<V> prop;
 
     public void setConfig(C config) {
         this.config = config;
     }
 
-    public void setProp(PropertyWrapper<?> prop) {
+    public void setProp(PropertyWrapper<V> prop) {
         this.prop = prop;
     }
 }

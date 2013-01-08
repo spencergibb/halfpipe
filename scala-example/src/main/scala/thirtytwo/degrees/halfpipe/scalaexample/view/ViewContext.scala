@@ -2,10 +2,15 @@ package thirtytwo.degrees.halfpipe.scalaexample.view
 
 import org.springframework.context.annotation.{Import, Bean, ComponentScan, Configuration}
 import thirtytwo.degrees.halfpipe.context.{MetricsContext, AbstractViewContext}
-import org.springframework.web.servlet.config.annotation.{ViewControllerRegistry, EnableWebMvc}
+import org.springframework.web.servlet.config.annotation.{ContentNegotiationConfigurer, ViewControllerRegistry, EnableWebMvc}
 import org.springframework.web.servlet.view.freemarker.{FreeMarkerViewResolver, FreeMarkerConfigurer}
 import thirtytwo.degrees.halfpipe.mgmt.view.MgmtControllers
 import org.springframework.context.annotation.ComponentScan.Filter
+import java.util
+import org.springframework.http.converter.HttpMessageConverter
+import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter
+import javax.inject.Inject
+import org.codehaus.jackson.map.ObjectMapper
 
 /**
  * User: spencergibb
@@ -46,7 +51,25 @@ class ViewContext extends AbstractViewContext {
     view
   }
 
+  @Inject
+  var objectMapper: ObjectMapper = _
+
+  @Bean
+  def jacksonMessageConverter = {
+    val conv = new MappingJacksonHttpMessageConverter()
+    conv.setObjectMapper(objectMapper)
+    conv
+  }
+
   override def addViewControllers(registry: ViewControllerRegistry) {
     registry.addViewController("/").setViewName("index")
+  }
+
+  override def configureContentNegotiation(configurer: ContentNegotiationConfigurer) {
+    configurer.ignoreAcceptHeader(false)
+  }
+
+  override def configureMessageConverters(converters: util.List[HttpMessageConverter[_]]) {
+    converters.add(jacksonMessageConverter)
   }
 }

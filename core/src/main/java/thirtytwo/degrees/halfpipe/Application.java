@@ -10,10 +10,9 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.Assert;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
-import thirtytwo.degrees.halfpipe.cli.Server;
 import thirtytwo.degrees.halfpipe.cli.Shell;
 import thirtytwo.degrees.halfpipe.logging.Log;
-import thirtytwo.degrees.halfpipe.logging.Logging;
+import thirtytwo.degrees.halfpipe.logging.LoggingUtils;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -27,7 +26,7 @@ public abstract class Application<C, VC> {
     private static final Log LOG = Log.forThisClass();
 
     static {
-        Logging.bootstrap();
+        LoggingUtils.bootstrap();
     }
 
     //TODO: find a better way to pass these to HalfpipeWebAppInitializer, sysprops?
@@ -47,7 +46,7 @@ public abstract class Application<C, VC> {
             AnnotationConfigWebApplicationContext rootContext = createWebContext(contextClass); //TODO: fix shell
             rootContext.refresh();
 
-            Logging.configure(config(rootContext).logging);
+            LoggingUtils.configure(config(rootContext).logging);
 
             LOG.info("Starting {}", config(rootContext).appName.get());
 

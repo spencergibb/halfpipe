@@ -34,14 +34,14 @@ public class HttpConfiguration {
 
     public GzipConfiguration gzip;
 
-    public static class PortCallback extends AbstractCallback<HttpConfiguration> {
+    public static class PortCallback extends AbstractCallback<HttpConfiguration, Integer> {
         @Override
         public void run() {
             System.err.println("http port changed to "+prop.getValue());
         }
     }
 
-    public static class Callback extends AbstractCallback<HttpConfiguration> {
+    public static class Callback extends AbstractCallback<HttpConfiguration, Object> {
         @Override
         public void run() {
             System.err.println("property named: "+prop.getName()+" changed to "+prop.getValue());

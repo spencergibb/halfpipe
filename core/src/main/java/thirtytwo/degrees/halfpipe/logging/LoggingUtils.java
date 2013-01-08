@@ -21,7 +21,7 @@ import java.util.TimeZone;
  * Date: 10/14/12
  * Time: 3:49 AM
  */
-public class Logging {
+public class LoggingUtils {
     public static void bootstrap() {
         final Logger root = (Logger) LoggerFactory.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
         root.detachAndStopAllAppenders();

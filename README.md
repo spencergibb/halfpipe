@@ -37,6 +37,7 @@ Features
     - TODO: flush out configuration for: http, logginc, etc...
 - Java [maven archetype](http://maven.apache.org/archetype/maven-archetype-plugin/advanced-usage.html)
 - Scala [maven archetype](http://maven.apache.org/archetype/maven-archetype-plugin/advanced-usage.html)
+    - TODO: Spring Scala: http://blog.springsource.org/2012/12/10/introducing-spring-scala/
 - TODO: Service registry and loadbalancer [Eureka](https://github.com/Netflix/eureka)
 - TODO: upload to [sonatype](https://docs.sonatype.org/display/Repository/Sonatype+OSS+Maven+Repository+Usage+Guide)
 

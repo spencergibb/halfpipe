@@ -21,7 +21,7 @@ import java.util.List;
 public class ConfigurationBuilder {
     public static ConversionService conversions;
 
-    public abstract class PropBuilder<P extends PropertyWrapper, T> {
+    public abstract class PropBuilder<P, T> {
         abstract Class<P> getPropType();
         abstract T defaultVal();
 
@@ -162,7 +162,7 @@ public class ConfigurationBuilder {
                             Throwables.propagate(e);
                         }
 
-                        PropertyWrapper<?> property = propBuilder.getProp(propName, defaultValue, valueClass);
+                        Object property = propBuilder.getProp(propName, defaultValue, valueClass);
 
                         PropertyCallback propertyCallback = field.getAnnotation(PropertyCallback.class);
                         addCallback(config, property, propertyCallback);
@@ -188,7 +188,7 @@ public class ConfigurationBuilder {
     }
 
     @SuppressWarnings("unchecked")
-    private void addCallback(Object config, PropertyWrapper<?> property, PropertyCallback propertyCallback) {
+    protected void addCallback(Object config, Object prop, PropertyCallback propertyCallback) {
         if (propertyCallback == null)
             return;
         try {
@@ -196,13 +196,19 @@ public class ConfigurationBuilder {
 
             Runnable callback = (Runnable) callbackClass.newInstance();
 
-            if (callback instanceof AbstractCallback) {
-                AbstractCallback abstractCallback = AbstractCallback.class.cast(callback);
-                abstractCallback.setConfig(config);
-                abstractCallback.setProp(property);
-            }
+            if (prop instanceof PropertyWrapper) {
+                PropertyWrapper<?> property = (PropertyWrapper<?>) prop;
 
-            property.addCallback(callback);
+                if (callback instanceof AbstractCallback) {
+                    AbstractCallback abstractCallback = AbstractCallback.class.cast(callback);
+                    abstractCallback.setConfig(config);
+                    abstractCallback.setProp(property);
+                }
+
+                property.addCallback(callback);
+            } else {
+                System.err.println("prop is not a PropertyWrapper: "+prop.getClass()); //TODO: replace with logging
+            }
         } catch (Exception e) {
             Throwables.propagate(e);
         }

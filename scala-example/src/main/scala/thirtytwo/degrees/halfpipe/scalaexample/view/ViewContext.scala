@@ -8,9 +8,9 @@ import thirtytwo.degrees.halfpipe.mgmt.view.MgmtControllers
 import org.springframework.context.annotation.ComponentScan.Filter
 import java.util
 import org.springframework.http.converter.HttpMessageConverter
-import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
 import javax.inject.Inject
-import org.codehaus.jackson.map.ObjectMapper
+import com.fasterxml.jackson.databind.ObjectMapper
 
 /**
  * User: spencergibb
@@ -56,7 +56,7 @@ class ViewContext extends AbstractViewContext {
 
   @Bean
   def jacksonMessageConverter = {
-    val conv = new MappingJacksonHttpMessageConverter()
+    val conv = new MappingJackson2HttpMessageConverter()
     conv.setObjectMapper(objectMapper)
     conv
   }

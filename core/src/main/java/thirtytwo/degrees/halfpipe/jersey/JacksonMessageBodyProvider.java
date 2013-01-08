@@ -1,9 +1,9 @@
 package thirtytwo.degrees.halfpipe.jersey;
 
+import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 import com.google.common.collect.ImmutableList;
-import org.codehaus.jackson.annotate.JsonIgnoreType;
-import org.codehaus.jackson.jaxrs.JacksonJaxbJsonProvider;
-import org.codehaus.jackson.map.ObjectMapper;
+import com.fasterxml.jackson.annotation.JsonIgnoreType;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import thirtytwo.degrees.halfpipe.validation.InvalidEntityException;
 import thirtytwo.degrees.halfpipe.validation.Validator;
 

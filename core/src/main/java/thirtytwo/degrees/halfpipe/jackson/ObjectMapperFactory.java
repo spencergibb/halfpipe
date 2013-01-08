@@ -1,10 +1,9 @@
 package thirtytwo.degrees.halfpipe.jackson;
 
-import org.codehaus.jackson.map.DeserializationConfig;
-import org.codehaus.jackson.map.Module;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.SerializationConfig;
-import thirtytwo.degrees.halfpipe.jackson.AnnotationSensitivePropertyNamingStrategy;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.Module;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 import java.util.List;
 
@@ -20,9 +19,9 @@ public class ObjectMapperFactory {
         ObjectMapper mapper = new ObjectMapper();
         mapper.setPropertyNamingStrategy(namingStrategy);
 
-        mapper.disable(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES);
-        mapper.disable(SerializationConfig.Feature.WRITE_ENUMS_USING_TO_STRING);
-        mapper.disable(DeserializationConfig.Feature.READ_ENUMS_USING_TO_STRING);
+        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        mapper.disable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING);
+        mapper.disable(DeserializationFeature.READ_ENUMS_USING_TO_STRING);
 
 
         if (modules != null)

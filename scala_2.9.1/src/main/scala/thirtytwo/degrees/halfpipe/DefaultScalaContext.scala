@@ -1,11 +1,11 @@
 package thirtytwo.degrees.halfpipe
 
 import configuration.ScalaConfigBuilder
-import context.{BaseContext, DefaultContext}
+import context.BaseContext
+import inject.ScalaCollectionsQueryParamInjectableProvider
 import org.springframework.context.annotation.{Import, Scope, Bean, Configuration}
-import com.codahale.jerkson.ScalaModule
-import com.codahale.jersey.inject.ScalaCollectionsQueryParamInjectableProvider
 import org.springframework.core.convert.ConversionService
+import com.fasterxml.jackson.module.scala.DefaultScalaModule
 
 /**
  * User: spencergibb
@@ -20,7 +20,7 @@ class DefaultScalaContext {
   def jacksonScalaCollections() = new ScalaCollectionsQueryParamInjectableProvider()
 
   @Bean @Scope("singleton")
-  def scalaModule() = new ScalaModule(Thread.currentThread().getContextClassLoader)
+  def scalaModule() = new DefaultScalaModule
 
   @Bean @Scope("singleton")
   def scalaConfigBuilder(conversionService:ConversionService) = new ScalaConfigBuilder(conversionService)

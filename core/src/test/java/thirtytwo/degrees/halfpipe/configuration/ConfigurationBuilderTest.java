@@ -4,6 +4,8 @@ import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
 import ch.qos.logback.classic.Level;
+import com.netflix.config.ConcurrentMapConfiguration;
+import com.netflix.config.DynamicPropertyFactory;
 import com.netflix.config.PropertyWrapper;
 import org.junit.Test;
 import org.springframework.core.convert.support.DefaultConversionService;
@@ -21,10 +23,24 @@ public class ConfigurationBuilderTest {
 
     @Test
     public void testGet() throws Exception {
-        System.setProperty("archaius.configurationSource.defaultFileName", "configurationFactoryTest.properties");
+        ConcurrentMapConfiguration testProperties = new ConcurrentMapConfiguration();
+        testProperties.addProperty("appName", "Test App");
+
+        testProperties.addProperty("level", "INFO");
+        testProperties.addProperty("duration", "1m");
+        testProperties.addProperty("size", "1B");
+
+        testProperties.addProperty("http.port", 80);
+        testProperties.addProperty("http.gzip.enabled", true);
+
+        testProperties.addProperty("longProp", 1);
+        testProperties.addProperty("floatProp", 1.0);
+        testProperties.addProperty("doubleProp", 1.0);
+
+
+        DynamicPropertyFactory.initWithConfigurationSource(testProperties);
 
         TestConfiguration config = new TestConfiguration();
-        Configuration c = config;
         DefaultConversionService conversionService = new DefaultConversionService();
         conversionService.addConverter(new StringToTimeZoneConverter());
         new ConfigurationBuilder(conversionService).build(config);

@@ -9,7 +9,7 @@ object HalfpipeConsole {
     //val ctx = new AnnotationConfigApplicationContext(classOf[AppConfig])
     //val hello = ctx.getBean(classOf[HelloResource])
     //println(hello.hellotext(new Some[String](" here is more")))
-    break(Nil)
+    //break(Nil)
     /*MainGenericRunner.main(args)
     sys.exit(0)*/
   }

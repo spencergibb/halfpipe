@@ -41,7 +41,7 @@ public class YamlConfigurationTest {
 
     @Test
     public void testParse() throws ConfigurationException {
-        YamlConfiguration config = new YamlConfiguration();
+        YamlConfiguration config = new YamlConfiguration(false);
         config.load(new StringReader(YAML));
 
         String date = config.getString("date");

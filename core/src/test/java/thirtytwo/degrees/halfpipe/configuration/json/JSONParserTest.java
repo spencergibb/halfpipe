@@ -57,7 +57,7 @@ public class JSONParserTest {
         return new BigInteger(String.valueOf(i));
     }
 
-    @Test
+    //@Test
     public void testArchaius() throws Exception {
         JSONConfiguration myConfiguration = new JSONConfiguration(); // this is your original configuration
         myConfiguration.load(new StringReader(JSON));

@@ -23,7 +23,7 @@ import java.util.List;
  * Time: 7:31 PM
  */
 public class YamlConfiguration extends AbstractHierarchicalFileConfiguration {
-    private static final Log LOG = Log.forThisClass();
+    private Log log;
 
     /**
      * Creates an empty YamlConfiguration object which can be
@@ -32,6 +32,13 @@ public class YamlConfiguration extends AbstractHierarchicalFileConfiguration {
      */
     public YamlConfiguration()
     {
+        log = Log.forThisClass();
+    }
+
+    YamlConfiguration(boolean doLog) {
+        if (doLog) {
+            log = Log.forThisClass();
+        }
     }
 
     /**
@@ -54,6 +61,7 @@ public class YamlConfiguration extends AbstractHierarchicalFileConfiguration {
     public YamlConfiguration(String fileName) throws ConfigurationException
     {
         super(fileName);
+        log = Log.forThisClass();
     }
 
     /**
@@ -65,6 +73,7 @@ public class YamlConfiguration extends AbstractHierarchicalFileConfiguration {
     public YamlConfiguration(File file) throws ConfigurationException
     {
         super(file);
+        log = Log.forThisClass();
     }
 
     /**
@@ -76,6 +85,7 @@ public class YamlConfiguration extends AbstractHierarchicalFileConfiguration {
     public YamlConfiguration(URL url) throws ConfigurationException
     {
         super(url);
+        log = Log.forThisClass();
     }
 
 
@@ -88,16 +98,24 @@ public class YamlConfiguration extends AbstractHierarchicalFileConfiguration {
         setRootNode(root);
     }
 
+    private void debug(String msg, Object... args) {
+        if (log != null) {
+            log.debug(msg, args);
+        } else {
+            //System.err.printf(msg+", %s, %s\n", args[0], (args.length > 1)? args[1] : "");
+        }
+    }
+
     private void build(org.yaml.snakeyaml.nodes.Node yaml, Node parent) {
         if (yaml instanceof MappingNode) {
             final MappingNode mappingNode = (MappingNode) yaml;
-            LOG.debug("writing map with size: {}", mappingNode.getValue().size());
+            debug("writing map with size: {}", mappingNode.getValue().size());
             for (NodeTuple tuple : mappingNode.getValue()) {
                 Node node = new Node();
                 if (tuple.getKeyNode() instanceof ScalarNode) {
                     ScalarNode scalarNode = (ScalarNode) tuple.getKeyNode();
                     String keyValue = scalarNode.getValue();
-                    LOG.debug("keyValue: {}", keyValue);
+                    debug("keyValue: {}", keyValue);
                     node.setName(keyValue);
                 }
                 parent.addChild(node);
@@ -106,7 +124,7 @@ public class YamlConfiguration extends AbstractHierarchicalFileConfiguration {
             }
         } else if (yaml instanceof SequenceNode) {
             SequenceNode sequenceNode = (SequenceNode) yaml;
-            LOG.debug("writing sequence with size: {}", sequenceNode.getValue().size());
+            debug("writing sequence with size: {}", sequenceNode.getValue().size());
             List<Object> list = Lists.newArrayList();
             for (org.yaml.snakeyaml.nodes.Node node : sequenceNode.getValue()) {
                 if (node instanceof ScalarNode) {
@@ -128,7 +146,7 @@ public class YamlConfiguration extends AbstractHierarchicalFileConfiguration {
 
     private Object getScalarValue(ScalarNode scalarNode) {
         final String className = scalarNode.getTag().getClassName();
-        LOG.debug("writing scalar with tag: {}, value: {}", className, scalarNode.getValue());
+        debug("writing scalar with tag: {}, value: {}", className, scalarNode.getValue());
         if ("bool".equals(className)) {
             return Boolean.parseBoolean(scalarNode.getValue());
         } else if ("int".equals(className)) {

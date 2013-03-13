@@ -5,7 +5,6 @@ import static com.netflix.config.sources.URLConfigurationSource.*;
 
 import com.google.common.collect.Maps;
 import com.netflix.config.ConcurrentCompositeConfiguration;
-import com.netflix.config.ConcurrentMapConfiguration;
 import com.netflix.config.ConfigurationManager;
 import com.netflix.config.DynamicPropertyFactory;
 import com.sun.jersey.api.core.PackagesResourceConfig;
@@ -13,7 +12,6 @@ import com.sun.jersey.api.json.JSONConfiguration;
 import com.sun.jersey.spi.container.servlet.ServletContainer;
 import org.apache.commons.configuration.SystemConfiguration;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import thirtytwo.degrees.halfpipe.configuration.Configuration;
 import thirtytwo.degrees.halfpipe.configuration.DynamicURLConfiguration;
@@ -31,6 +29,7 @@ import java.util.Map;
  */
 public class HalfpipeConfiguration {
     private static final Log LOG = Log.forThisClass();
+    public static AnnotationConfigWebApplicationContext rootContext;
 
     public static Map<String, String> jerseyProperties(Configuration config) {
         HashMap<String, String> props = Maps.newHashMap();
@@ -73,9 +72,14 @@ public class HalfpipeConfiguration {
         DynamicPropertyFactory.initWithConfigurationSource(configuration);
     }
 
+    public static AnnotationConfigWebApplicationContext registerRootContext(Class<?> appConfigClass) {
+        rootContext = createWebContext(appConfigClass);
+        return rootContext;
+    }
+
     public static AnnotationConfigWebApplicationContext createWebContext(Class<?> appConfigClass) {
-        AnnotationConfigWebApplicationContext ctx = new AnnotationConfigWebApplicationContext();
-        ctx.register(appConfigClass);
-        return ctx;
+        AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
+        context.register(appConfigClass);
+        return context;
     }
 }

@@ -32,23 +32,23 @@ public class HalfpipeWebAppInitializer implements WebApplicationInitializer {
 
                 initialized = true;
 
-                AnnotationConfigWebApplicationContext rootCtx = Application.rootContext;
+                //AnnotationConfigWebApplicationContext rootCtx = Application.rootContext;
 
                 // rather than sc.addListener(new ContextLoaderListener(rootCtx));
                 // set the required servletcontext attribute to avoid loading beans twice
-                sc.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, rootCtx);
+                //sc.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, rootCtx);
 
-                Configuration config = rootCtx.getBean(Configuration.class);
+                //Configuration config = rootCtx.getBean(Configuration.class);
 
                 // Filters
                 //addFilter(sc, "springSecurityFilterChain", new DelegatingFilterProxy(), ROOT_URL_PATTERN);
                 //addFilter(sc, "webappMetricsFilter", new DefaultWebappMetricsFilter(), ROOT_URL_PATTERN);
 
                 // now the context for the Dispatcher servlet
-                AnnotationConfigWebApplicationContext webCtx = createWebContext(Application.serverViewContextClass);
-                webCtx.setParent(rootCtx); //TODO: does setParent need to be done?
+                //AnnotationConfigWebApplicationContext webCtx = createWebContext(Application.serverViewContextClass);
+                //webCtx.setParent(rootCtx); //TODO: does setParent need to be done?
                 // The main Spring MVC servlet.
-                String viewPattern = config.http.viewPattern.get();
+                //String viewPattern = config.http.viewPattern.get();
                 //addServlet(sc, "viewServlet", new DispatcherServlet(webCtx), 1, viewPattern);
 
                 // Jersey Servlet

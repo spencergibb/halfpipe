@@ -6,6 +6,7 @@ import static com.google.common.collect.Lists.*;
 import static thirtytwo.degrees.halfpipe.HalfpipeConfiguration.*;
 
 import com.google.common.base.Throwables;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.Assert;
@@ -22,7 +23,7 @@ import java.lang.reflect.Type;
  * Date: 9/26/12
  * Time: 10:41 PM
  */
-public abstract class Application<C, VC> {
+public abstract class Application<C> {
     private static final Log LOG = Log.forThisClass();
 
     static {
@@ -30,27 +31,27 @@ public abstract class Application<C, VC> {
     }
 
     //TODO: find a better way to pass these to HalfpipeWebAppInitializer, sysprops?
-    public static AnnotationConfigWebApplicationContext rootContext;
-    public static Class<?> serverViewContextClass;
 
     protected Class<C> contextClass;
-    protected Class<VC> viewContextClass;
 
     public void run(String[] args) {
         try {
             getContextClasses();
-            Application.serverViewContextClass = viewContextClass;
+            Class<?> serverViewContextClass = getViewContext();
 
             createConfig(findConfig(args));
 
-            AnnotationConfigWebApplicationContext rootContext = createWebContext(contextClass); //TODO: fix shell
+            registerRootContext(contextClass); //TODO: fix shell
+
             rootContext.refresh();
+
+            if (serverViewContextClass != null) {
+                registerCtx(rootContext).registerSingleton("viewContextClass", serverViewContextClass);
+            }
 
             LoggingUtils.configure(config(rootContext).logging);
 
             LOG.info("Starting {}", config(rootContext).appName.get());
-
-            Application.rootContext = rootContext;
 
             Shell shell = getShell(rootContext);
             shell.start(args);
@@ -62,6 +63,10 @@ public abstract class Application<C, VC> {
 
     private thirtytwo.degrees.halfpipe.configuration.Configuration config(AnnotationConfigWebApplicationContext rootContext) {
         return rootContext.getBean(thirtytwo.degrees.halfpipe.configuration.Configuration.class);
+    }
+
+    protected ConfigurableBeanFactory registerCtx(AnnotationConfigWebApplicationContext context) {
+        return (ConfigurableBeanFactory) context.getAutowireCapableBeanFactory();
     }
 
     protected boolean isServer(String[] args) {
@@ -94,13 +99,12 @@ public abstract class Application<C, VC> {
             // should typically have one of type parameters (first one) that matches:
             ParameterizedType parameterizedType = (ParameterizedType) t;
             Type[] typeArguments = parameterizedType.getActualTypeArguments();
-            Assert.isTrue(typeArguments != null && typeArguments.length == 2, getClass().getName()+
-                    " does not have two Context types as type parameters");
+            Assert.isTrue(typeArguments != null && typeArguments.length == 1, getClass().getName()+
+                    " does not have one Context types as a type parameter");
 
             contextClass = (Class<C>) getWiringClass(typeArguments[0]);
-            viewContextClass = (Class<VC>) getWiringClass(typeArguments[1]);
         }
-        if (contextClass == null || viewContextClass == null)
+        if (contextClass == null)
             throw new IllegalStateException("Can not figure out Context types parameterization for "+getClass().getName());
     }
 
@@ -111,6 +115,10 @@ public abstract class Application<C, VC> {
             if (klass.isAnnotationPresent(Configuration.class))
                return klass;
         }
+        return null;
+    }
+
+    protected Class<?> getViewContext() {
         return null;
     }
 }

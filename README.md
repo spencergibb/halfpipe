@@ -50,7 +50,6 @@ Features
 - TODO: Hysterix command simplification
 - TODO: Yammer metrics to hysterix
 - TODO: Cloud formation templates?
-- TODO: No view option (jetty vs netty? separate parent class)
 - TODO: Admin like karyon
 - TODO: Gradle?
 
@@ -58,12 +57,10 @@ Examples
 -----
 To run the examples:
 
-Java cmd line: `thirtytwo.degrees.halfpipe.scalaexample.ExampleScalaApp server config.yml`
+Java cmd line: `example/target/halfpipe-example server example_config.yml`
 
 Scala cmd line: `thirtytwo.degrees.halfpipe.scalaexample.ExampleScalaApp server config.yml`
 
-- 'server' runs the tomcat server
+- 'server' runs the jetty server
 - empty args runs the interactive shell with custom commands loaded
 - in the examples try with 'hello' as the argument
-- you can also run the examples using your ide as a normal web project
-- TODO: mvn install, the try mvn archetype:generate -Dfilter=halfpipe-archetype-java

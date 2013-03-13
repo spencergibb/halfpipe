@@ -9,6 +9,7 @@ import org.eclipse.jetty.server.handler.DefaultHandler;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.servlet.*;
 import org.eclipse.jetty.webapp.WebAppContext;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.shell.core.CommandMarker;
 import org.springframework.shell.core.annotation.CliAvailabilityIndicator;
 import org.springframework.shell.core.annotation.CliCommand;
@@ -17,7 +18,6 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.DispatcherServlet;
-import thirtytwo.degrees.halfpipe.Application;
 import thirtytwo.degrees.halfpipe.HalfpipeConfiguration;
 import thirtytwo.degrees.halfpipe.configuration.Configuration;
 import thirtytwo.degrees.halfpipe.logging.Log;
@@ -73,15 +73,19 @@ public class HalfpipeServer implements CommandMarker {
         addFilter(context, "springSecurityFilterChain", new DelegatingFilterProxy(), ROOT_URL_PATTERN);
         addFilter(context, "webappMetricsFilter", new DefaultWebappMetricsFilter(), ROOT_URL_PATTERN);
 
-        AnnotationConfigWebApplicationContext rootCtx = Application.rootContext;
+        context.getServletContext().setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, rootContext);
 
-        context.getServletContext().setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, rootCtx);
+        ConfigurableBeanFactory beanFactory = (ConfigurableBeanFactory) rootContext.getAutowireCapableBeanFactory();
+        if (beanFactory.containsBean("viewContextClass")) {
+            Class<?> viewContextClass = beanFactory.getBean("viewContextClass", Class.class);
+            AnnotationConfigWebApplicationContext webContext = HalfpipeConfiguration.createWebContext(viewContextClass);
+            webContext.setParent(rootContext);
 
-        AnnotationConfigWebApplicationContext webContext = HalfpipeConfiguration.createWebContext(Application.serverViewContextClass);
-        webContext.setParent(rootCtx);
-
-        String viewPattern = config.http.viewPattern.get();
-        addServlet(context, "viewServlet", new DispatcherServlet(webContext), viewPattern);
+            String viewPattern = config.http.viewPattern.get();
+            addServlet(context, "viewServlet", new DispatcherServlet(webContext), viewPattern);
+        } else {
+            //TODO: default view context?
+        }
         addServlet(context, "default", new DefaultServlet(), "/favicon.ico");
 
         addServlet(context, "jersey-servlet", new SpringServlet(),

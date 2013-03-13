@@ -13,7 +13,6 @@
         <module>web-common</module>
         <module>common</module>
         <module>core</module>
-        <module>onejar-maven</module>
         <module>example</module>
         <module>scala_2.10.0</module>
         <module>scala-example</module>
@@ -34,7 +33,7 @@
         <tomcat7.maven.version>2.0</tomcat7.maven.version>
         <jetty.version>9.0.0.v20130308</jetty.version>
         <scala.version>2.10.0</scala.version>
-        <scala.maven.version>3.1.1</scala.maven.version>
+        <scala.maven.version>3.1.3</scala.maven.version>
         <finagle.version>5.3.9</finagle.version>
         <logback.version>1.0.7</logback.version>
         <slf4j.version>1.6.6</slf4j.version>
@@ -118,41 +117,6 @@
         </plugins>
         <pluginManagement>
             <plugins>
-                <plugin>
-                    <groupId>net.thirty2</groupId>
-                    <artifactId>onejar-maven-plugin</artifactId>
-                    <version>1.4.6-SNAPSHOT</version>
-                    <executions>
-                        <execution>
-                            <phase>package</phase>
-                            <configuration>
-                                <mainClass>${mainClass}</mainClass>
-                                <onejarVersion>0.98</onejarVersion>
-                                <attachToBuild>true</attachToBuild>
-                                <filename>${project.build.finalName}.halfpipe.jar</filename>
-                                <binlibs>
-                                    <fileSet>
-                                        <directory>${project.build.directory}</directory>
-                                        <includes>
-                                            <include>${project.build.finalName}.war</include>
-                                        </includes>
-                                    </fileSet>
-                                </binlibs>
-                                <!--<localOneJarTemplate>../core/lib/one-jar-boot-0.98.jar</localOneJarTemplate>-->
-                                <manifestEntries>
-                                    <One-Jar-Expand>binlib/${project.build.finalName}.war</One-Jar-Expand>
-                                    <One-Jar-Expand-Dir>.halfpipe</One-Jar-Expand-Dir>
-                                    <One-Jar-Show-Expand>true</One-Jar-Show-Expand>
-                                    <!--<Main-Class>thirtytwo.degrees.halfpipe.cli.Boot</Main-Class>-->
-                                    <!--<One-Jar-Confirm-Expand>true</One-Jar-Confirm-Expand>-->
-                                </manifestEntries>
-                            </configuration>
-                            <goals>
-                                <goal>one-jar</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>

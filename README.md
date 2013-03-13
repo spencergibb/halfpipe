@@ -8,6 +8,7 @@ Features
 -----
 - Maven
 - [Embedded Jetty](http://www.eclipse.org/jetty/documentation/current/embedding-jetty.html)
+- [Executable](https://github.com/brianm/really-executable-jars-maven-plugin)
 - Spring enabled (no or little XML)
     - mvc [no xml] (http://rockhoppertech.com/blog/spring-mvc-configuration-without-xml/)
     - [java security, not xml](http://blog.springsource.org/2011/08/01/spring-security-configuration-with-scala/), see [scala example](https://github.com/32degrees/halfpipe/tree/master/scala-example)

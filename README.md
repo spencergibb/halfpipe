@@ -21,10 +21,11 @@ Features
 - Guava integration
 - Validation
 - Commands
-- Jersey Metrics
+- Jersey
+- Metrics
     - Health Checks
     - web metrics
-    - TODO: tomcat metrics
+    - TODO: jetty metrics
     - spring metrics, TODO: including forking metrics-spring which is no longer maintained
     - TODO: [jersey 2](http://jersey.java.net/documentation/snapshot/index.html)
 - Spring command line [spring shell](http://www.springsource.org/spring-shell/)

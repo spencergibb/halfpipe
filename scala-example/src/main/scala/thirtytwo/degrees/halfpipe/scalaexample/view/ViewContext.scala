@@ -38,7 +38,7 @@ class ViewContext extends AbstractViewContext {
   @Bean
   def freemarkerConfig = {
     val cfg = new FreeMarkerConfigurer
-    cfg.setTemplateLoaderPath("/WEB-INF/freemarker")
+    cfg.setTemplateLoaderPath("classpath:freemarker")
     cfg
   }
 

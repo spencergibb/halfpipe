@@ -30,8 +30,8 @@ public abstract class Application<C, VC> {
     }
 
     //TODO: find a better way to pass these to HalfpipeWebAppInitializer, sysprops?
-    static AnnotationConfigWebApplicationContext rootContext;
-    static Class<?> serverViewContextClass;
+    public static AnnotationConfigWebApplicationContext rootContext;
+    public static Class<?> serverViewContextClass;
 
     protected Class<C> contextClass;
     protected Class<VC> viewContextClass;

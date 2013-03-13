@@ -1,25 +1,19 @@
 package thirtytwo.degrees.halfpipe;
 
-import static thirtytwo.degrees.halfpipe.Halfpipe.*;
-import static thirtytwo.degrees.halfpipe.HalfpipeConfiguration.*;
-
-import com.sun.jersey.spi.spring.container.servlet.SpringServlet;
-import com.yammer.metrics.web.DefaultWebappMetricsFilter;
-import org.springframework.util.Assert;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
-import org.springframework.web.filter.DelegatingFilterProxy;
-import org.springframework.web.servlet.DispatcherServlet;
 import thirtytwo.degrees.halfpipe.configuration.Configuration;
 import thirtytwo.degrees.halfpipe.logging.Log;
 
-import javax.servlet.*;
-import java.util.Map;
-import java.util.Set;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+
+import static thirtytwo.degrees.halfpipe.HalfpipeConfiguration.createWebContext;
 
 /**
  * http://rockhoppertech.com/blog/spring-mvc-configuration-without-xml/
+ * //TODO: delete HalfpipeWebAppInitializer
  */
 public class HalfpipeWebAppInitializer implements WebApplicationInitializer {
     private static final Log LOG = Log.forThisClass();
@@ -47,23 +41,23 @@ public class HalfpipeWebAppInitializer implements WebApplicationInitializer {
                 Configuration config = rootCtx.getBean(Configuration.class);
 
                 // Filters
-                addFilter(sc, "springSecurityFilterChain", new DelegatingFilterProxy(), ROOT_URL_PATTERN);
-                addFilter(sc, "webappMetricsFilter", new DefaultWebappMetricsFilter(), ROOT_URL_PATTERN);
+                //addFilter(sc, "springSecurityFilterChain", new DelegatingFilterProxy(), ROOT_URL_PATTERN);
+                //addFilter(sc, "webappMetricsFilter", new DefaultWebappMetricsFilter(), ROOT_URL_PATTERN);
 
                 // now the context for the Dispatcher servlet
                 AnnotationConfigWebApplicationContext webCtx = createWebContext(Application.serverViewContextClass);
                 webCtx.setParent(rootCtx); //TODO: does setParent need to be done?
                 // The main Spring MVC servlet.
                 String viewPattern = config.http.viewPattern.get();
-                addServlet(sc, "viewServlet", new DispatcherServlet(webCtx), 1, viewPattern);
+                //addServlet(sc, "viewServlet", new DispatcherServlet(webCtx), 1, viewPattern);
 
                 // Jersey Servlet
-                ServletRegistration.Dynamic jersey = addServlet(sc, "jersey-servlet", new SpringServlet(), 1,
+                /*ServletRegistration.Dynamic jersey = addServlet(sc, "jersey-servlet", new SpringServlet(), 1,
                         config.http.resourcePattern.get());
 
                 for (Map.Entry<String, Object> entry: jerseyProperties(config).entrySet()) {
                     jersey.setInitParameter(entry.getKey(), entry.getValue().toString());
-                }
+                }*/
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -72,7 +66,7 @@ public class HalfpipeWebAppInitializer implements WebApplicationInitializer {
         }
     }
 
-    private ServletRegistration.Dynamic addServlet(ServletContext servletContext, String servletName, Servlet servlet,
+/*    private ServletRegistration.Dynamic addServlet(ServletContext servletContext, String servletName, Servlet servlet,
         int loadOnStartup, String... urlPatterns) {
             ServletRegistration.Dynamic reg = servletContext.addServlet(servletName, servlet);
         Assert.notNull(reg, "Unable to create servlet " + servletName);
@@ -96,5 +90,5 @@ public class HalfpipeWebAppInitializer implements WebApplicationInitializer {
         //fr.setInitParameter("name", "value");
         fr.addMappingForUrlPatterns(null, true, urlPattern);
         return fr;
-    }
+    }*/
 }

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Controller
 import thirtytwo.degrees.halfpipe.DefaultScalaContext
 import thirtytwo.degrees.halfpipe.context.MetricsContext
 import thirtytwo.degrees.halfpipe.mgmt.resources.GCResource
-import thirtytwo.degrees.halfpipe.finagle.{FinagleClientCommand, FinagleCommand}
+//import thirtytwo.degrees.halfpipe.finagle.{FinagleClientCommand, FinagleCommand}
 import org.springframework.context.ApplicationContext
 
 @Configuration
@@ -29,9 +29,9 @@ class Context extends DynamicProperties {
   @Bean
   def garbageCollectionTask: GCResource = new GCResource
 
-  @Bean
+  /*@Bean
   def finagleCommand: FinagleCommand = new FinagleCommand(config, context)
 
   @Bean
-  def finagleClient: FinagleClientCommand = new FinagleClientCommand(config)
+  def finagleClient: FinagleClientCommand = new FinagleClientCommand(config)*/
 }

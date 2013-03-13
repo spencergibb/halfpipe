@@ -32,6 +32,7 @@
         <jackson.version>2.1.2</jackson.version>
         <jersey.version>1.16</jersey.version>
         <tomcat7.maven.version>2.0</tomcat7.maven.version>
+        <jetty.version>9.0.0.v20130308</jetty.version>
         <scala.version>2.10.0</scala.version>
         <scala.maven.version>3.1.1</scala.maven.version>
         <finagle.version>5.3.9</finagle.version>
@@ -259,12 +260,19 @@
 
     <repositories>
         <repository>
-            <!-- Release -->
-            <id>spring-release</id>
-            <name>Spring Maven RELEASE Repository</name>
-            <url>http://repo.springsource.org/repo</url>
+            <id>central</id>
+            <name>Maven Repository Switchboard</name>
+            <layout>default</layout>
+            <url>http://repo1.maven.org/maven2</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
         </repository>
         <repository>
+            <id>spring-release</id>
+            <url>http://repo.springsource.org/libs-release/</url>
+        </repository>
+        <!--<repository>
             <id>twitter</id>
             <url>http://maven.twttr.com</url>
             <releases>
@@ -274,7 +282,7 @@
                 <enabled>true</enabled>
             </snapshots>
         </repository>
-        <!--<repository>
+        <repository>
             <id>sonatype-nexus-snapshots</id>
             <name>Sonatype Nexus Snapshots</name>
             <url>http://oss.sonatype.org/content/repositories/snapshots</url>

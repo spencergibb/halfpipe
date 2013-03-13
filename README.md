@@ -2,13 +2,12 @@
 ====================
 
 HTTP+JSON Services using industry best Java libraries.
-Spring enabled, with embedded tomcat or finagle.  Fork of [dropwizard](http://dropwizard.codahale.com/).
+Spring enabled, with embedded jetty or netty.  Fork of [dropwizard](http://dropwizard.codahale.com/).
 
 Features
 -----
 - Maven
-- [Embedded tomcat](http://tomcat.apache.org/maven-plugin-2/executable-war-jar.html)
-    - TODO: smaller/faster executable jar
+- [Embedded Jetty](http://www.eclipse.org/jetty/documentation/current/embedding-jetty.html)
 - Spring enabled (no or little XML)
     - mvc [no xml] (http://rockhoppertech.com/blog/spring-mvc-configuration-without-xml/)
     - [java security, not xml](http://blog.springsource.org/2011/08/01/spring-security-configuration-with-scala/), see [scala example](https://github.com/32degrees/halfpipe/tree/master/scala-example)
@@ -42,8 +41,18 @@ Features
 - Scala 2.10
     - TODO: [update maven archetype](http://maven.apache.org/archetype/maven-archetype-plugin/advanced-usage.html)
     - TODO: [Spring Scala](http://blog.springsource.org/2012/12/10/introducing-spring-scala)
-- TODO: Service registry and loadbalancer [Eureka](https://github.com/Netflix/eureka)
+- TODO: Netflix OSS Platform [flux capacitor example app](https://github.com/cfregly/fluxcapacitor)
+    - TODO: Service registry and loadbalancer [Eureka](https://github.com/Netflix/eureka)
 - TODO: upload to [sonatype](https://docs.sonatype.org/display/Repository/Sonatype+OSS+Maven+Repository+Usage+Guide)
+- TODO: Netty instead of finagle
+- TODO: Model after RSS recipe and flux capacitor
+- TODO: Change to jar like dropwizard or RSS recipe
+- TODO: Hysterix command simplification
+- TODO: Yammer metrics to hysterix
+- TODO: Cloud formation templates?
+- TODO: No view option (jetty vs netty)
+- TODO: Admin like karyon
+- TODO: Gradle?
 
 Examples
 -----

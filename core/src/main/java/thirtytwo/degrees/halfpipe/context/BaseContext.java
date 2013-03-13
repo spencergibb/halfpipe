@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.core.convert.converter.Converter;
 import thirtytwo.degrees.halfpipe.cli.HalfpipeBannerProvider;
-import thirtytwo.degrees.halfpipe.cli.Server;
+import thirtytwo.degrees.halfpipe.cli.HalfpipeServer;
 import thirtytwo.degrees.halfpipe.configuration.ConfigurationBeanPostProcessor;
 import thirtytwo.degrees.halfpipe.configuration.convert.StringToTimeZoneConverter;
 import thirtytwo.degrees.halfpipe.jackson.AnnotationSensitivePropertyNamingStrategy;
@@ -124,8 +124,8 @@ public class BaseContext {
     }
 
     @Bean @Scope("singleton")
-    public Server server() {
-        return new Server();
+    public HalfpipeServer server() {
+        return new HalfpipeServer();
     }
 
     @Bean @Scope("singleton")

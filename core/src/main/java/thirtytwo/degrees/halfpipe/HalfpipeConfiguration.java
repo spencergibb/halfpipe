@@ -32,8 +32,8 @@ import java.util.Map;
 public class HalfpipeConfiguration {
     private static final Log LOG = Log.forThisClass();
 
-    public static Map<String, Object> jerseyProperties(Configuration config) {
-        HashMap<String, Object> props = Maps.newHashMap();
+    public static Map<String, String> jerseyProperties(Configuration config) {
+        HashMap<String, String> props = Maps.newHashMap();
         props.put(ServletContainer.RESOURCE_CONFIG_CLASS, HalfpipeResourceConfig.class.getName());
         props.put(PackagesResourceConfig.PROPERTY_PACKAGES, config.resourcePackages.get());
         props.put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE.toString());

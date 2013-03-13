@@ -37,21 +37,20 @@ Features
     - callbacks when config property changes
     - TODO: validate config
     - TODO: flush out configuration for: http, logginc, etc...
-- Java
-    - TODO: [update maven archetype](http://maven.apache.org/archetype/maven-archetype-plugin/advanced-usage.html)
-- Scala 2.10
-    - TODO: [update maven archetype](http://maven.apache.org/archetype/maven-archetype-plugin/advanced-usage.html)
-    - TODO: [Spring Scala](http://blog.springsource.org/2012/12/10/introducing-spring-scala)
+- Polyglot
+    - Java
+    - TODO: Groovy
+    - Scala 2.10
+        - TODO: [Spring Scala](http://blog.springsource.org/2012/12/10/introducing-spring-scala)
 - TODO: Netflix OSS Platform [flux capacitor example app](https://github.com/cfregly/fluxcapacitor)
     - TODO: Service registry and loadbalancer [Eureka](https://github.com/Netflix/eureka)
 - TODO: upload to [sonatype](https://docs.sonatype.org/display/Repository/Sonatype+OSS+Maven+Repository+Usage+Guide)
 - TODO: Netty instead of finagle
-- TODO: Model after RSS recipe and flux capacitor
-- TODO: Change to jar like dropwizard or RSS recipe
+- TODO: Model example after RSS recipe and flux capacitor
 - TODO: Hysterix command simplification
 - TODO: Yammer metrics to hysterix
 - TODO: Cloud formation templates?
-- TODO: No view option (jetty vs netty)
+- TODO: No view option (jetty vs netty? separate parent class)
 - TODO: Admin like karyon
 - TODO: Gradle?
 

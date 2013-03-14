@@ -1,0 +1,38 @@
+
+
+description = 'Halfpipe Example'
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'eu.appsatori:gradle-fatjar-plugin:0.2-rc1'
+    }
+}
+//TODO: apply fatjar on normal build?
+apply plugin: 'fatjar'
+
+dependencies {
+  compile project(':halfpipe-core')
+  }
+
+fatJar {
+    dependsOn jar
+    manifest { attributes 'Main-Class': 'thirtytwo.degrees.halfpipe.example.ExampleApp' }
+    exclude('META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA')
+}
+
+fatJarPrepareFiles {
+  include 'META-INF/spring.handlers'
+  include 'META-INF/spring.schemas'
+}
+
+assemble {
+  it.dependsOn fatJar
+}
+//    jar {
+//        from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+//        manifest { attributes 'Main-Class': 'thirtytwo.degrees.halfpipe.example.ExampleApp' }
+//			exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA' 
+//    }

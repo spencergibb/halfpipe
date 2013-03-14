@@ -1,0 +1,9 @@
+rootProject.name = 'halfpipe-parent'
+include ':halfpipe-web-common', ':halfpipe-common', ':halfpipe-core', ':halfpipe-example', ':halfpipe-scala_2.10.0', ':halfpipe-scala-example'
+
+project(':halfpipe-web-common').projectDir = "$rootDir/web-common" as File
+project(':halfpipe-common').projectDir = "$rootDir/common" as File
+project(':halfpipe-core').projectDir = "$rootDir/core" as File
+project(':halfpipe-example').projectDir = "$rootDir/example" as File
+project(':halfpipe-scala_2.10.0').projectDir = "$rootDir/scala_2.10.0" as File
+project(':halfpipe-scala-example').projectDir = "$rootDir/scala-example" as File

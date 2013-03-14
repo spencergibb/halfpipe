@@ -1,0 +1,39 @@
+allprojects  {
+  apply plugin: 'maven'
+
+  group = 'net.thirty2'
+  version = '1.0-SNAPSHOT'
+  
+}
+
+subprojects {
+  apply plugin: 'java'
+  sourceCompatibility = 1.6
+  targetCompatibility = 1.6
+
+  task packageSources(type: Jar) {
+classifier = 'sources'
+from sourceSets.main.allSource
+
+}
+artifacts.archives packageSources
+  repositories {
+    mavenLocal()
+    
+    mavenRepo url: "http://repo1.maven.org/maven2"
+    mavenRepo url: "http://repo.springsource.org/libs-release/"
+    mavenRepo url: "http://repo.codahale.com/"
+  }
+
+  
+  dependencies {
+    testCompile(group: 'junit', name: 'junit', version:'4.10') {
+exclude(module: 'hamcrest-core')
+}
+    testCompile group: 'org.mockito', name: 'mockito-all', version:'1.9.5-rc1'
+    testCompile group: 'org.hamcrest', name: 'hamcrest-all', version:'1.1'
+    testCompile group: 'org.easytesting', name: 'fest-assert-core', version:'2.0M7'
+  }
+
+  
+}

@@ -49,7 +49,7 @@ Features
 - TODO: Netty instead of finagle
 - TODO: Model example after RSS recipe and flux capacitor
 - TODO: Hysterix command simplification
-- TODO: Yammer metrics to hysterix
+- TODO: Yammer metrics to hysterix?
 - TODO: Cloud formation templates?
 - TODO: Admin like karyon
 - TODO: Gradle?

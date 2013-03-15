@@ -30,7 +30,7 @@ public class HalfpipeBannerProvider implements BannerProvider {
             sb.append(banner);
         } catch (Exception e) {
             e.printStackTrace();  //TODO: handle catch
-            throw new IllegalStateException("File not fount "+config.bannerFile.get());
+            //TODO: throw exception?throw new IllegalStateException("File not fount "+config.bannerFile.get());
         }
         //sb.append(FileUtils.readBanner(HalfpipeBannerProvider.class, bannerTextFile.get()));
         //sb.append(getVersion()).append(OsUtils.LINE_SEPARATOR);

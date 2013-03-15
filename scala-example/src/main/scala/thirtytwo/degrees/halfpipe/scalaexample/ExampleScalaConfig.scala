@@ -12,7 +12,7 @@ import javax.ws.rs.DefaultValue
  * Time: 2:12 PM
  */
 
-class HelloIntCallback extends AbstractScalaCallback[ExampleScalaConfig, Int]
+class HelloIntCallback //extends AbstractScalaCallback[ExampleScalaConfig, Int]
 {
   def run() {
     println("HelloIntCallback property changed to = "+ prop.get())

@@ -1,18 +1,16 @@
 package thirtytwo.degrees.halfpipe.jackson;
+// original https://github.com/codahale/dropwizard/blob/master/dropwizard-core/src/main/java/com/yammer/dropwizard/json/GuavaExtrasModule.java
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.Version;
+import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.deser.Deserializers;
 import com.google.common.cache.CacheBuilderSpec;
 import com.google.common.net.HostAndPort;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.Version;
-import org.codehaus.jackson.map.*;
-import org.codehaus.jackson.map.annotate.JsonCachable;
-import org.codehaus.jackson.type.JavaType;
 
 import java.io.IOException;
 
-// original https://github.com/codahale/dropwizard/blob/master/dropwizard-core/src/main/java/com/yammer/dropwizard/json/GuavaExtrasModule.java
 public class GuavaExtrasModule extends Module {
-    @JsonCachable
     private static class HostAndPortDeserializer extends JsonDeserializer<HostAndPort> {
         @Override
         public HostAndPort deserialize(JsonParser jp,
@@ -21,7 +19,6 @@ public class GuavaExtrasModule extends Module {
         }
     }
 
-    @JsonCachable
     private static class CacheBuilderSpecDeserializer extends JsonDeserializer<CacheBuilderSpec> {
         @Override
         public CacheBuilderSpec deserialize(JsonParser jp,
@@ -38,9 +35,7 @@ public class GuavaExtrasModule extends Module {
         @Override
         public JsonDeserializer<?> findBeanDeserializer(JavaType type,
                                                         DeserializationConfig config,
-                                                        DeserializerProvider provider,
-                                                        BeanDescription beanDesc,
-                                                        BeanProperty property) throws JsonMappingException {
+                                                        BeanDescription beanDesc) throws JsonMappingException {
             if (CacheBuilderSpec.class.isAssignableFrom(type.getRawClass())) {
                 return new CacheBuilderSpecDeserializer();
             }
@@ -49,7 +44,7 @@ public class GuavaExtrasModule extends Module {
                 return new HostAndPortDeserializer();
             }
 
-            return super.findBeanDeserializer(type, config, provider, beanDesc, property);
+            return super.findBeanDeserializer(type, config, beanDesc);
         }
     }
 

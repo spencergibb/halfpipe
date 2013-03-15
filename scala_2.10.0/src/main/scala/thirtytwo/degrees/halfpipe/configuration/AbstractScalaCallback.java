@@ -8,17 +8,17 @@ package thirtytwo.degrees.halfpipe.configuration;
 @SuppressWarnings("unchecked")
 public abstract class AbstractScalaCallback<C, V> implements Runnable {
     protected C config;
-    protected ScalaPropertyWrapper<V> prop;
+    //protected ScalaPropertyWrapper<V> prop;
 
     public void setConfig(Object config) {
         this.config = (C) config;
     }
 
     public void setProp(Object prop) {
-        if (prop instanceof ScalaPropertyWrapper) {
+        /*if (prop instanceof ScalaPropertyWrapper) {
             this.prop = (ScalaPropertyWrapper<V>) prop;
         } else {
             System.err.println("prop is not ScalaPropertyWrapper: "+prop.getClass());
-        }
+        }TODO: Fix AbstractScalaCallback*/
     }
 }

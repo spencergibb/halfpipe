@@ -15,7 +15,7 @@ import javax.ws.rs.DefaultValue
 class HelloIntCallback //extends AbstractScalaCallback[ExampleScalaConfig, Int]
 {
   def run() {
-    println("HelloIntCallback property changed to = "+ prop.get())
+    //println("HelloIntCallback property changed to = "+ prop.get())
   }
 }
 

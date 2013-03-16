@@ -1,39 +1,152 @@
-allprojects  {
-  apply plugin: 'maven'
+// Establish version and status
+ext.githubProjectName = rootProject.name // Change if github project name is not the same as the root project's name
 
-  group = 'net.thirty2'
-  version = '1.0-SNAPSHOT'
-  
+buildscript {
+    repositories { 
+		mavenCentral() 
+		mavenRepo url: "http://repo1.maven.org/maven2"
+		mavenRepo url: "http://repo.springsource.org/libs-release/"
+		mavenRepo url: "http://repo.codahale.com/"
+	 }
+    apply from: file('gradle/buildscript.gradle'), to: buildscript 
 }
+
+allprojects {
+    repositories { 
+        mavenCentral()
+		 mavenRepo url: "http://repo1.maven.org/maven2"
+		 mavenRepo url: "http://repo.springsource.org/libs-release/"
+		 mavenRepo url: "http://repo.codahale.com/"
+    }
+}
+
+apply from: file('gradle/convention.gradle')
+apply from: file('gradle/maven.gradle')
+//apply from: file('gradle/check.gradle')
+//apply from: file('gradle/license.gradle')
+//apply from: file('gradle/release.gradle')
 
 subprojects {
-  apply plugin: 'java'
-  sourceCompatibility = 1.6
-  targetCompatibility = 1.6
+    group = "net.thirty2.${githubProjectName}" // TEMPLATE: Set to organization of project
 
-  task packageSources(type: Jar) {
-classifier = 'sources'
-from sourceSets.main.allSource
-
-}
-artifacts.archives packageSources
-  repositories {
-    mavenLocal()
-    
-    mavenRepo url: "http://repo1.maven.org/maven2"
-    mavenRepo url: "http://repo.springsource.org/libs-release/"
-    mavenRepo url: "http://repo.codahale.com/"
-  }
-
-  
-  dependencies {
+    dependencies {
     testCompile(group: 'junit', name: 'junit', version:'4.10') {
-exclude(module: 'hamcrest-core')
+		exclude(module: 'hamcrest-core')
 }
-    testCompile group: 'org.mockito', name: 'mockito-all', version:'1.9.5-rc1'
-    testCompile group: 'org.hamcrest', name: 'hamcrest-all', version:'1.1'
-    testCompile group: 'org.easytesting', name: 'fest-assert-core', version:'2.0M7'
-  }
+    testCompile 'org.mockito:mockito-all:1.9.5-rc1'
+    testCompile 'org.hamcrest:hamcrest-all:1.1'
+    testCompile 'org.easytesting:fest-assert-core:2.0M7'
+     }
+}
 
-  
+project(':common') {
+    apply plugin: 'java'
+	description = 'Halfpipe Common'
+    dependencies {
+		 compile 'com.fasterxml.jackson.core:jackson-annotations:2.1.2'
+		 compile 'com.google.guava:guava:13.0.1'
+		 compile 'org.hibernate:hibernate-validator:4.3.0.Final'
+    }
+}
+
+project(':core') {
+    apply plugin: 'java'
+	description = 'Halfpipe Core'
+
+    dependencies {
+  compile project(':common')
+    compile 'org.eclipse.jetty:jetty-server:8.1.9.v20130131'
+    compile 'org.eclipse.jetty:jetty-util:8.1.9.v20130131'
+    compile 'org.eclipse.jetty:jetty-servlet:8.1.9.v20130131'
+    compile 'org.eclipse.jetty:jetty-webapp:8.1.9.v20130131'
+    compile 'org.springframework:spring-webmvc:3.2.0.RELEASE'
+    compile(group: 'org.springframework.security', name: 'spring-security-core', version:'3.1.3.RELEASE') {
+exclude(module: 'org.springframework.aop')
+}
+    compile 'org.springframework:spring-aop:3.2.0.RELEASE'
+    compile(group: 'org.springframework.security', name: 'spring-security-web', version:'3.1.3.RELEASE') {
+exclude(module: 'spring-jdbc')
+exclude(module: 'spring-tx')
+}
+    compile 'org.springframework:spring-jdbc:3.2.0.RELEASE'
+    compile 'org.springframework:spring-tx:3.2.0.RELEASE'
+    compile 'org.springframework.security:spring-security-config:3.1.3.RELEASE'
+    compile 'org.springframework.shell:spring-shell:1.0.0.RELEASE'
+    compile 'cglib:cglib-nodep:2.2'
+    compile 'javax.inject:javax.inject:1'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.1.2'
+    compile 'com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.1.2'
+    compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.1.2'
+    compile 'com.fasterxml.jackson.datatype:jackson-datatype-guava:2.1.2'
+    compile 'joda-time:joda-time:2.1'
+    compile 'com.fasterxml.jackson.datatype:jackson-datatype-joda:2.1.2'
+    compile 'com.sun.jersey:jersey-json:1.16'
+    compile 'com.sun.jersey:jersey-core:1.16'
+    compile 'com.sun.jersey:jersey-server:1.16'
+    compile 'com.sun.jersey:jersey-servlet:1.16'
+    compile(group: 'com.sun.jersey.contribs', name: 'jersey-spring', version:'1.16') {
+exclude(module: 'spring')
+exclude(module: 'spring-aop')
+exclude(module: 'spring-core')
+exclude(module: 'spring-web')
+exclude(module: 'spring-beans')
+exclude(module: 'spring-context')
+}
+    compile 'com.sun.jersey:jersey-client:1.16'
+    compile 'com.netflix.archaius:archaius-core:0.3.3'
+    compile 'com.yammer.metrics:metrics-core:2.2.0'
+    compile 'com.yammer.metrics:metrics-spring:2.2.0'
+    compile(group: 'com.yammer.metrics', name: 'metrics-jersey', version:'2.2.0') {
+exclude(module: 'jersey-core')
+exclude(module: 'jersey-json')
+exclude(module: 'jersey-server')
+}
+    compile 'com.yammer.metrics:metrics-servlet:2.2.0'
+    compile 'com.yammer.metrics:metrics-web:2.2.0'
+    compile 'com.yammer.metrics:metrics-logback:2.2.0'
+    compile(group: 'com.fasterxml.jackson', name: 'jackson-datatype-guava', version:'1.9.1') {
+exclude(module: 'guava')
+}
+    compile 'com.google.guava:guava:13.0.1'
+    compile 'commons-cli:commons-cli:1.2'
+    compile 'commons-io:commons-io:2.4'
+    compile 'javax.servlet:servlet-api:2.5'
+    compile 'org.yaml:snakeyaml:1.11'
+    compile 'org.slf4j:slf4j-api:1.6.6'
+    compile 'org.slf4j:jul-to-slf4j:1.6.6'
+    compile 'ch.qos.logback:logback-core:1.0.7'
+    compile 'ch.qos.logback:logback-classic:1.0.7'
+    compile 'org.slf4j:log4j-over-slf4j:1.6.6'
+ 
+    }
+}
+
+project(':example') {
+	apply plugin: 'java'
+	apply plugin: 'fatjar'
+description = 'Halfpipe Example'
+
+	dependencies {
+	  compile project(':core')
+	  }
+
+	fatJar {
+		 dependsOn jar
+		 manifest { attributes 'Main-Class': 'thirtytwo.degrees.halfpipe.example.ExampleApp' }
+		 exclude('META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA')
+	}
+
+	fatJarPrepareFiles {
+	  include 'META-INF/spring.handlers'
+	  include 'META-INF/spring.schemas'
+	}
+
+	assemble {
+	  it.dependsOn fatJar
+	}
+	//    jar {
+	//        from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+	//        manifest { attributes 'Main-Class': 'thirtytwo.degrees.halfpipe.example.ExampleApp' }
+	//			exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA' 
+	//    }
 }

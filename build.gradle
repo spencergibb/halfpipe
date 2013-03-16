@@ -39,7 +39,7 @@ subprojects {
      }
 }
 
-project(':common') {
+project(':halfpipe-common') {
     apply plugin: 'java'
 	description = 'Halfpipe Common'
     dependencies {
@@ -49,12 +49,12 @@ project(':common') {
     }
 }
 
-project(':core') {
+project(':halfpipe-core') {
     apply plugin: 'java'
 	description = 'Halfpipe Core'
 
     dependencies {
-  compile project(':common')
+  compile project(':halfpipe-common')
     compile 'org.eclipse.jetty:jetty-server:8.1.9.v20130131'
     compile 'org.eclipse.jetty:jetty-util:8.1.9.v20130131'
     compile 'org.eclipse.jetty:jetty-servlet:8.1.9.v20130131'
@@ -121,13 +121,13 @@ exclude(module: 'guava')
     }
 }
 
-project(':example') {
+project(':halfpipe-example') {
 	apply plugin: 'java'
 	apply plugin: 'fatjar'
 description = 'Halfpipe Example'
 
 	dependencies {
-	  compile project(':core')
+	  compile project(':halfpipe-core')
 	  }
 
 	fatJar {

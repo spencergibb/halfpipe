@@ -1,3 +1,3 @@
 rootProject.name='halfpipe' // TEMPLATE: Change this
-include 'common', 'core', 'example'
+include 'halfpipe-common', 'halfpipe-core', 'halfpipe-example'
 //include 'common', 'core, 'example', 'scala_2.10.0', 'scala-example'

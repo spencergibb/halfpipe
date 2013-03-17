@@ -59,6 +59,7 @@ class ScalaConfigBuilder(conversionService: ConversionService) extends Configura
   builders.add(new FloatBuilder)
   builders.add(new DoubleBuilder)
 
+  @SuppressWarnings(Array("unchecked"))
   protected override def addCallback(config: Any, prop: Any, propertyCallback: PropertyCallback) {
     if (propertyCallback == null)
       return

@@ -70,12 +70,12 @@ class ScalaConfigBuilder(conversionService: ConversionService) extends Configura
 
       val callback = callbackClass.newInstance()
 
-      /*if (callback.isInstanceOf[AbstractScalaCallback[_, _]]) {
-        val scalaCallback = callback.asInstanceOf[AbstractScalaCallback[_, _]]
-        scalaCallback.setConfig(config)
+      if (callback.isInstanceOf[AbstractScalaCallback[Configuration, _]]) {
+        val scalaCallback = callback.asInstanceOf[AbstractScalaCallback[Configuration, _]]
+        scalaCallback.config = config.asInstanceOf[Configuration]
         scalaCallback.setProp(property)
         property.addCallback(scalaCallback)
-      } else*/ if (callback.isInstanceOf[Runnable]) {
+      } else if (callback.isInstanceOf[Runnable]) {
         property.addCallback(callback.asInstanceOf[Runnable])
       } else {
         System.err.println("unknown callback class: "+callbackClass); //TODO: replace with logging

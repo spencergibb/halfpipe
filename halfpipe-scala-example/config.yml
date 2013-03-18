@@ -2,6 +2,9 @@ helloText: "Hello from yaml config file plus more"
 
 helloInt: 1
 
+appName: Example Halfpipe Scala App
+bannerFile: scalaexample.txt
+
 http:
   port: 8080
 

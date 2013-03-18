@@ -3,6 +3,9 @@ package halfpipe;
 import static halfpipe.Halfpipe.*;
 import static com.netflix.config.sources.URLConfigurationSource.*;
 
+import com.google.common.base.Function;
+import com.google.common.base.Joiner;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
 import com.netflix.config.ConcurrentCompositeConfiguration;
 import com.netflix.config.ConfigurationManager;
@@ -10,6 +13,7 @@ import com.netflix.config.DynamicPropertyFactory;
 import com.sun.jersey.api.core.PackagesResourceConfig;
 import com.sun.jersey.api.json.JSONConfiguration;
 import com.sun.jersey.spi.container.servlet.ServletContainer;
+import halfpipe.jersey.HalfpipeResources;
 import org.apache.commons.configuration.SystemConfiguration;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
@@ -31,10 +35,25 @@ public class HalfpipeConfiguration {
     private static final Log LOG = Log.forThisClass();
     public static AnnotationConfigWebApplicationContext rootContext;
 
-    public static Map<String, String> jerseyProperties(Configuration config) {
+    public static Map<String, String> jerseyProperties(Map<String,HalfpipeResources> resources, Configuration config) {
+
+        String jerseyPackages = null;
+
+        if (resources != null && !resources.isEmpty()) {
+            Iterable<String> packages = Iterables.transform(resources.values(), new Function<HalfpipeResources, String>() {
+                @Override
+                public String apply(HalfpipeResources input) {
+                    return input.getClass().getPackage().getName();
+                }
+            });
+            jerseyPackages= Joiner.on(",").skipNulls().join(packages);
+        } else {
+            jerseyPackages = config.resourcePackages.get();
+        }
+
         HashMap<String, String> props = Maps.newHashMap();
         props.put(ServletContainer.RESOURCE_CONFIG_CLASS, HalfpipeResourceConfig.class.getName());
-        props.put(PackagesResourceConfig.PROPERTY_PACKAGES, config.resourcePackages.get());
+        props.put(PackagesResourceConfig.PROPERTY_PACKAGES, jerseyPackages);
         props.put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE.toString());
         return props;
     }

@@ -1,13 +1,22 @@
 package halfpipe.cli;
 
+import com.google.common.base.Function;
+import com.google.common.base.Joiner;
+import com.google.common.collect.Iterables;
 import com.sun.jersey.spi.spring.container.servlet.SpringServlet;
 import com.yammer.metrics.web.DefaultWebappMetricsFilter;
+import halfpipe.HalfpipeConfiguration;
+import halfpipe.configuration.Configuration;
+import halfpipe.jersey.HalfpipeResources;
+import halfpipe.logging.Log;
 import org.apache.commons.cli.CommandLine;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.DefaultHandler;
 import org.eclipse.jetty.server.handler.HandlerList;
-import org.eclipse.jetty.servlet.*;
+import org.eclipse.jetty.servlet.DefaultServlet;
+import org.eclipse.jetty.servlet.FilterHolder;
+import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.shell.core.CommandMarker;
@@ -18,21 +27,18 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.DispatcherServlet;
-import halfpipe.HalfpipeConfiguration;
-import halfpipe.configuration.Configuration;
-import halfpipe.logging.Log;
 
 import javax.inject.Inject;
 import javax.servlet.DispatcherType;
 import javax.servlet.Filter;
 import javax.servlet.Servlet;
-
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
 import static halfpipe.Halfpipe.ROOT_URL_PATTERN;
-import static halfpipe.HalfpipeConfiguration.*;
+import static halfpipe.HalfpipeConfiguration.jerseyProperties;
+import static halfpipe.HalfpipeConfiguration.rootContext;
 
 /**
  * User: spencergibb
@@ -88,8 +94,10 @@ public class HalfpipeServer implements CommandMarker {
         }
         addServlet(context, "default", new DefaultServlet(), "/favicon.ico");
 
+        Map<String, HalfpipeResources> resources = rootContext.getBeansOfType(HalfpipeResources.class);
+
         addServlet(context, "jersey-servlet", new SpringServlet(),
-                config.http.resourcePattern.get(), jerseyProperties(config));
+                config.http.resourcePattern.get(), jerseyProperties(resources, config));
         /*Connector connector = new Connector(config.http.protocol.get());
         connector.setPort(config.http.port.get());
         connector.setURIEncoding(config.http.uriEncoding.get());*/

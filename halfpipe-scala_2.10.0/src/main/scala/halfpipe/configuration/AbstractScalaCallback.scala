@@ -1,7 +1,7 @@
 package halfpipe.configuration
 
 /**
- * User: gibbsb
+ * User: spencergibb
  * Date: 3/16/13
  * Time: 8:55 PM
  */

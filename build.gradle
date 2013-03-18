@@ -132,7 +132,7 @@ project(':halfpipe-example') {
 
     fatJar {
         dependsOn jar
-        manifest { attributes 'Main-Class': 'thirtytwo.degrees.halfpipe.example.ExampleApp' }
+        manifest { attributes 'Main-Class': 'halfpipe.example.ExampleApp' }
         exclude('META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA')
     }
 

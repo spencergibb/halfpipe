@@ -11,13 +11,13 @@ Features
 - [Executable](https://github.com/brianm/really-executable-jars-maven-plugin)
 - Spring enabled (no or little XML)
     - mvc [no xml] (http://rockhoppertech.com/blog/spring-mvc-configuration-without-xml/)
-    - [java security, not xml](http://blog.springsource.org/2011/08/01/spring-security-configuration-with-scala/), see [scala example](https://github.com/32degrees/halfpipe/tree/master/scala-example)
+    - [java security, not xml](http://blog.springsource.org/2011/08/01/spring-security-configuration-with-scala/), see [scala example](https://github.com/32degrees/halfpipe/tree/master/halfpipe-scala-example)
     - data
     - integration
 - [Finagle](http://twitter.github.com/finagle/) integrational ala [finagle resteasy](https://github.com/opower/finagle-resteasy)
     - TODO: Finagle client integration
 - Multilingual java/Scala
-    - [scala-spring](https://github.com/ewolff/scala-spring), see [scala example](https://github.com/32degrees/halfpipe/tree/master/scala-example)
+    - [scala-spring](https://github.com/ewolff/scala-spring), see [scala example](https://github.com/32degrees/halfpipe/tree/master/halfpipe-scala-example)
 - Guava integration
 - Validation
 - Commands
@@ -60,7 +60,7 @@ To run the examples:
 
 Java cmd line: `example/target/halfpipe-example server example_config.yml`
 
-Scala cmd line: `thirtytwo.degrees.halfpipe.scalaexample.ExampleScalaApp server config.yml`
+Scala cmd line: `halfpipe.scalaexample.ExampleScalaApp server config.yml`
 
 - 'server' runs the jetty server
 - empty args runs the interactive shell with custom commands loaded

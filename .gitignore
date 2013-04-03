@@ -6,6 +6,8 @@ tomcat.8080
 .extract
 .idea
 *.iml
+*.iws
+*.ipr
 .halfpipe
 *.log
 *.swp

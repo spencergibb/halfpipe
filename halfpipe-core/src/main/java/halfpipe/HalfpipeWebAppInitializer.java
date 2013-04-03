@@ -27,27 +27,18 @@ public abstract class HalfpipeWebAppInitializer<C> extends ContextAware<C>
         LoggingUtils.bootstrap();
     }
 
-    static Object lock = new Object();
-    static boolean initialized = false;
-
     public HalfpipeWebAppInitializer() {
     }
 
     @Override
     public void onStartup(ServletContext sc) throws ServletException {
         try {
-            synchronized (lock) {
-                if (initialized) return;
+            String configFile = System.getProperty("halfpipe.config.file");
+            startApplication(configFile, getContextClass(), getViewContext(), LOG);
 
-                initialized = true;
+            Configuration config = config(rootContext);
 
-                String configFile = System.getProperty("halfpipe.config.file");
-                startApplication(configFile, getContextClass(), getViewContext(), LOG);
-
-                Configuration config = config(rootContext);
-
-                configureWebApp(sc, sc, this, config, false);
-            }
+            configureWebApp(sc, sc, this, config, false);
         } catch (Exception e) {
             e.printStackTrace();
             sc.log("Unable to initialize Halfpipe web application", e);
@@ -76,11 +67,12 @@ public abstract class HalfpipeWebAppInitializer<C> extends ContextAware<C>
         return reg;
     }
 
-    public FilterRegistration.Dynamic addFilter(ServletContext servletContext, String filterName, Filter filter, String urlPattern) {
+    public FilterRegistration.Dynamic addFilter(ServletContext servletContext, String filterName, Filter filter,
+                                                String urlPattern, Map<String, String> initParams) {
         FilterRegistration.Dynamic fr = servletContext.addFilter(filterName, filter);
         Assert.notNull(fr, "Unable to create filter "+filterName);
-        //fr.setInitParameter("name", "value");
         fr.addMappingForUrlPatterns(null, true, urlPattern);
+        fr.setInitParameters(initParams);
         return fr;
     }
 }

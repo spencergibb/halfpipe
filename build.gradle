@@ -1,6 +1,8 @@
 // Establish version and status
 ext.githubProjectName = rootProject.name // Change if github project name is not the same as the root project's name
 
+apply plugin: 'idea'
+
 buildscript {
     repositories {
         mavenCentral()
@@ -10,6 +12,8 @@ buildscript {
     }
     apply from: file('gradle/buildscript.gradle'), to: buildscript
 }
+
+apply plugin: 'idea-utils'
 
 allprojects {
     repositories {
@@ -77,9 +81,9 @@ project(':halfpipe-core') {
         compile "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
         compile "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:${jacksonVersion}"
         compile "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:${jacksonVersion}"
-        compile "com.fasterxml.jackson.datatype:jackson-datatype-guava:${jacksonVersion}"
+        compile "com.fasterxml.jackson.datatype:jackson-datatype-guava:${jacksonDatatypeVersion}"
         compile 'joda-time:joda-time:2.1'
-        compile "com.fasterxml.jackson.datatype:jackson-datatype-joda:${jacksonVersion}"
+        compile "com.fasterxml.jackson.datatype:jackson-datatype-joda:${jacksonDatatypeVersion}"
         compile "com.sun.jersey:jersey-json:${jerseyVersion}"
         compile "com.sun.jersey:jersey-core:${jerseyVersion}"
         compile "com.sun.jersey:jersey-server:${jerseyVersion}"

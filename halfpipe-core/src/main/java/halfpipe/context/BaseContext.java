@@ -1,5 +1,7 @@
 package halfpipe.context;
 
+import com.fasterxml.jackson.databind.Module;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.guava.GuavaModule;
 import com.yammer.metrics.HealthChecks;
 import com.yammer.metrics.Metrics;
@@ -7,14 +9,6 @@ import com.yammer.metrics.core.HealthCheck;
 import com.yammer.metrics.core.HealthCheckRegistry;
 import com.yammer.metrics.core.MetricsRegistry;
 import com.yammer.metrics.util.DeadlockHealthCheck;
-import com.fasterxml.jackson.databind.Module;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.aop.framework.ProxyConfig;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.support.ConversionServiceFactoryBean;
-import org.springframework.core.convert.converter.Converter;
 import halfpipe.cli.HalfpipeBannerProvider;
 import halfpipe.cli.HalfpipeServer;
 import halfpipe.configuration.ConfigurationBeanPostProcessor;
@@ -26,6 +20,12 @@ import halfpipe.jersey.HalfpipeObjectMapperProvider;
 import halfpipe.jersey.InvalidEntityExceptionMapper;
 import halfpipe.jersey.JacksonMessageBodyProvider;
 import halfpipe.jersey.OptionalQueryParamInjectableProvider;
+import org.springframework.aop.framework.ProxyConfig;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.support.ConversionServiceFactoryBean;
+import org.springframework.core.convert.converter.Converter;
 
 import javax.inject.Named;
 import java.util.List;

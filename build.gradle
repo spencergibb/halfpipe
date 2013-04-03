@@ -122,7 +122,9 @@ project(':halfpipe-core') {
 }
 
 project(':halfpipe-example') {
+    jar.enabled = true
     apply plugin: 'java'
+    apply plugin: 'war'
     apply plugin: 'fatjar'
     description = 'Halfpipe Example'
 
@@ -184,7 +186,7 @@ project(':halfpipe-scala-example') {
 
     dependencies {
         compile project(':halfpipe-scala_2.10.0')
-        compile group: 'org.freemarker', name: 'freemarker', version: '2.3.19'
+        compile 'org.freemarker:freemarker:2.3.19'
         compile(group: 'javax.servlet', name: 'javax.servlet-api', version: '3.0.1') {
             provided = true
         }

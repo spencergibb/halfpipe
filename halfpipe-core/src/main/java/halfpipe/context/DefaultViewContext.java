@@ -2,6 +2,7 @@ package halfpipe.context;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import halfpipe.mgmt.view.MgmtControllers;
 
@@ -14,5 +15,4 @@ import halfpipe.mgmt.view.MgmtControllers;
 @Configuration
 @ComponentScan(basePackageClasses = MgmtControllers.class)
 public class DefaultViewContext extends AbstractViewContext {
-
 }

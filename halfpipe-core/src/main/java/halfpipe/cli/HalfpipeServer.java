@@ -1,13 +1,11 @@
 package halfpipe.cli;
 
-import com.google.common.base.Function;
-import com.google.common.base.Joiner;
-import com.google.common.collect.Iterables;
 import com.sun.jersey.spi.spring.container.servlet.SpringServlet;
 import com.yammer.metrics.web.DefaultWebappMetricsFilter;
 import halfpipe.HalfpipeConfiguration;
+import halfpipe.WebRegistrar;
 import halfpipe.configuration.Configuration;
-import halfpipe.jersey.HalfpipeResources;
+import halfpipe.context.DefaultViewContext;
 import halfpipe.logging.Log;
 import org.apache.commons.cli.CommandLine;
 import org.eclipse.jetty.server.Handler;
@@ -19,6 +17,7 @@ import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.security.web.FilterChainProxy;
 import org.springframework.shell.core.CommandMarker;
 import org.springframework.shell.core.annotation.CliAvailabilityIndicator;
 import org.springframework.shell.core.annotation.CliCommand;
@@ -32,6 +31,8 @@ import javax.inject.Inject;
 import javax.servlet.DispatcherType;
 import javax.servlet.Filter;
 import javax.servlet.Servlet;
+import javax.servlet.ServletContext;
+import javax.ws.rs.Path;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,7 +46,7 @@ import static halfpipe.HalfpipeConfiguration.rootContext;
  * Date: 9/26/12
  * Time: 11:44 PM
  */
-public class HalfpipeServer implements CommandMarker {
+public class HalfpipeServer implements CommandMarker, WebRegistrar<WebAppContext> {
     private static final Log LOG = Log.forThisClass();
 
     @Inject
@@ -76,28 +77,8 @@ public class HalfpipeServer implements CommandMarker {
 
         //context.addServlet(JspServlet.class, "*.jsp");*/
 
-        addFilter(context, "springSecurityFilterChain", new DelegatingFilterProxy(), ROOT_URL_PATTERN);
-        addFilter(context, "webappMetricsFilter", new DefaultWebappMetricsFilter(), ROOT_URL_PATTERN);
+        configureWebApp(context.getServletContext(), context, this, config, true);
 
-        context.getServletContext().setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, rootContext);
-
-        ConfigurableBeanFactory beanFactory = (ConfigurableBeanFactory) rootContext.getAutowireCapableBeanFactory();
-        if (beanFactory.containsBean("viewContextClass")) {
-            Class<?> viewContextClass = beanFactory.getBean("viewContextClass", Class.class);
-            AnnotationConfigWebApplicationContext webContext = HalfpipeConfiguration.createWebContext(viewContextClass);
-            webContext.setParent(rootContext);
-
-            String viewPattern = config.http.viewPattern.get();
-            addServlet(context, "viewServlet", new DispatcherServlet(webContext), viewPattern);
-        } else {
-            //TODO: default view context?
-        }
-        addServlet(context, "default", new DefaultServlet(), "/favicon.ico");
-
-        Map<String, HalfpipeResources> resources = rootContext.getBeansOfType(HalfpipeResources.class);
-
-        addServlet(context, "jersey-servlet", new SpringServlet(),
-                config.http.resourcePattern.get(), jerseyProperties(resources, config));
         /*Connector connector = new Connector(config.http.protocol.get());
         connector.setPort(config.http.port.get());
         connector.setURIEncoding(config.http.uriEncoding.get());*/
@@ -117,10 +98,43 @@ public class HalfpipeServer implements CommandMarker {
         server.join();
     }
 
-    private ServletHolder addServlet(WebAppContext context, String name, Servlet servlet, String viewPattern) {
-        return addServlet(context, name, servlet, viewPattern, new HashMap<String, String>());
+    public static <WC> void configureWebApp(ServletContext servletContext, WC context, WebRegistrar<WC> registrar,
+                                            Configuration config, boolean registerDefault) {
+        // rather than sc.addListener(new ContextLoaderListener(rootCtx));
+        // set the required servletcontext attribute to avoid loading beans twice
+        servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, rootContext);
+
+        registrar.addFilter(context, "springSecurityFilterChain", new DelegatingFilterProxy(), ROOT_URL_PATTERN);
+        registrar.addFilter(context, "webappMetricsFilter", new DefaultWebappMetricsFilter(), ROOT_URL_PATTERN);
+
+        ConfigurableBeanFactory beanFactory = (ConfigurableBeanFactory) rootContext.getAutowireCapableBeanFactory();
+
+        Class<?> viewContextClass;
+        if (beanFactory.containsBean("viewContextClass")) {
+            viewContextClass = beanFactory.getBean("viewContextClass", Class.class);
+        } else {
+            //default view context
+            viewContextClass = DefaultViewContext.class;
+            beanFactory.registerSingleton("springSecurityFilterChain", new FilterChainProxy());
+        }
+        // now the context for the Dispatcher servlet
+        AnnotationConfigWebApplicationContext webContext = HalfpipeConfiguration.createWebContext(viewContextClass);
+        webContext.setParent(rootContext);
+
+        // The main Spring MVC servlet.
+        String viewPattern = config.http.viewPattern.get();
+        registrar.addServlet(context, "viewServlet", new DispatcherServlet(webContext), viewPattern, new HashMap<String, String>());
+
+        if (registerDefault)
+            registrar.addServlet(context, "default", new DefaultServlet(), "/favicon.ico", new HashMap<String, String>());
+
+        Map<String, Object> resources = rootContext.getBeansWithAnnotation(Path.class);
+
+        registrar.addServlet(context, "jersey-servlet", new SpringServlet(),
+                config.http.resourcePattern.get(), jerseyProperties(resources, config));
     }
-    private ServletHolder addServlet(WebAppContext context, String name, Servlet servlet, String viewPattern, Map<String, String> initParams) {
+
+    public ServletHolder addServlet(WebAppContext context, String name, Servlet servlet, String viewPattern, Map<String, String> initParams) {
         ServletHolder servletHolder = new ServletHolder(servlet);
         servletHolder.setName(name);
         servletHolder.setInitParameters(initParams);
@@ -128,24 +142,11 @@ public class HalfpipeServer implements CommandMarker {
         return servletHolder;
     }
 
-    private FilterHolder addFilter(WebAppContext context, String name, Filter filter, String urlPattern) {
+    public FilterHolder addFilter(WebAppContext context, String name, Filter filter, String urlPattern) {
         FilterHolder filterHolder = new FilterHolder(filter);
         filterHolder.setName(name);
         context.addFilter(filterHolder, urlPattern, EnumSet.of(DispatcherType.REQUEST));
         return filterHolder;
-    }
-
-    private static void waitIndefinitely() {
-        Object lock = new Object();
-
-        synchronized (lock) {
-            try {
-                lock.wait();
-            } catch (InterruptedException exception) {
-                throw new Error("InterruptedException on wait Indefinitely lock:" + exception.getMessage(),
-                        exception);
-            }
-        }
     }
 
 }

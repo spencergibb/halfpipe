@@ -12,7 +12,7 @@ import java.io.Writer;
 public class HelloController {
     private static final Log LOG = Log.forThisClass();
 
-    @RequestMapping(value = "/hello")
+    @RequestMapping("/hello")
     @Timed
     public void home(Writer out) throws IOException {
         LOG.warn("HelloController: Passing through...");

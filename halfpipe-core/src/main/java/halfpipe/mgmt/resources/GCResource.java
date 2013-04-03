@@ -1,10 +1,11 @@
 package halfpipe.mgmt.resources;
 
 import com.google.common.base.Optional;
-import org.springframework.stereotype.Component;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.StreamingOutput;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -13,7 +14,6 @@ import java.io.OutputStream;
  * Date: 9/25/12
  * Time: 6:13 AM
  */
-@Component
 @Path("/mgmt/gc")
 public class GCResource {
 

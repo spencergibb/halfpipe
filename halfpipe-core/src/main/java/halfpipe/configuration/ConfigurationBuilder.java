@@ -222,7 +222,7 @@ public class ConfigurationBuilder {
     }
 
     @SuppressWarnings("unchecked")
-    //TODO: combine with Application.getContextClasses
+    //TODO: combine with Application.getContextClass
     public static Class<?> getValueClass(Type t) {
         Class<?> originalType;
 

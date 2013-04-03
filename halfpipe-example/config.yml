@@ -2,7 +2,6 @@ helloText: "Hello from yaml config file"
 
 appName: Example Halfpipe Java App
 bannerFile: example.txt
-helloText: Hello from sayer and Archaius
 
 myconfig: Myconfig from properties
 

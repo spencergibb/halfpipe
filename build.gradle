@@ -34,12 +34,12 @@ subprojects {
     group = "net.thirty2.${githubProjectName}" // TEMPLATE: Set to organization of project
 
     dependencies {
-        testCompile(group: 'junit', name: 'junit', version: '4.10') {
+        testCompile(group: 'junit', name: 'junit', version: junitVersion) {
             exclude(module: 'hamcrest-core')
         }
-        testCompile 'org.mockito:mockito-all:1.9.5-rc1'
-        testCompile 'org.hamcrest:hamcrest-all:1.1'
-        testCompile 'org.easytesting:fest-assert-core:2.0M7'
+        testCompile "org.mockito:mockito-core:${mockitoVersion}"
+        testCompile "org.hamcrest:hamcrest-all:${hamcrestVersion}"
+        testCompile "org.easytesting:fest-assert-core:${easytestingVersion}"
     }
 }
 
@@ -49,7 +49,7 @@ project(':halfpipe-common') {
     dependencies {
         compile "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}"
         compile "com.google.guava:guava:${guavaVersion}"
-        compile 'org.hibernate:hibernate-validator:4.3.0.Final'
+        compile "org.hibernate:hibernate-validator:${hibernateValidatorVersion}"
     }
 }
 
@@ -75,14 +75,13 @@ project(':halfpipe-core') {
         compile "org.springframework:spring-jdbc:${springVersion}"
         compile "org.springframework:spring-tx:${springVersion}"
         compile "org.springframework.security:spring-security-config:${springSecurityVersion}"
-        compile 'org.springframework.shell:spring-shell:1.0.0.RELEASE'
-        compile 'cglib:cglib-nodep:2.2'
-        compile 'javax.inject:javax.inject:1'
+        compile "org.springframework.shell:spring-shell:${springShellVersion}"
+        compile "cglib:cglib-nodep:${cglibVersion}"
+        compile "javax.inject:javax.inject:${javaxInjectVersion}"
         compile "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
         compile "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:${jacksonVersion}"
         compile "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:${jacksonVersion}"
-        compile "com.fasterxml.jackson.datatype:jackson-datatype-guava:${jacksonDatatypeVersion}"
-        compile 'joda-time:joda-time:2.1'
+        compile "joda-time:joda-time:${jodaTimeVersion}"
         compile "com.fasterxml.jackson.datatype:jackson-datatype-joda:${jacksonDatatypeVersion}"
         compile "com.sun.jersey:jersey-json:${jerseyVersion}"
         compile "com.sun.jersey:jersey-core:${jerseyVersion}"
@@ -97,7 +96,7 @@ project(':halfpipe-core') {
             exclude(module: 'spring-context')
         }
         compile "com.sun.jersey:jersey-client:${jerseyVersion}"
-        compile 'com.netflix.archaius:archaius-core:0.3.3'
+        compile "com.netflix.archaius:archaius-core:${netfixArchaiusVersion}"
         compile "com.yammer.metrics:metrics-core:${metricsVersion}"
         compile "com.yammer.metrics:metrics-spring:${metricsVersion}"
         compile(group: 'com.yammer.metrics', name: 'metrics-jersey', version: metricsVersion) {
@@ -108,14 +107,14 @@ project(':halfpipe-core') {
         compile "com.yammer.metrics:metrics-servlet:${metricsVersion}"
         compile "com.yammer.metrics:metrics-web:${metricsVersion}"
         compile "com.yammer.metrics:metrics-logback:${metricsVersion}"
-        compile(group: 'com.fasterxml.jackson', name: 'jackson-datatype-guava', version: '1.9.1') {
+        compile(group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-guava', version: jacksonDatatypeVersion) {
             exclude(module: 'guava')
         }
         compile "com.google.guava:guava:${guavaVersion}"
-        compile 'commons-cli:commons-cli:1.2'
-        compile 'commons-io:commons-io:2.4'
-        compile 'javax.servlet:servlet-api:2.5'
-        compile 'org.yaml:snakeyaml:1.11'
+        compile "commons-cli:commons-cli:${commonsCliVersion}"
+        compile "commons-io:commons-io:${commonsIoVersion}"
+        compile "javax.servlet:javax.servlet-api:${javaxServletVersion}"
+        compile "org.yaml:snakeyaml:${snakeYamlVersion}"
         compile "org.slf4j:slf4j-api:${slf4jVersion}"
         compile "org.slf4j:jul-to-slf4j:${slf4jVersion}"
         compile "org.slf4j:log4j-over-slf4j:${slf4jVersion}"
@@ -152,29 +151,35 @@ project(':halfpipe-example') {
     }
 }
 
-project(':halfpipe-scala_2.10.0') {
+project(":halfpipe-scala_${scalaVersion}") {
     apply plugin: 'scala'
 
-    description = 'Halfpipe for Scala 2.10.0'
+    description = "Halfpipe for Scala ${scalaVersion}"
 
     tasks.withType(ScalaCompile) {
         scalaCompileOptions.useAnt = false
     }
 
     dependencies {
+        scalaTools "org.scala-lang:scala-compiler:${scalaVersion}"
+        scalaTools "org.scala-lang:scala-library:${scalaVersion}"
+
+        testCompile "org.scala-lang:scala-compiler:${scalaVersion}"
+        testCompile "org.scalatest:scalatest_${scalaPrefixVersion}:${scalaTestVersion}"
+
         compile project(':halfpipe-core')
-        compile 'org.scala-lang:scala-library:2.10.0'
-        compile 'com.fasterxml.jackson.module:jackson-module-scala_2.10:2.1.3'
-        compile 'com.fasterxml.jackson:jackson-datatype-guava:1.9.1'
-        compile 'org.scala-lang:jline:2.10.0'
-        compile 'com.netflix.archaius:archaius-scala:0.3.3'
-        testCompile 'org.scala-lang:scala-compiler:2.10.0'
-        testCompile 'org.scalatest:scalatest_2.10:1.9.1'
-        compile(group: 'javax.servlet', name: 'servlet-api', version: '2.5') {
-            provided = true
+        compile "org.scala-lang:scala-library:${scalaVersion}"
+        compile "com.fasterxml.jackson.module:jackson-module-scala_${scalaPrefixVersion}:${jacksonScalaVersion}"
+        compile(group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-guava', version: jacksonDatatypeVersion) {
+            exclude(module: 'guava')
+        }
+        compile "org.scala-lang:jline:${scalaVersion}"
+        compile "com.netflix.archaius:archaius-scala:${netfixArchaiusVersion}"
+        compile(group: 'javax.servlet', name: 'javax.servlet-api', version: javaxServletVersion) {
+            ext.provided = true
         }
         compile(group: 'org.springframework.security', name: 'spring-security-openid', version: springSecurityVersion) {
-            provided = true
+            ext.provided = true
         }
     }
 }
@@ -189,10 +194,13 @@ project(':halfpipe-scala-example') {
     }
 
     dependencies {
-        compile project(':halfpipe-scala_2.10.0')
-        compile 'org.freemarker:freemarker:2.3.19'
-        compile(group: 'javax.servlet', name: 'javax.servlet-api', version: '3.0.1') {
-            provided = true
+        scalaTools "org.scala-lang:scala-compiler:${scalaVersion}"
+        scalaTools "org.scala-lang:scala-library:${scalaVersion}"
+
+        compile project(":halfpipe-scala_${scalaVersion}")
+        compile "org.freemarker:freemarker:${freemarkerVersion}"
+        compile(group: 'javax.servlet', name: 'javax.servlet-api', version: javaxServletVersion) {
+            ext.provided = true
         }
     }
 }

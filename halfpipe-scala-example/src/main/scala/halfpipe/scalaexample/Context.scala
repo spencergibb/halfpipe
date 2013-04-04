@@ -1,7 +1,7 @@
 package halfpipe.scalaexample
 
 import org.springframework.context.annotation._
-import com.netflix.config.scala.DynamicProperties
+import com.netflix.config.scala.DynamicProperties._
 import javax.inject.{Inject, Named}
 import org.springframework.context.annotation.ComponentScan.Filter
 import org.springframework.stereotype.Controller
@@ -15,7 +15,7 @@ import org.springframework.context.ApplicationContext
 @ComponentScan (basePackageClasses = Array (classOf[Context], classOf[GCResource]),
   excludeFilters = Array(new Filter (Array (classOf[Controller], classOf[Configuration]))))
 @Import(Array(classOf[DefaultScalaContext], classOf[SecurityContext], classOf[MetricsContext]))
-class Context extends DynamicProperties {
+class Context {
 
   @Inject
   var config: ExampleScalaConfig = _

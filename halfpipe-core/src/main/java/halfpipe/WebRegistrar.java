@@ -10,7 +10,8 @@ import java.util.Map;
  * Time: 12:19 PM
  */
 public interface WebRegistrar<WC> {
-    public Object addServlet(WC context, String name, Servlet servlet, String viewPattern, Map<String, String> initParams);
+    public void setContext(WC context);
+    public Object addServlet(String name, Servlet servlet, String viewPattern, Map<String, String> initParams);
 
-    public Object addFilter(WC context, String name, Filter filter, String urlPattern, Map<String, String> initParams);
+    public Object addFilter(String name, Filter filter, String urlPattern, Map<String, String> initParams);
 }

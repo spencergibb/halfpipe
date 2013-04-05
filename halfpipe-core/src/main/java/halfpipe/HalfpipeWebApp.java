@@ -18,7 +18,7 @@ import java.util.Set;
 /**
  * http://rockhoppertech.com/blog/spring-mvc-configuration-without-xml/
  */
-public abstract class HalfpipeWebAppInitializer<C> extends ContextAware<C>
+public abstract class HalfpipeWebApp<C> extends ContextAware<C>
         implements WebApplicationInitializer, WebRegistrar<ServletContext>
 {
     private static final Log LOG = Log.forThisClass();
@@ -27,7 +27,9 @@ public abstract class HalfpipeWebAppInitializer<C> extends ContextAware<C>
         LoggingUtils.bootstrap();
     }
 
-    public HalfpipeWebAppInitializer() {
+    ServletContext context;
+
+    public HalfpipeWebApp() {
     }
 
     @Override
@@ -38,7 +40,9 @@ public abstract class HalfpipeWebAppInitializer<C> extends ContextAware<C>
 
             Configuration config = config(rootContext);
 
-            configureWebApp(sc, sc, this, config, false);
+            WebBootstrap webBootstrap = rootContext.getBean(WebBootstrap.class);
+
+            configureWebApp(sc, sc, this, config, webBootstrap, false);
         } catch (Exception e) {
             e.printStackTrace();
             sc.log("Unable to initialize Halfpipe web application", e);
@@ -46,10 +50,14 @@ public abstract class HalfpipeWebAppInitializer<C> extends ContextAware<C>
         }
     }
 
-    public ServletRegistration.Dynamic addServlet(ServletContext servletContext, String servletName, Servlet servlet,
+    public void setContext(ServletContext context) {
+        this.context = context;
+    }
+
+    public ServletRegistration.Dynamic addServlet(String servletName, Servlet servlet,
         String urlPattern, Map<String, String> initParams)
     {
-        ServletRegistration.Dynamic reg = servletContext.addServlet(servletName, servlet);
+        ServletRegistration.Dynamic reg = context.addServlet(servletName, servlet);
         Assert.notNull(reg, "Unable to create servlet " + servletName);
         reg.setLoadOnStartup(1); //TODO: config loadOnStartup?
 
@@ -67,9 +75,9 @@ public abstract class HalfpipeWebAppInitializer<C> extends ContextAware<C>
         return reg;
     }
 
-    public FilterRegistration.Dynamic addFilter(ServletContext servletContext, String filterName, Filter filter,
+    public FilterRegistration.Dynamic addFilter(String filterName, Filter filter,
                                                 String urlPattern, Map<String, String> initParams) {
-        FilterRegistration.Dynamic fr = servletContext.addFilter(filterName, filter);
+        FilterRegistration.Dynamic fr = context.addFilter(filterName, filter);
         Assert.notNull(fr, "Unable to create filter "+filterName);
         fr.addMappingForUrlPatterns(null, true, urlPattern);
         fr.setInitParameters(initParams);

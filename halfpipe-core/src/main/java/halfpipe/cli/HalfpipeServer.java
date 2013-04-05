@@ -3,6 +3,7 @@ package halfpipe.cli;
 import com.sun.jersey.spi.spring.container.servlet.SpringServlet;
 import com.yammer.metrics.web.DefaultWebappMetricsFilter;
 import halfpipe.HalfpipeConfiguration;
+import halfpipe.WebBootstrap;
 import halfpipe.WebRegistrar;
 import halfpipe.configuration.Configuration;
 import halfpipe.context.DefaultViewContext;
@@ -16,6 +17,7 @@ import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.webapp.WebAppContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.shell.core.CommandMarker;
@@ -52,6 +54,11 @@ public class HalfpipeServer implements CommandMarker, WebRegistrar<WebAppContext
     @Inject
     Configuration config;
 
+    @Autowired(required = false)
+    WebBootstrap webBootstrap;
+
+    WebAppContext context;
+
     @CliAvailabilityIndicator({"server"})
     public boolean isCommandAvailable() {
         return true;
@@ -76,7 +83,7 @@ public class HalfpipeServer implements CommandMarker, WebRegistrar<WebAppContext
 
         //context.addServlet(JspServlet.class, "*.jsp");*/
 
-        configureWebApp(context.getServletContext(), context, this, config, true);
+        configureWebApp(context.getServletContext(), context, this, config, webBootstrap, true);
 
         /*Connector connector = new Connector(config.http.protocol.get());
         connector.setPort(config.http.port.get());
@@ -98,15 +105,16 @@ public class HalfpipeServer implements CommandMarker, WebRegistrar<WebAppContext
     }
 
     public static <WC> void configureWebApp(ServletContext servletContext, WC context, WebRegistrar<WC> registrar,
-                                            Configuration config, boolean registerDefault) {
+                                            Configuration config, WebBootstrap webBootstrap, boolean registerDefault) {
         HashMap<String, String> emptyInitParams = new HashMap<String, String>();
 
         // rather than sc.addListener(new ContextLoaderListener(rootCtx));
         // set the required servletcontext attribute to avoid loading beans twice
         servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, rootContext);
+        registrar.setContext(context);
 
-        registrar.addFilter(context, "springSecurityFilterChain", new DelegatingFilterProxy(), ROOT_URL_PATTERN, emptyInitParams);
-        registrar.addFilter(context, "webappMetricsFilter", new DefaultWebappMetricsFilter(), ROOT_URL_PATTERN, emptyInitParams);
+        registrar.addFilter("springSecurityFilterChain", new DelegatingFilterProxy(), ROOT_URL_PATTERN, emptyInitParams);
+        registrar.addFilter("webappMetricsFilter", new DefaultWebappMetricsFilter(), ROOT_URL_PATTERN, emptyInitParams);
 
         ConfigurableBeanFactory beanFactory = (ConfigurableBeanFactory) rootContext.getAutowireCapableBeanFactory();
 
@@ -124,20 +132,27 @@ public class HalfpipeServer implements CommandMarker, WebRegistrar<WebAppContext
 
         // The main Spring MVC servlet.
         String viewPattern = config.http.viewPattern.get();
-        registrar.addServlet(context, "viewServlet", new DispatcherServlet(webContext), viewPattern, emptyInitParams);
+        registrar.addServlet("viewServlet", new DispatcherServlet(webContext), viewPattern, emptyInitParams);
 
         if (registerDefault)
-            registrar.addServlet(context, "default", new DefaultServlet(), "/favicon.ico", emptyInitParams);
+            registrar.addServlet("default", new DefaultServlet(), "/favicon.ico", emptyInitParams);
 
         Map<String, Object> resources = rootContext.getBeansWithAnnotation(Path.class);
 
-        registrar.addServlet(context, "jersey-servlet", new SpringServlet(),
+        registrar.addServlet("jersey-servlet", new SpringServlet(),
                 config.http.resourcePattern.get(), jerseyProperties(resources, config));
 
-        //TODO allow custom webapp initialization
+        //custom webapp initialization
+        if (webBootstrap != null) {
+            webBootstrap.boostrap(registrar);
+        }
     }
 
-    public ServletHolder addServlet(WebAppContext context, String name, Servlet servlet, String viewPattern, Map<String, String> initParams) {
+    public void setContext(WebAppContext context) {
+        this.context = context;
+    }
+
+    public ServletHolder addServlet(String name, Servlet servlet, String viewPattern, Map<String, String> initParams) {
         ServletHolder servletHolder = new ServletHolder(servlet);
         servletHolder.setName(name);
         servletHolder.setInitParameters(initParams);
@@ -145,7 +160,7 @@ public class HalfpipeServer implements CommandMarker, WebRegistrar<WebAppContext
         return servletHolder;
     }
 
-    public FilterHolder addFilter(WebAppContext context, String name, Filter filter, String urlPattern, Map<String, String> initParams) {
+    public FilterHolder addFilter(String name, Filter filter, String urlPattern, Map<String, String> initParams) {
         FilterHolder filterHolder = new FilterHolder(filter);
         filterHolder.setName(name);
         filterHolder.setInitParameters(initParams);

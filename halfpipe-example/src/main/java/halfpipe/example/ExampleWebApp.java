@@ -1,6 +1,6 @@
 package halfpipe.example;
 
-import halfpipe.HalfpipeWebAppInitializer;
+import halfpipe.HalfpipeWebApp;
 import halfpipe.example.view.ViewContext;
 
 /**
@@ -8,7 +8,7 @@ import halfpipe.example.view.ViewContext;
  * Date: 4/3/13
  * Time: 11:19 AM
  */
-public class ExampleWebApp extends HalfpipeWebAppInitializer<Context> {
+public class ExampleWebApp extends HalfpipeWebApp<Context> {
 
     @Override
     protected Class<?> getViewContext() {

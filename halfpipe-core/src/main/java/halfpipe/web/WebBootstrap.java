@@ -1,4 +1,4 @@
-package halfpipe;
+package halfpipe.web;
 
 /**
  * User: spencergibb

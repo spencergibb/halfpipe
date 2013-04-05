@@ -4,31 +4,45 @@ import static halfpipe.HalfpipeConfiguration.*;
 
 import com.google.common.base.Throwables;
 import halfpipe.cli.Shell;
+import halfpipe.configuration.Configuration;
 import halfpipe.logging.Log;
 import halfpipe.logging.LoggingUtils;
+import halfpipe.web.ServletContextWebRegistrar;
+import halfpipe.web.WebApp;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 
 /**
  * User: spencergibb
  * Date: 9/26/12
  * Time: 10:41 PM
+ * http://rockhoppertech.com/blog/spring-mvc-configuration-without-xml/
  */
-public abstract class Application<C> extends ContextAware<C> {
+public abstract class Application<C> extends ContextAware<C>
+        implements WebApplicationInitializer {
+
     private static final Log LOG = Log.forThisClass();
 
     static {
         LoggingUtils.bootstrap();
     }
 
+    /**
+     * Run from the command line
+     * @param args
+     */
     public void run(String[] args) {
         try {
             Class<C> contextClass = getContextClass();
             Class<?> serverViewContextClass = getViewContext();
 
             String configFile = findConfig(args);
-            startApplication(configFile, contextClass, serverViewContextClass, LOG);
+            startApplication(configFile, contextClass, serverViewContextClass, "CLI");
 
             Shell shell = getShell(rootContext);
             shell.start(args);
@@ -38,7 +52,30 @@ public abstract class Application<C> extends ContextAware<C> {
         }
     }
 
-    public static void startApplication(String configFile, Class<?> contextClass, Class<?> serverViewContextClass, Log log) throws Exception {
+    /**
+     * Start from a war
+     * @param sc
+     * @throws ServletException
+     */
+    @Override
+    public void onStartup(ServletContext sc) throws ServletException {
+        try {
+            String configFile = System.getProperty("halfpipe.config.file");
+            startApplication(configFile, getContextClass(), getViewContext(), "WAR");
+
+            Configuration config = config(rootContext);
+
+            WebApp webApp = rootContext.getBean(WebApp.class);
+
+            webApp.configure(sc, sc, new ServletContextWebRegistrar(), false);
+        } catch (Exception e) {
+            e.printStackTrace();
+            sc.log("Unable to initialize Halfpipe web application", e);
+            throw new ServletException("Unable to initialize Halfpipe web application", e);
+        }
+    }
+
+    protected void startApplication(String configFile, Class<?> contextClass, Class<?> serverViewContextClass, String appType) throws Exception {
         createConfig(configFile);
 
         registerRootContext(contextClass);
@@ -51,14 +88,15 @@ public abstract class Application<C> extends ContextAware<C> {
 
         LoggingUtils.configure(config(rootContext).logging);
 
-        log.info("Starting {}", config(rootContext).appName.get());
+        LOG.info("Starting {} via {}", config(rootContext).appName.get(), appType);
     }
 
-    public static halfpipe.configuration.Configuration config(AnnotationConfigWebApplicationContext rootContext) {
+
+    protected halfpipe.configuration.Configuration config(AnnotationConfigWebApplicationContext rootContext) {
         return rootContext.getBean(halfpipe.configuration.Configuration.class);
     }
 
-    public static ConfigurableBeanFactory registerCtx(AnnotationConfigWebApplicationContext context) {
+    protected ConfigurableBeanFactory registerCtx(AnnotationConfigWebApplicationContext context) {
         return (ConfigurableBeanFactory) context.getAutowireCapableBeanFactory();
     }
 

@@ -1,4 +1,4 @@
-package halfpipe;
+package halfpipe.web;
 
 import javax.servlet.Filter;
 import javax.servlet.Servlet;

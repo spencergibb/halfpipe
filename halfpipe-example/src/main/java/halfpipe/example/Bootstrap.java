@@ -1,7 +1,7 @@
 package halfpipe.example;
 
-import halfpipe.WebBootstrap;
-import halfpipe.WebRegistrar;
+import halfpipe.web.WebBootstrap;
+import halfpipe.web.WebRegistrar;
 import halfpipe.logging.Log;
 import org.springframework.stereotype.Component;
 

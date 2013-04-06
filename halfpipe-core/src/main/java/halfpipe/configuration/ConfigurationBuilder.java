@@ -184,7 +184,13 @@ public class ConfigurationBuilder {
                         Throwables.propagate(e);
                     }
                 }
-            }});
+            }}, new FieldFilter() {
+                    @Override
+                    public boolean matches(Field field) {
+                        String name = field.getName();
+                        return !name.startsWith("$") && !name.equals("metaClass");
+                    }
+                });
     }
 
     @SuppressWarnings("unchecked")

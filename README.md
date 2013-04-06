@@ -29,6 +29,7 @@ Features
     - spring metrics, TODO: including forking metrics-spring which is no longer maintained
     - TODO: [jersey 2](http://jersey.java.net/documentation/snapshot/index.html)
 - Spring command line [spring shell](http://www.springsource.org/spring-shell/)
+    - ASCII Banners [TAAG](http://patorjk.com/software/taag)
     - TODO: Scala repl [via scala maven plugin](http://davidb.github.com/scala-maven-plugin/example_console.html)
     - TODO: Yeoman integration?
 - Dynamic Config [Archaius](https://github.com/Netflix/archaius)
@@ -41,7 +42,7 @@ Features
 - Model example after RSS recipe and flux capacitor see [32degrees/recipes-rss](https://github.com/32degrees/recipes-rss)
 - Polyglot
     - Java
-    - TODO: Groovy
+    - Groovy
     - Scala 2.10
         - TODO: [Spring Scala](http://blog.springsource.org/2012/12/10/introducing-spring-scala)
 - TODO: Netflix OSS Platform [flux capacitor example app](https://github.com/cfregly/fluxcapacitor)

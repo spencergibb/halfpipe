@@ -84,7 +84,7 @@ public class Shell {
             exitShellRequest = ExitShellRequest.FATAL_EXIT;
 
             HalfpipeBannerProvider provider = ctx.getBean(HalfpipeBannerProvider.class);
-            LOG.info(provider.getBanner());
+            LOG.info("\n"+provider.getBanner());
 
             for (String cmd : executeThenQuit) {
                 successful = shell.executeCommand(cmd);

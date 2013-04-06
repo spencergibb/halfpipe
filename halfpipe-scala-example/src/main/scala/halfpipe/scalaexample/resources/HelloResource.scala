@@ -26,8 +26,8 @@ class HelloResource @Inject() (config: ExampleScalaConfig) {
   @GET
   @Path("/text")
   @Produces(Array(MediaType.TEXT_PLAIN))
-  def hellotext(@QueryParam("more") more: Option[String]) =
-    config.helloText.get() + more.getOrElse("")
+  def hellotext(@QueryParam("name") name: Option[String]) =
+    config.helloText.get() + name.getOrElse("")
 
   @Timed
   @GET

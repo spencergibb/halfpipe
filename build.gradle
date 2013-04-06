@@ -222,3 +222,32 @@ project(':halfpipe-scala-example') {
         }
     }
 }
+
+
+project(':halfpipe-groovy-example') {
+    jar.enabled = true
+    apply plugin: 'groovy'
+    apply plugin: 'fatjar'
+
+    fatJar {
+        dependsOn jar
+        manifest { attributes 'Main-Class': 'halfpipe.groovyexample.ExampleGroovyApp' }
+        exclude('META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA')
+    }
+
+    fatJarPrepareFiles {
+        include 'META-INF/spring.handlers'
+        include 'META-INF/spring.schemas'
+    }
+
+    assemble {
+        it.dependsOn fatJar
+    }
+
+    dependencies {
+        compile project(':halfpipe-core')
+
+        compile 'org.codehaus.groovy:groovy-all:2.1.2'
+    }
+}
+

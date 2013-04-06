@@ -6,7 +6,7 @@ Spring enabled, with embedded jetty or netty.  Fork of [dropwizard](http://dropw
 
 Features
 -----
-- Maven
+- Gradle
 - [Embedded Jetty](http://www.eclipse.org/jetty/documentation/current/embedding-jetty.html)
 - [Executable](https://github.com/brianm/really-executable-jars-maven-plugin)
 - WAR deployment or executable jar
@@ -38,6 +38,7 @@ Features
     - callbacks when config property changes
     - TODO: validate config
     - TODO: flush out configuration for: http, logginc, etc...
+- Model example after RSS recipe and flux capacitor see [32degrees/recipes-rss](https://github.com/32degrees/recipes-rss)
 - Polyglot
     - Java
     - TODO: Groovy
@@ -47,21 +48,19 @@ Features
     - TODO: Service registry and loadbalancer [Eureka](https://github.com/Netflix/eureka)
 - TODO: upload to [sonatype](https://docs.sonatype.org/display/Repository/Sonatype+OSS+Maven+Repository+Usage+Guide)
 - TODO: Netty instead of finagle
-- TODO: Model example after RSS recipe and flux capacitor
 - TODO: Hysterix command simplification
 - TODO: Yammer metrics to hysterix?
 - TODO: Cloud formation templates?
 - TODO: Admin like karyon
-- TODO: Gradle?
-- TODO: metrics aws `cloudwatch
+- TODO: metrics aws cloudwatch
 
 Examples
 -----
 To run the examples:
 
-Java cmd line: `example/target/halfpipe-example server example_config.yml`
+Java cmd line: `java -jar halfpipe-example/build/libs/halfpipe-example-0.1.0-SNAPSHOT.jar server halfpipe-example/config.yml`
 
-Scala cmd line: `halfpipe.scalaexample.ExampleScalaApp server config.yml`
+Scala cmd line: `java -jar halfpipe-scala-example/build/libs/halfpipe-scala-example-0.1.0-SNAPSHOT.jar server halfpipe-scala-example/config.yml`
 
 - 'server' runs the jetty server
 - empty args runs the interactive shell with custom commands loaded

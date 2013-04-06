@@ -12,25 +12,28 @@ import java.util.Set;
  * Date: 4/5/13
  * Time: 10:55 AM
  */
-public class ServletContextWebRegistrar implements WebRegistrar<ServletContext> {
+public class DefualtServletContextHandler implements ServletContextHandler {
     private static final Log LOG = Log.forThisClass();
 
     ServletContext context;
 
-    public void setContext(ServletContext context) {
+    public DefualtServletContextHandler(ServletContext context) {
         this.context = context;
     }
 
+    public ServletContext getServletContext() {
+        return context;
+    }
+
     public ServletRegistration.Dynamic addServlet(String servletName, Servlet servlet,
-                                                  String urlPattern, Map<String, String> initParams)
+                                                  Map<String, String> initParams, String... viewPatterns)
     {
         ServletRegistration.Dynamic reg = context.addServlet(servletName, servlet);
         Assert.notNull(reg, "Unable to create servlet " + servletName);
         reg.setLoadOnStartup(1); //TODO: config loadOnStartup?
 
         reg.setInitParameters(initParams);
-
-        Set<String> mappingConflicts = reg.addMapping(urlPattern);
+        Set<String> mappingConflicts = reg.addMapping(viewPatterns);
         if (!mappingConflicts.isEmpty()) {
             for (String s : mappingConflicts) {
                 LOG.warn("Mapping conflict: {}", s);
@@ -43,10 +46,10 @@ public class ServletContextWebRegistrar implements WebRegistrar<ServletContext> 
     }
 
     public FilterRegistration.Dynamic addFilter(String filterName, Filter filter,
-                                                String urlPattern, Map<String, String> initParams) {
+                                                Map<String, String> initParams, String... urlPatterns) {
         FilterRegistration.Dynamic fr = context.addFilter(filterName, filter);
         Assert.notNull(fr, "Unable to create filter " + filterName);
-        fr.addMappingForUrlPatterns(null, true, urlPattern);
+        fr.addMappingForUrlPatterns(null, true, urlPatterns);
         fr.setInitParameters(initParams);
         return fr;
     }

@@ -20,7 +20,7 @@ import halfpipe.jersey.HalfpipeObjectMapperProvider;
 import halfpipe.jersey.InvalidEntityExceptionMapper;
 import halfpipe.jersey.JacksonMessageBodyProvider;
 import halfpipe.jersey.OptionalQueryParamInjectableProvider;
-import halfpipe.web.WebApp;
+import halfpipe.web.ServletContextInitializer;
 import org.springframework.aop.framework.ProxyConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -130,8 +130,8 @@ public class BaseContext {
     }
 
     @Bean @Scope("singleton")
-    public WebApp webApp() {
-        return new WebApp();
+    public ServletContextInitializer servletContextInitializer() {
+        return new ServletContextInitializer();
     }
 
     @Bean @Scope("singleton")

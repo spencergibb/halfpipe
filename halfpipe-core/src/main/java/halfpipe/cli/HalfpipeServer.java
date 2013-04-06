@@ -2,8 +2,8 @@ package halfpipe.cli;
 
 import halfpipe.configuration.Configuration;
 import halfpipe.logging.Log;
-import halfpipe.web.JettyWebRegistrar;
-import halfpipe.web.WebApp;
+import halfpipe.web.JettyServletContextHandler;
+import halfpipe.web.ServletContextInitializer;
 import org.apache.commons.cli.CommandLine;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
@@ -29,7 +29,7 @@ public class HalfpipeServer implements CommandMarker {
     Configuration config;
 
     @Inject
-    WebApp webApp;
+    ServletContextInitializer initializer;
 
     @CliAvailabilityIndicator({"server"})
     public boolean isCommandAvailable() {
@@ -55,7 +55,7 @@ public class HalfpipeServer implements CommandMarker {
 
         //context.addServlet(JspServlet.class, "*.jsp");*/
 
-        webApp.configure(context.getServletContext(), context, new JettyWebRegistrar(), true);
+        initializer.init(new JettyServletContextHandler(context), true);
 
         /*Connector connector = new Connector(config.http.protocol.get());
         connector.setPort(config.http.port.get());

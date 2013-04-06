@@ -29,28 +29,32 @@ import java.util.Map;
  * Date: 4/5/13
  * Time: 11:03 AM
  */
-public class WebApp {
+public class ServletContextInitializer {
 
     @Inject
     Configuration config;
 
     @Autowired(required = false)
-    WebBootstrap webBootstrap;
+    ServletContextBootstrap webBootstrap;
 
-    public <WC> void configure(ServletContext servletContext, WC context, WebRegistrar<WC> registrar,
-                                            boolean registerDefault) {
+    public void init(ServletContextHandler scHandler, boolean registerDefault) {
         HashMap<String, String> emptyInitParams = new HashMap<String, String>();
 
+        //---------------------------------------------------------
+        //TODO: move these to an ordered list of ServletContextBootstrap
+        ServletContext servletContext = scHandler.getServletContext();
         // rather than sc.addListener(new ContextLoaderListener(rootCtx));
         // set the required servletcontext attribute to avoid loading beans twice
         servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, rootContext);
-        registrar.setContext(context);
 
-        registrar.addFilter("springSecurityFilterChain", new DelegatingFilterProxy(), ROOT_URL_PATTERN, emptyInitParams);
-        registrar.addFilter("webappMetricsFilter", new DefaultWebappMetricsFilter(), ROOT_URL_PATTERN, emptyInitParams);
+        //---------------------------------------------------------
+        scHandler.addFilter("springSecurityFilterChain", new DelegatingFilterProxy(), emptyInitParams, ROOT_URL_PATTERN);
 
+        //---------------------------------------------------------
+        scHandler.addFilter("webappMetricsFilter", new DefaultWebappMetricsFilter(), emptyInitParams, ROOT_URL_PATTERN);
+
+        //---------------------------------------------------------
         ConfigurableBeanFactory beanFactory = (ConfigurableBeanFactory) rootContext.getAutowireCapableBeanFactory();
-
         Class<?> viewContextClass;
         if (beanFactory.containsBean("viewContextClass")) {
             viewContextClass = beanFactory.getBean("viewContextClass", Class.class);
@@ -65,19 +69,22 @@ public class WebApp {
 
         // The main Spring MVC servlet.
         String viewPattern = config.http.viewPattern.get();
-        registrar.addServlet("viewServlet", new DispatcherServlet(webContext), viewPattern, emptyInitParams);
+        scHandler.addServlet("viewServlet", new DispatcherServlet(webContext), emptyInitParams, viewPattern);
 
+        //---------------------------------------------------------
         if (registerDefault)
-            registrar.addServlet("default", new DefaultServlet(), "/favicon.ico", emptyInitParams);
+            scHandler.addServlet("default", new DefaultServlet(), emptyInitParams, "/favicon.ico");
 
+        //---------------------------------------------------------
         Map<String, Object> resources = rootContext.getBeansWithAnnotation(Path.class);
 
-        registrar.addServlet("jersey-servlet", new SpringServlet(),
-                config.http.resourcePattern.get(), jerseyProperties(resources, config));
+        scHandler.addServlet("jersey-servlet", new SpringServlet(),
+                jerseyProperties(resources, config), config.http.resourcePattern.get());
 
+        //---------------------------------------------------------
         //custom webapp initialization
         if (webBootstrap != null) {
-            webBootstrap.boostrap(registrar);
+            webBootstrap.boostrap(scHandler);
         }
     }
 }

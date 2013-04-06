@@ -1,13 +1,12 @@
 package halfpipe.example;
 
-import halfpipe.web.WebBootstrap;
-import halfpipe.web.WebRegistrar;
+import halfpipe.web.ServletContextBootstrap;
+import halfpipe.web.ServletContextHandler;
 import halfpipe.logging.Log;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
 import java.io.IOException;
-import java.util.HashMap;
 
 /**
  * User: spencergibb
@@ -15,12 +14,14 @@ import java.util.HashMap;
  * Time: 10:25 AM
  */
 @Component
-public class Bootstrap implements WebBootstrap {
+public class Bootstrap implements ServletContextBootstrap {
     private static final Log LOG = Log.forThisClass();
 
     @Override
-    public void boostrap(WebRegistrar<?> registrar) {
-        registrar.addFilter("myfilter", new MyFilter(), "/*", new HashMap<String, String>());
+    public void boostrap(ServletContextHandler handler) {
+        //handler.addFilter("myfilter", new MyFilter(), new HashMap<String, String>(), "/*");
+        FilterRegistration.Dynamic filter = handler.getServletContext().addFilter("myfilter", new MyFilter());
+        filter.addMappingForUrlPatterns(null, true, "/*");
     }
 
     class MyFilter implements Filter {

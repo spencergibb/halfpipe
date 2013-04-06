@@ -1,7 +1,0 @@
-
-
-description = 'Halfpipe Web Common'
-
-apply plugin: 'war'
-
-jar.enabled = true

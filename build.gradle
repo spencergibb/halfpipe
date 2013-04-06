@@ -185,12 +185,30 @@ project(":halfpipe-scala_${scalaVersion}") {
 }
 
 project(':halfpipe-scala-example') {
+    jar.enabled = true
+    apply plugin: 'war'
+    apply plugin: 'fatjar'
     apply plugin: 'scala'
 
     description = 'Halfpipe Scala Example'
 
     tasks.withType(ScalaCompile) {
         scalaCompileOptions.useAnt = false
+    }
+
+    fatJar {
+        dependsOn jar
+        manifest { attributes 'Main-Class': 'halfpipe.scalaexample.ExampleScalaApp' }
+        exclude('META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA')
+    }
+
+    fatJarPrepareFiles {
+        include 'META-INF/spring.handlers'
+        include 'META-INF/spring.schemas'
+    }
+
+    assemble {
+        it.dependsOn fatJar
     }
 
     dependencies {

@@ -62,6 +62,10 @@ Java cmd line: `java -jar halfpipe-example/build/libs/halfpipe-example-0.1.0-SNA
 
 Scala cmd line: `java -jar halfpipe-scala-example/build/libs/halfpipe-scala-example-0.1.0-SNAPSHOT.jar server halfpipe-scala-example/config.yml`
 
+Java IDE: `halfpipe.example.ExampleApp server halfpipe-example/config.yml`
+
+Scala IDE: `halfpipe.scalaexample.ExampleScalaApp server halfpipe-scala-example/config.yml`
+
 - 'server' runs the jetty server
 - empty args runs the interactive shell with custom commands loaded
 - in the examples try with 'hello' as the argument

@@ -1,12 +1,12 @@
 package halfpipe.configuration;
 
+import static halfpipe.configuration.Defaults.*;
+
 import ch.qos.logback.classic.Level;
 import com.netflix.config.*;
 import halfpipe.context.MetricsContext;
 import halfpipe.util.Duration;
 import halfpipe.util.Size;
-
-import javax.ws.rs.DefaultValue;
 
 /**
  * User: spencergibb
@@ -14,33 +14,27 @@ import javax.ws.rs.DefaultValue;
  * Time: 12:09 AM
  */
 public class TestConfiguration extends Configuration {
-    @DefaultValue("1")
-    DynamicIntProperty defaultIntProp;
+    DynamicIntProperty defaultIntProp = prop(1);
 
-    @DefaultValue("true")
-    DynamicBooleanProperty defaultBooleanProp;
+    DynamicBooleanProperty defaultBooleanProp = prop(true);
 
-    @DefaultValue("1")
-    DynamicLongProperty defaultLongProp;
+    DynamicLongProperty defaultLongProp = prop(1L);
 
-    @DefaultValue("1.0f")
-    DynamicFloatProperty defaultFloatProp;
+    DynamicFloatProperty defaultFloatProp = prop(1.0f);
 
-    @DefaultValue("1.0d")
-    DynamicDoubleProperty defaultDoubleProp;
+    DynamicDoubleProperty defaultDoubleProp = prop(1.0d);
 
-    @DefaultValue("WARN")
-    DynamicProp<Level> defaultLevel;
+    DynamicStringProperty defaultStringProp = prop("one");
+
+    DynamicProp<Level> defaultLevel = prop(Level.WARN);
 
     DynamicProp<Level> level;
 
-    @DefaultValue("2B")
-    DynamicProp<Size> defaultSize;
+    DynamicProp<Size> defaultSize = prop(Size.bytes(2));
 
     DynamicProp<Size> size;
 
-    @DefaultValue("2m")
-    DynamicProp<Duration> defaultDuration;
+    DynamicProp<Duration> defaultDuration = prop(Duration.minutes(2));
 
     DynamicProp<Duration> duration;
 

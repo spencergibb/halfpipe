@@ -17,6 +17,8 @@ import java.io.IOException;
 public class Bootstrap implements ServletContextBootstrap {
     private static final Log LOG = Log.forThisClass();
 
+    int count = 0;
+
     @Override
     public void boostrap(ServletContextHandler handler) {
         //handler.addFilter("myfilter", new MyFilter(), new HashMap<String, String>(), "/*");
@@ -32,7 +34,8 @@ public class Bootstrap implements ServletContextBootstrap {
 
         @Override
         public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-            LOG.info("Passing through {}", getClass().getSimpleName());
+            if (count++ < 5)
+                LOG.info("Passing through {}", getClass().getSimpleName());
             chain.doFilter(request, response);
         }
 

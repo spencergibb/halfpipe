@@ -86,4 +86,15 @@ class ScalaConfigBuilder(conversionService: ConversionService) extends Configura
       super.addCallback(config, prop, propertyCallback)
     }
   }
+
+
+  protected override def getDefaultValue(fieldValue: Any):AnyRef = {
+    if (fieldValue != null && fieldValue.isInstanceOf[ScalaPropertyWrapper[_]]) {
+      val property = fieldValue.asInstanceOf[ScalaPropertyWrapper[_]]
+      val value: Any = property.get()
+      if (value != null)
+        return value.asInstanceOf[AnyRef]
+    }
+    super.getDefaultValue(fieldValue)
+  }
 }

@@ -9,8 +9,10 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.util.Assert;
 
-import javax.ws.rs.DefaultValue;
-import java.lang.reflect.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.List;
 /**
  * User: spencergibb
@@ -133,64 +135,76 @@ public class ConfigurationBuilder {
         Class<?> configClass = config.getClass();
         final PropertyCallback classPropertyCallback = configClass.getAnnotation(PropertyCallback.class);
 
-        doWithFields(configClass, new FieldCallback(){
-            public void doWith(Field field) throws IllegalArgumentException, IllegalAccessException {
-                Class<?> type = field.getType();
-                String propName = getPropName(field, context);
+        doWithFields(configClass, new FieldCallback() {
+                    public void doWith(Field field) throws IllegalArgumentException, IllegalAccessException {
+                        Class<?> type = field.getType();
+                        String propName = getPropName(field, context);
 
-                boolean fieldSet = false;
-                for (PropBuilder propBuilder: builders) {
-                    if (propBuilder.getPropType().isAssignableFrom(type)) {
-                        makeAccessible(field);
-                        Object defaultValue = null;
-                        //TODO: use spring converters
-                        DefaultValue annotation = field.getAnnotation(DefaultValue.class);
-                        Class<?> valueClass = getValueClass(field.getGenericType());
-                        try {
-                            if (valueClass == null) {
-                                // look for the return type of the get method?
-                                // TODO: better way? scala classes don't extend
-                                Method get = type.getMethod("get");
-                                valueClass = get.getReturnType();
+                        boolean fieldSet = false;
+                        for (PropBuilder propBuilder : builders) {
+                            if (propBuilder.getPropType().isAssignableFrom(type)) {
+                                makeAccessible(field);
+                                Object defaultValue = null;
+                                //TODO: use spring converters
+                                Class<?> valueClass = getValueClass(field.getGenericType());
+                                try {
+                                    if (valueClass == null) {
+                                        // look for the return type of the get method?
+                                        // TODO: better way? scala classes don't extend
+                                        Method get = type.getMethod("get");
+                                        valueClass = get.getReturnType();
+                                    }
+                                    defaultValue = propBuilder.defaultVal();
+
+                                    Object value = getDefaultValue(field.get(config));
+                                    if (value != null)
+                                        defaultValue = value;
+                                } catch (Exception e) {
+                                    Throwables.propagate(e);
+                                }
+
+                                Object property = propBuilder.getProp(propName, defaultValue, valueClass);
+
+                                PropertyCallback propertyCallback = field.getAnnotation(PropertyCallback.class);
+                                addCallback(config, property, propertyCallback);
+                                addCallback(config, property, classPropertyCallback);
+
+                                field.set(config, property);
+
+                                fieldSet = true;
+                                break;
                             }
-                            if (annotation != null) {
-                                defaultValue = propBuilder.convert(annotation.value(), valueClass);
-                            } else {
-                                defaultValue = propBuilder.defaultVal();
-                            }
-                        } catch (Exception e) {
-                            Throwables.propagate(e);
                         }
 
-                        Object property = propBuilder.getProp(propName, defaultValue, valueClass);
-
-                        PropertyCallback propertyCallback = field.getAnnotation(PropertyCallback.class);
-                        addCallback(config, property, propertyCallback);
-                        addCallback(config, property, classPropertyCallback);
-
-                        field.set(config, property);
-
-                        fieldSet = true;
-                        break;
+                        if (!fieldSet && field.get(config) == null) {
+                            try {
+                                Object fieldConfig = type.newInstance();
+                                build(fieldConfig, propName);
+                                field.set(config, fieldConfig);
+                            } catch (Exception e) {
+                                Throwables.propagate(e);
+                            }
+                        }
                     }
-                }
-
-                if (!fieldSet && field.get(config) == null) {
-                    try {
-                        Object fieldConfig = type.newInstance();
-                        build(fieldConfig, propName);
-                        field.set(config, fieldConfig);
-                    } catch (Exception e) {
-                        Throwables.propagate(e);
-                    }
-                }
-            }}, new FieldFilter() {
+                }, new FieldFilter() {
                     @Override
                     public boolean matches(Field field) {
                         String name = field.getName();
+                        // for groovy
                         return !name.startsWith("$") && !name.equals("metaClass");
                     }
-                });
+                }
+        );
+    }
+
+    protected Object getDefaultValue(Object fieldValue) {
+        if (fieldValue != null && fieldValue instanceof PropertyWrapper) {
+                PropertyWrapper pw = (PropertyWrapper) fieldValue;
+                Object value = pw.getValue();
+                if (value != null)
+                    return value;
+        }
+        return null;
     }
 
     @SuppressWarnings("unchecked")

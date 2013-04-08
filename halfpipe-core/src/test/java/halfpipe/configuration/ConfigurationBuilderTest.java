@@ -53,14 +53,15 @@ public class ConfigurationBuilderTest {
         assertProp("config.defaultLongProp", config.defaultLongProp, 1L);
         assertProp("config.defaultFloatProp", config.defaultFloatProp, 1.0f);
         assertProp("config.defaultDoubleProp", config.defaultDoubleProp, 1.0d);
+        assertProp("config.defaultStringProp", config.defaultStringProp, "one");
         assertProp("config.longProp", config.longProp, 1L);
         assertProp("config.floatProp", config.floatProp, 1.0f);
         assertProp("config.doubleProp", config.doubleProp, 1.0d);
 
         assertProp("config.http", config.http);
-        assertThat("config.http.protocol is bad", config.http.protocol.get(), is(nullValue()));
         assertProp("config.http.port", config.http.port, 80);
         assertProp("config.http.viewPattern", config.http.viewPattern, "/*");
+        assertProp("config.http.port", config.http.maxIdleTime, Duration.seconds(200));
 
         assertProp("config.http.gzip", config.http.gzip);
         assertProp("config.http.gzip.enabled", config.http.gzip.enabled, true);

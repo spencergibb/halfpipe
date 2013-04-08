@@ -1,10 +1,11 @@
 package halfpipe.configuration;
 
+import static halfpipe.configuration.Defaults.*;
+
 import ch.qos.logback.classic.Level;
 import com.netflix.config.DynamicBooleanProperty;
 import com.netflix.config.DynamicStringProperty;
 
-import javax.ws.rs.DefaultValue;
 import java.util.TimeZone;
 
 /**
@@ -15,20 +16,16 @@ import java.util.TimeZone;
 public class LoggingConfiguration {
 
     public static class ConsoleConfiguration {
-        @DefaultValue("true")
-        public DynamicBooleanProperty enabled;
+        public DynamicBooleanProperty enabled = prop(true);
 
-        @DefaultValue("ALL")
-        public DynamicProp<Level> threshold;
+        public DynamicProp<Level> threshold = prop(Level.ALL);
 
         public DynamicStringProperty logFormat;
 
-        @DefaultValue("UTC")
-        public DynamicProp<TimeZone> timeZone;
+        public DynamicProp<TimeZone> timeZone = prop(TimeZone.getTimeZone("UTC"));
     }
 
     public ConsoleConfiguration console;
 
-    @DefaultValue("WARN")
-    public DynamicProp<Level> level;
+    public DynamicProp<Level> level = prop(Level.WARN);
 }

@@ -1,9 +1,8 @@
 package halfpipe.configuration;
 
-import com.netflix.config.DynamicStringProperty;
-import halfpipe.context.DefaultContext;
+import static halfpipe.configuration.Defaults.*;
 
-import javax.ws.rs.DefaultValue;
+import com.netflix.config.DynamicStringProperty;
 
 /**
  * User: spencergibb
@@ -11,17 +10,13 @@ import javax.ws.rs.DefaultValue;
  * Time: 11:14 PM
  */
 public class Configuration {
-    @DefaultValue("Halfpipe")
-    public DynamicStringProperty appName;
+    public DynamicStringProperty appName = prop("Halfpipe");
 
-    @DefaultValue("halfpipebanner.txt")
-    public DynamicStringProperty bannerFile;
+    public DynamicStringProperty bannerFile = prop("halfpipebanner.txt");
 
     public DynamicStringProperty resourcePackages;
 
     public HttpConfiguration http;
 
     public LoggingConfiguration logging;
-
-    public Class<?> appConfigClass = DefaultContext.class;
 }

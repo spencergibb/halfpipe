@@ -4,15 +4,19 @@ import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
 import ch.qos.logback.classic.Level;
+import com.google.common.collect.Lists;
 import com.netflix.config.ConcurrentMapConfiguration;
 import com.netflix.config.DynamicPropertyFactory;
 import com.netflix.config.PropertyWrapper;
+import halfpipe.configuration.builder.*;
 import org.junit.Test;
 import org.springframework.core.convert.support.DefaultConversionService;
 import halfpipe.configuration.convert.StringToTimeZoneConverter;
 import halfpipe.context.MetricsContext;
 import halfpipe.util.Duration;
 import halfpipe.util.Size;
+
+import java.util.List;
 
 /**
  * User: spencergibb
@@ -43,7 +47,15 @@ public class ConfigurationBuilderTest {
         TestConfiguration config = new TestConfiguration();
         DefaultConversionService conversionService = new DefaultConversionService();
         conversionService.addConverter(new StringToTimeZoneConverter());
-        new ConfigurationBuilder(conversionService).build(config);
+        List<PropBuilder<?, ?>> builders = Lists.newArrayList();
+        builders.add(new GenericBuilder());
+        builders.add(new StringPropBuilder());
+        builders.add(new IntBuilder());
+        builders.add(new BooleanBuilder());
+        builders.add(new LongBuilder());
+        builders.add(new FloatBuilder());
+        builders.add(new DoubleBuilder());
+        new ConfigurationBuilder(conversionService, builders).build(config);
 
         assertProp("config", config);
 

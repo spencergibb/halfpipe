@@ -12,6 +12,7 @@ import com.yammer.metrics.util.DeadlockHealthCheck;
 import halfpipe.cli.HalfpipeBannerProvider;
 import halfpipe.cli.HalfpipeServer;
 import halfpipe.configuration.ConfigurationBeanPostProcessor;
+import halfpipe.configuration.builder.*;
 import halfpipe.configuration.convert.StringToTimeZoneConverter;
 import halfpipe.jackson.AnnotationSensitivePropertyNamingStrategy;
 import halfpipe.jackson.GuavaExtrasModule;
@@ -23,6 +24,7 @@ import halfpipe.jersey.OptionalQueryParamInjectableProvider;
 import halfpipe.web.ServletContextInitializer;
 import org.springframework.aop.framework.ProxyConfig;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.support.ConversionServiceFactoryBean;
@@ -38,6 +40,7 @@ import java.util.Set;
  * Time: 4:34 PM
  */
 @Configuration
+@ComponentScan(basePackageClasses = PropBuilder.class)
 public class BaseContext {
 
     @Bean

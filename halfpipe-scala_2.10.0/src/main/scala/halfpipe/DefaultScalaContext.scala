@@ -1,5 +1,7 @@
 package halfpipe
 
+import java.util.{List => JList}
+import configuration.builder.PropBuilder
 import configuration.ScalaConfigBuilder
 import context.BaseContext
 import inject.ScalaCollectionsQueryParamInjectableProvider
@@ -23,5 +25,6 @@ class DefaultScalaContext {
   def scalaModule() = new DefaultScalaModule
 
   @Bean @Scope("singleton")
-  def scalaConfigBuilder(conversionService:ConversionService) = new ScalaConfigBuilder(conversionService)
+  def scalaConfigBuilder(conversionService:ConversionService, builders:JList[PropBuilder[_, _]]) =
+    new ScalaConfigBuilder(conversionService, builders)
 }

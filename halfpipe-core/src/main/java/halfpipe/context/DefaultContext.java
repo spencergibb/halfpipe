@@ -1,11 +1,14 @@
 package halfpipe.context;
 
+import halfpipe.configuration.builder.PropBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Scope;
 import org.springframework.core.convert.ConversionService;
 import halfpipe.configuration.ConfigurationBuilder;
+
+import java.util.List;
 
 /**
  * User: spencergibb
@@ -17,7 +20,7 @@ import halfpipe.configuration.ConfigurationBuilder;
 public class DefaultContext {
 
     @Bean @Scope("singleton")
-    public ConfigurationBuilder configurationBuilder(ConversionService conversionService) {
-        return new ConfigurationBuilder(conversionService);
+    public ConfigurationBuilder configurationBuilder(ConversionService conversionService, List<PropBuilder<?, ?>> builders) {
+        return new ConfigurationBuilder(conversionService, builders);
     }
 }

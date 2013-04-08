@@ -3,7 +3,7 @@ package halfpipe.configuration
 import com.netflix.config.scala._
 
 /**
- * User: gibbsb
+ * User: spencergibb
  * Date: 4/8/13
  * Time: 11:58 AM
  */

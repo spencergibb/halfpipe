@@ -13,12 +13,12 @@ import java.util.Set;
  * Date: 4/5/13
  * Time: 10:55 AM
  */
-public class DefualtServletEnvironment implements ServletEnvironment {
+public class DefaultServletEnvironment implements ServletEnvironment {
     private static final Logger LOG = Log.forThisClass();
 
     ServletContext context;
 
-    public DefualtServletEnvironment(ServletContext context) {
+    public DefaultServletEnvironment(ServletContext context) {
         this.context = context;
     }
 

@@ -6,7 +6,7 @@ import com.google.common.base.Throwables;
 import halfpipe.cli.Shell;
 import halfpipe.logging.Log;
 import halfpipe.logging.LoggingFactory;
-import halfpipe.web.DefualtServletEnvironment;
+import halfpipe.web.DefaultServletEnvironment;
 import halfpipe.web.ServletContextInitializer;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -65,7 +65,7 @@ public abstract class Application<C> extends ContextAware<C>
 
             ServletContextInitializer initializer = rootContext.getBean(ServletContextInitializer.class);
 
-            initializer.init(new DefualtServletEnvironment(sc));
+            initializer.init(new DefaultServletEnvironment(sc));
         } catch (Exception e) {
             e.printStackTrace();
             sc.log("Unable to initialize Halfpipe web application", e);

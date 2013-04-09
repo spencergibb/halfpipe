@@ -2,7 +2,6 @@ package halfpipe.configuration
 
 import java.util.{List => JList}
 import builder.PropBuilder
-import com.netflix.config.scala._
 import org.springframework.core.convert.ConversionService
 
 /**

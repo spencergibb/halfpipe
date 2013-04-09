@@ -98,6 +98,7 @@ project(':halfpipe-core') {
         compile "com.sun.jersey:jersey-client:${jerseyVersion}"
         compile "com.netflix.archaius:archaius-core:${netfixArchaiusVersion}"
         compile "com.yammer.metrics:metrics-core:${metricsVersion}"
+        compile "com.yammer.metrics:metrics-jetty:${metricsVersion}"
         compile "com.yammer.metrics:metrics-spring:${metricsVersion}"
         compile(group: 'com.yammer.metrics', name: 'metrics-jersey', version: metricsVersion) {
             exclude(module: 'jersey-core')

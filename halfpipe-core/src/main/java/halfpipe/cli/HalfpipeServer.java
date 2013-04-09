@@ -2,18 +2,19 @@ package halfpipe.cli;
 
 import halfpipe.configuration.Configuration;
 import halfpipe.logging.Log;
-import halfpipe.web.JettyServletContextHandler;
-import halfpipe.web.ServletContextInitializer;
+import halfpipe.web.JettyServletEnvironment;
+import halfpipe.web.ServerFactory;
 import org.apache.commons.cli.CommandLine;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.DefaultHandler;
 import org.eclipse.jetty.server.handler.HandlerList;
-import org.eclipse.jetty.webapp.WebAppContext;
+import org.springframework.context.annotation.Profile;
 import org.springframework.shell.core.CommandMarker;
 import org.springframework.shell.core.annotation.CliAvailabilityIndicator;
 import org.springframework.shell.core.annotation.CliCommand;
 import org.springframework.shell.core.annotation.CliOption;
+import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 
@@ -22,6 +23,8 @@ import javax.inject.Inject;
  * Date: 9/26/12
  * Time: 11:44 PM
  */
+@Component
+@Profile("CLI")
 public class HalfpipeServer implements CommandMarker {
     private static final Log LOG = Log.forThisClass();
 
@@ -29,7 +32,7 @@ public class HalfpipeServer implements CommandMarker {
     Configuration config;
 
     @Inject
-    ServletContextInitializer initializer;
+    ServerFactory serverFactory;
 
     @CliAvailabilityIndicator({"server"})
     public boolean isCommandAvailable() {
@@ -46,29 +49,7 @@ public class HalfpipeServer implements CommandMarker {
     }
 
     public void run(CommandLine commandLine) throws Exception {
-        Server server = new Server(config.http.port.get());
-
-        WebAppContext context = new WebAppContext();
-        context.setContextPath("/");
-        context.setResourceBase("."); //TODO: has to be set to non null?
-        context.setClassLoader(Thread.currentThread().getContextClassLoader());
-
-        //context.addServlet(JspServlet.class, "*.jsp");*/
-
-        initializer.init(new JettyServletContextHandler(context), true);
-
-        /*Connector connector = new Connector(config.http.protocol.get());
-        connector.setPort(config.http.port.get());
-        connector.setURIEncoding(config.http.uriEncoding.get());*/
-
-        //TODO https config
-        //TODO use naming config
-        //TODO ajp config
-        //TODO serverXml config?
-
-        HandlerList handlers = new HandlerList();
-        handlers.setHandlers(new Handler[] { context, new DefaultHandler() });
-        server.setHandler(handlers);
+        Server server = serverFactory.buildServer(new JettyServletEnvironment());
 
         LOG.info("staring jetty on port {}", config.http.port.get());
         server.start();

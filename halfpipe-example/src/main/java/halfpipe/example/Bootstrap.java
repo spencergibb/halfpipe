@@ -1,7 +1,7 @@
 package halfpipe.example;
 
 import halfpipe.web.ServletContextBootstrap;
-import halfpipe.web.ServletContextHandler;
+import halfpipe.web.ServletEnvironment;
 import halfpipe.logging.Log;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +20,7 @@ public class Bootstrap implements ServletContextBootstrap {
     int count = 0;
 
     @Override
-    public void boostrap(ServletContextHandler handler) {
+    public void boostrap(ServletEnvironment handler) {
         //handler.addFilter("myfilter", new MyFilter(), new HashMap<String, String>(), "/*");
         FilterRegistration.Dynamic filter = handler.getServletContext().addFilter("myfilter", new MyFilter());
         filter.addMappingForUrlPatterns(null, true, "/*");

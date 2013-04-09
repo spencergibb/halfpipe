@@ -10,7 +10,7 @@ import java.util.Map;
  * Date: 4/3/13
  * Time: 12:19 PM
  */
-public interface ServletContextHandler {
+public interface ServletEnvironment {
     /**
      * Allow direct access to the Servlet Context
      * @return
@@ -38,4 +38,6 @@ public interface ServletContextHandler {
      * @return
      */
     public Object addFilter(String name, Filter filter, Map<String, String> initParams, String... urlPatterns);
+
+    public boolean isRegisterDefault();
 }

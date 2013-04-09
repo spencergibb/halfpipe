@@ -9,10 +9,9 @@ import com.yammer.metrics.core.HealthCheck;
 import com.yammer.metrics.core.HealthCheckRegistry;
 import com.yammer.metrics.core.MetricsRegistry;
 import com.yammer.metrics.util.DeadlockHealthCheck;
-import halfpipe.cli.HalfpipeBannerProvider;
 import halfpipe.cli.HalfpipeServer;
 import halfpipe.configuration.ConfigurationBeanPostProcessor;
-import halfpipe.configuration.builder.*;
+import halfpipe.configuration.builder.PropBuilder;
 import halfpipe.configuration.convert.StringToTimeZoneConverter;
 import halfpipe.jackson.AnnotationSensitivePropertyNamingStrategy;
 import halfpipe.jackson.GuavaExtrasModule;
@@ -22,6 +21,7 @@ import halfpipe.jersey.InvalidEntityExceptionMapper;
 import halfpipe.jersey.JacksonMessageBodyProvider;
 import halfpipe.jersey.OptionalQueryParamInjectableProvider;
 import halfpipe.web.ServletContextInitializer;
+import halfpipe.web.ServletEnvironment;
 import org.springframework.aop.framework.ProxyConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -40,13 +40,12 @@ import java.util.Set;
  * Time: 4:34 PM
  */
 @Configuration
-@ComponentScan(basePackageClasses = PropBuilder.class)
+@ComponentScan(basePackageClasses = {
+        PropBuilder.class,
+        ServletEnvironment.class,
+        HalfpipeServer.class
+})
 public class BaseContext {
-
-    @Bean
-    public HalfpipeBannerProvider halfpipeBannerProvider() {
-        return new HalfpipeBannerProvider();
-    }
 
     @Bean @Scope("singleton")
     public OptionalQueryParamInjectableProvider optionalQueryParamInjectableProvider() {
@@ -57,11 +56,6 @@ public class BaseContext {
     public GuavaExtrasModule guavaExtrasModule() {
         return new GuavaExtrasModule();
     }
-
-/*    @Bean @Scope("singleton")
-    public DynamicPropertiesModule dynamicPropertiesModule() {
-        return new DynamicPropertiesModule();
-    }*/
 
     @Bean @Scope("singleton")
     public GuavaModule guavaModule() {
@@ -125,11 +119,6 @@ public class BaseContext {
     @Bean @Scope("singleton")
     public ConfigurationBeanPostProcessor configurationBeanPostProcessor() {
         return new ConfigurationBeanPostProcessor();
-    }
-
-    @Bean @Scope("singleton")
-    public HalfpipeServer server() {
-        return new HalfpipeServer();
     }
 
     @Bean @Scope("singleton")

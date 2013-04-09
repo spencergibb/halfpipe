@@ -14,6 +14,7 @@ import java.util.TimeZone;
  * Time: 11:18 PM
  */
 public class LoggingConfiguration {
+    static final TimeZone UTC = TimeZone.getTimeZone("UTC");
 
     public static class ConsoleConfiguration {
         public DynamicBooleanProperty enabled = prop(true);
@@ -22,7 +23,7 @@ public class LoggingConfiguration {
 
         public DynamicStringProperty logFormat;
 
-        public DynamicProp<TimeZone> timeZone = prop(TimeZone.getTimeZone("UTC"));
+        public DynamicProp<TimeZone> timeZone = prop(UTC);
     }
 
     public ConsoleConfiguration console;

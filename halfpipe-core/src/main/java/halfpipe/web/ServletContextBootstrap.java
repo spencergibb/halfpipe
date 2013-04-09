@@ -6,5 +6,5 @@ package halfpipe.web;
  * Time: 10:19 AM
  */
 public interface ServletContextBootstrap {
-    public void boostrap(ServletContextHandler handler);
+    public void boostrap(ServletEnvironment handler);
 }

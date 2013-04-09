@@ -4,15 +4,20 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.filter.ThresholdFilter;
+import ch.qos.logback.classic.jmx.JMXConfigurator;
 import ch.qos.logback.classic.jul.LevelChangePropagator;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.ConsoleAppender;
 import com.google.common.collect.Maps;
 import com.yammer.metrics.logback.InstrumentedAppender;
+import halfpipe.configuration.Configuration;
 import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 import halfpipe.configuration.LoggingConfiguration;
 
+import javax.management.MBeanServer;
+import javax.management.ObjectName;
+import java.lang.management.ManagementFactory;
 import java.util.Map;
 import java.util.TimeZone;
 
@@ -23,11 +28,23 @@ import java.util.TimeZone;
  */
 public class LoggingUtils {
     public static void bootstrap() {
-        final Logger root = (Logger) LoggerFactory.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
-        root.detachAndStopAllAppenders();
+        final Logger root = getCleanRoot();
 
-        LoggerContext context = root.getLoggerContext();
-        root.addAppender(consoleLogger(context, Level.WARN, null, TimeZone.getDefault()));
+        final LogFormatter formatter = new LogFormatter(root.getLoggerContext(),
+                TimeZone.getDefault());
+        formatter.start();
+
+        final ThresholdFilter filter = new ThresholdFilter();
+        filter.setLevel(Level.WARN.toString());
+        filter.start();
+
+        final ConsoleAppender<ILoggingEvent> appender = new ConsoleAppender<ILoggingEvent>();
+        appender.addFilter(filter);
+        appender.setContext(root.getLoggerContext());
+        appender.setLayout(formatter);
+        appender.start();
+
+        root.addAppender(appender);
     }
 
     private static ConsoleAppender<ILoggingEvent> consoleLogger(LoggerContext context, LoggingConfiguration.ConsoleConfiguration config)
@@ -55,12 +72,49 @@ public class LoggingUtils {
 
         return appender;
     }
-
     public static void configure(LoggingConfiguration config) {
-        //hijackJDKLogging
+        hijackJDKLogging();
+
+        final Logger root = configureLevels(config);
+
+        /*TODO: move to configurable loggers
+        for (LoggingOutput output : config.logging.outputs) {
+            root.addAppender(output.build(root.getLoggerContext(), config.appName.get(), null));
+        }*/
+        if (config.console.enabled.get()) {
+            root.addAppender(AsyncAppender.wrap(consoleLogger(root.getLoggerContext(),
+                    config.console)));
+        }
+
+        final MBeanServer server = ManagementFactory.getPlatformMBeanServer();
+        try {
+            final ObjectName objectName = new ObjectName("halfpipe:type=Logging");
+            if (!server.isRegistered(objectName)) {
+                server.registerMBean(new JMXConfigurator(root.getLoggerContext(),
+                        server,
+                        objectName),
+                        objectName);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        configureInstrumentation(root);
+    }
+
+    private static void configureInstrumentation(Logger root) {
+        final InstrumentedAppender appender = new InstrumentedAppender();
+        appender.setContext(root.getLoggerContext());
+        appender.start();
+        root.addAppender(appender);
+    }
+
+    private static void hijackJDKLogging() {
         SLF4JBridgeHandler.removeHandlersForRootLogger();
         SLF4JBridgeHandler.install();
+    }
 
+    private static Logger configureLevels(LoggingConfiguration logging) {
         final Logger root = (Logger) LoggerFactory.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
         root.getLoggerContext().reset();
 
@@ -70,8 +124,11 @@ public class LoggingUtils {
 
         root.getLoggerContext().addListener(propagator);
 
-        root.setLevel(config.level.get());
+        root.setLevel(logging.level.get());
 
+        /*for (Map.Entry<String, Level> entry : logging.loggers.entrySet()) {
+            ((Logger) LoggerFactory.getLogger(entry.getKey())).setLevel(entry.getValue());
+        }*/
         Map<String, Level> loggers = Maps.newHashMap(); //TODO: config
         loggers.put("org.springframework.shell", Level.INFO);
         loggers.put("com.sun.jersey.api.core.ScanningResourceConfig", Level.INFO);
@@ -80,14 +137,13 @@ public class LoggingUtils {
             ((Logger) LoggerFactory.getLogger(entry.getKey())).setLevel(entry.getValue());
         }
 
-        if (config.console.enabled.get()) {
-                root.addAppender(AsyncAppender.wrap(consoleLogger(root.getLoggerContext(),
-                    config.console)));
-        }
-
-        final InstrumentedAppender appender = new InstrumentedAppender();
-        appender.setContext(root.getLoggerContext());
-        appender.start();
-        root.addAppender(appender);
+        return root;
     }
+
+    private static Logger getCleanRoot() {
+        final Logger root = (Logger) LoggerFactory.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
+        root.detachAndStopAllAppenders();
+        return root;
+    }
+
 }

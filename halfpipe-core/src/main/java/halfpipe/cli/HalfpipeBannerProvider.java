@@ -7,6 +7,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.shell.plugin.BannerProvider;
 import org.springframework.shell.support.util.OsUtils;
 import halfpipe.configuration.Configuration;
+import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 import java.net.URL;
@@ -16,6 +17,7 @@ import java.net.URL;
  * Date: 10/3/12
  * Time: 4:09 PM
  */
+@Component
 @Order(Ordered.LOWEST_PRECEDENCE-1)
 public class HalfpipeBannerProvider implements BannerProvider {
 

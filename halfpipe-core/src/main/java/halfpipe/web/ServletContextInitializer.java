@@ -9,6 +9,7 @@ import com.yammer.metrics.web.DefaultWebappMetricsFilter;
 import halfpipe.HalfpipeConfiguration;
 import halfpipe.configuration.Configuration;
 import halfpipe.context.DefaultViewContext;
+import halfpipe.servlets.ThreadNameFilter;
 import org.eclipse.jetty.servlet.DefaultServlet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -19,8 +20,10 @@ import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.DispatcherServlet;
 
 import javax.inject.Inject;
+import javax.servlet.DispatcherType;
 import javax.servlet.ServletContext;
 import javax.ws.rs.Path;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,21 +40,23 @@ public class ServletContextInitializer {
     @Autowired(required = false)
     ServletContextBootstrap webBootstrap;
 
-    public void init(ServletContextHandler scHandler, boolean registerDefault) {
+    public void init(ServletEnvironment env) {
         HashMap<String, String> emptyInitParams = new HashMap<String, String>();
 
         //---------------------------------------------------------
         //TODO: move these to an ordered list of ServletContextBootstrap
-        ServletContext servletContext = scHandler.getServletContext();
+        ServletContext servletContext = env.getServletContext();
         // rather than sc.addListener(new ContextLoaderListener(rootCtx));
         // set the required servletcontext attribute to avoid loading beans twice
         servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, rootContext);
 
-        //---------------------------------------------------------
-        scHandler.addFilter("springSecurityFilterChain", new DelegatingFilterProxy(), emptyInitParams, ROOT_URL_PATTERN);
+        env.addFilter("threadNameFilter", new ThreadNameFilter(), emptyInitParams, ROOT_URL_PATTERN);
 
         //---------------------------------------------------------
-        scHandler.addFilter("webappMetricsFilter", new DefaultWebappMetricsFilter(), emptyInitParams, ROOT_URL_PATTERN);
+        env.addFilter("springSecurityFilterChain", new DelegatingFilterProxy(), emptyInitParams, ROOT_URL_PATTERN);
+
+        //---------------------------------------------------------
+        env.addFilter("webappMetricsFilter", new DefaultWebappMetricsFilter(), emptyInitParams, ROOT_URL_PATTERN);
 
         //---------------------------------------------------------
         ConfigurableBeanFactory beanFactory = (ConfigurableBeanFactory) rootContext.getAutowireCapableBeanFactory();
@@ -69,22 +74,22 @@ public class ServletContextInitializer {
 
         // The main Spring MVC servlet.
         String viewPattern = config.http.viewPattern.get();
-        scHandler.addServlet("viewServlet", new DispatcherServlet(webContext), emptyInitParams, viewPattern);
+        env.addServlet("viewServlet", new DispatcherServlet(webContext), emptyInitParams, viewPattern);
 
         //---------------------------------------------------------
-        if (registerDefault)
-            scHandler.addServlet("default", new DefaultServlet(), emptyInitParams, "/favicon.ico");
+        if (env.isRegisterDefault())
+            env.addServlet("default", new DefaultServlet(), emptyInitParams, "/favicon.ico");
 
         //---------------------------------------------------------
         Map<String, Object> resources = rootContext.getBeansWithAnnotation(Path.class);
 
-        scHandler.addServlet("jersey-servlet", new SpringServlet(),
+        env.addServlet("jersey-servlet", new SpringServlet(),
                 jerseyProperties(resources, config), config.http.resourcePattern.get());
 
         //---------------------------------------------------------
         //custom webapp initialization
         if (webBootstrap != null) {
-            webBootstrap.boostrap(scHandler);
+            webBootstrap.boostrap(env);
         }
     }
 }

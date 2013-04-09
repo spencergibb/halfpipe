@@ -3,12 +3,16 @@ package halfpipe.configuration;
 import static halfpipe.Halfpipe.*;
 import static halfpipe.configuration.Defaults.*;
 
+import com.netflix.config.DynamicBooleanProperty;
 import com.netflix.config.DynamicIntProperty;
 import com.netflix.config.DynamicStringProperty;
 import halfpipe.util.Duration;
+import halfpipe.util.Size;
 import halfpipe.validation.PortRange;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.Locale;
 
@@ -37,16 +41,16 @@ public class HttpConfiguration {
         }
     }
 
-    /*@Valid
+    @Valid
     @NotNull
-    public RequestLogConfiguration requestLog = new RequestLogConfiguration();*/
+    public RequestLogConfiguration requestLog;
 
     @Valid
     @NotNull
     public GzipConfiguration gzip;
 
-    /*@Valid
-    public SslConfiguration ssl = null;*/
+    @Valid
+    public SslConfiguration ssl;
 
     public DynamicStringProperty viewPattern = prop(ROOT_URL_PATTERN);
 
@@ -56,77 +60,74 @@ public class HttpConfiguration {
     @PropertyCallback(PortCallback.class)
     public DynamicIntProperty port = prop(8080);
 
-/*
     @PortRange
-    public int adminPort = 8081;
+    public DynamicIntProperty adminPort = prop(8080); //TODO: implement admin port
 
     @Min(2)
     @Max(1000000)
-    public int maxThreads = 1024;
+    public DynamicIntProperty maxThreads = prop(1024);
 
     @Min(1)
     @Max(1000000)
-    public int minThreads = 8;
+    public DynamicIntProperty minThreads = prop(8);
 
     @NotNull
-    public ConnectorType connectorType = ConnectorType.BLOCKING;
-*/
+    public DynamicProp<ConnectorType> connectorType = prop(ConnectorType.BLOCKING);
+
     @NotNull
     public DynamicProp<Duration> maxIdleTime = prop(Duration.seconds(200));
-/*
+
     @Min(1)
     @Max(128)
-    public int acceptorThreads = 1;
+    public DynamicIntProperty acceptorThreads = prop(1);
 
     @Min(-Thread.NORM_PRIORITY)
     @Max(Thread.NORM_PRIORITY)
-    public int acceptorThreadPriorityOffset = 0;
+    public DynamicIntProperty acceptorThreadPriorityOffset = prop(0);
 
     @Min(-1)
-    public int acceptQueueSize = -1;
+    public DynamicIntProperty acceptQueueSize = prop(-1);
 
     @Min(1)
-    public int maxBufferCount = 1024;
+    public DynamicIntProperty maxBufferCount = prop(1024);
 
     @NotNull
-    public Size requestBufferSize = Size.kilobytes(16);
+    public DynamicProp<Size> requestBufferSize = prop(Size.kilobytes(16));
 
     @NotNull
-    public Size requestHeaderBufferSize = Size.kilobytes(6);
+    public DynamicProp<Size> requestHeaderBufferSize = prop(Size.kilobytes(6));
 
     @NotNull
-    public Size responseBufferSize = Size.kilobytes(32);
+    public DynamicProp<Size> responseBufferSize = prop(Size.kilobytes(32));
 
     @NotNull
-    public Size responseHeaderBufferSize = Size.kilobytes(6);
+    public DynamicProp<Size> responseHeaderBufferSize = prop(Size.kilobytes(6));
 
-    public boolean reuseAddress = true;
+    public DynamicBooleanProperty reuseAddress = prop(true);
 
-    public Duration soLingerTime = null;
+    public DynamicProp<Duration> soLingerTime;
 
-    public int lowResourcesConnectionThreshold = 0;
-
-    @NotNull
-    public Duration lowResourcesMaxIdleTime = Duration.seconds(0);
+    public DynamicIntProperty lowResourcesConnectionThreshold = prop(0);
 
     @NotNull
-    public Duration shutdownGracePeriod = Duration.seconds(2);
+    public DynamicProp<Duration> lowResourcesMaxIdleTime = prop(Duration.seconds(0));
 
-    public boolean useServerHeader = false;
+    @NotNull
+    public DynamicProp<Duration> shutdownGracePeriod = prop(Duration.seconds(2));
 
-    public boolean useDateHeader = true;
+    public DynamicBooleanProperty useServerHeader = prop(false);
 
-    public boolean useForwardedHeaders = true;
+    public DynamicBooleanProperty useDateHeader = prop(true);
 
-    public boolean useDirectBuffers = true;
+    public DynamicBooleanProperty useForwardedHeaders = prop(true);
 
-    public String bindHost = null;
+    public DynamicBooleanProperty useDirectBuffers = prop(true);
 
-    public String adminUsername = null;
+    public DynamicStringProperty bindHost;
 
-    public String adminPassword = null;
-*/
+    public DynamicStringProperty adminUsername;
 
+    public DynamicStringProperty adminPassword;
 
     public static class PortCallback extends AbstractCallback<HttpConfiguration, Integer> {
         @Override

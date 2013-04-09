@@ -12,12 +12,12 @@ import java.util.Set;
  * Date: 4/5/13
  * Time: 10:55 AM
  */
-public class DefualtServletContextHandler implements ServletContextHandler {
+public class DefualtServletEnvironment implements ServletEnvironment {
     private static final Log LOG = Log.forThisClass();
 
     ServletContext context;
 
-    public DefualtServletContextHandler(ServletContext context) {
+    public DefualtServletEnvironment(ServletContext context) {
         this.context = context;
     }
 
@@ -54,4 +54,8 @@ public class DefualtServletContextHandler implements ServletContextHandler {
         return fr;
     }
 
+    @Override
+    public boolean isRegisterDefault() {
+        return false;
+    }
 }

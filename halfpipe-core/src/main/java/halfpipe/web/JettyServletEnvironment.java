@@ -16,13 +16,20 @@ import java.util.Map;
  * Date: 4/5/13
  * Time: 10:58 AM
  */
-//TODO: spring profiles and inject ServletContextHandler
-public class JettyServletContextHandler implements ServletContextHandler {
+//TODO: spring profiles and inject ServletEnvironment
+public class JettyServletEnvironment implements ServletEnvironment {
 
     WebAppContext context;
 
-    public JettyServletContextHandler(WebAppContext context) {
-        this.context = context;
+    public JettyServletEnvironment() {
+        context = new WebAppContext();
+        context.setContextPath("/");
+        context.setResourceBase("."); //TODO: has to be set to non null?
+        context.setClassLoader(Thread.currentThread().getContextClassLoader());
+    }
+
+    public WebAppContext getContext() {
+        return context;
     }
 
     public ServletContext getServletContext() {
@@ -44,5 +51,10 @@ public class JettyServletContextHandler implements ServletContextHandler {
         filterHolder.setInitParameters(initParams);
         context.addFilter(filterHolder, urlPatterns[0], EnumSet.of(DispatcherType.REQUEST));
         return filterHolder;
+    }
+
+    @Override
+    public boolean isRegisterDefault() {
+        return true;
     }
 }

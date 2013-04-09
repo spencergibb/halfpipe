@@ -19,8 +19,8 @@ import halfpipe.mgmt.resources.GCResource;
     @Filter(Controller.class),
     @Filter(Configuration.class)
 })
-@ImportResource("classpath:META-INF/spring/applicationContext-security.xml")
-@Import({DefaultContext.class, MetricsContext.class})
+//@ImportResource("classpath:META-INF/spring/applicationContext-security.xml")
+@Import({DefaultContext.class, MetricsContext.class, SecurityContext.class})
 public class Context {
 
     @Bean

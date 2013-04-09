@@ -1,6 +1,7 @@
 package halfpipe.web;
 
 import halfpipe.logging.Log;
+import org.slf4j.Logger;
 import org.springframework.util.Assert;
 
 import javax.servlet.*;
@@ -13,7 +14,7 @@ import java.util.Set;
  * Time: 10:55 AM
  */
 public class DefualtServletEnvironment implements ServletEnvironment {
-    private static final Log LOG = Log.forThisClass();
+    private static final Logger LOG = Log.forThisClass();
 
     ServletContext context;
 

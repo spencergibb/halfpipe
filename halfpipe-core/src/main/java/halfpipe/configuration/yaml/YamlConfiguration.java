@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import org.apache.commons.configuration.AbstractHierarchicalFileConfiguration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.lang.NotImplementedException;
+import org.slf4j.Logger;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.nodes.MappingNode;
 import org.yaml.snakeyaml.nodes.NodeTuple;
@@ -23,7 +24,7 @@ import java.util.List;
  * Time: 7:31 PM
  */
 public class YamlConfiguration extends AbstractHierarchicalFileConfiguration {
-    private Log log;
+    private Logger log;
 
     /**
      * Creates an empty YamlConfiguration object which can be

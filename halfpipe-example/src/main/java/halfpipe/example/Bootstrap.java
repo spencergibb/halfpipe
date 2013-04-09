@@ -3,6 +3,7 @@ package halfpipe.example;
 import halfpipe.web.ServletContextBootstrap;
 import halfpipe.web.ServletEnvironment;
 import halfpipe.logging.Log;
+import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
@@ -15,7 +16,7 @@ import java.io.IOException;
  */
 @Component
 public class Bootstrap implements ServletContextBootstrap {
-    private static final Log LOG = Log.forThisClass();
+    private static final Logger LOG = Log.forThisClass();
 
     int count = 0;
 

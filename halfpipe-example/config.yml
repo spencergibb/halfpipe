@@ -10,3 +10,4 @@ http:
 
 logging:
   level: WARN
+  loggers: org.springframework.security.web=INFO

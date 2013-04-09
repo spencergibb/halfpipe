@@ -5,10 +5,8 @@ import halfpipe.logging.Log;
 import halfpipe.web.JettyServletEnvironment;
 import halfpipe.web.ServerFactory;
 import org.apache.commons.cli.CommandLine;
-import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.handler.DefaultHandler;
-import org.eclipse.jetty.server.handler.HandlerList;
+import org.slf4j.Logger;
 import org.springframework.context.annotation.Profile;
 import org.springframework.shell.core.CommandMarker;
 import org.springframework.shell.core.annotation.CliAvailabilityIndicator;
@@ -26,7 +24,7 @@ import javax.inject.Inject;
 @Component
 @Profile("CLI")
 public class HalfpipeServer implements CommandMarker {
-    private static final Log LOG = Log.forThisClass();
+    private static final Logger LOG = Log.forThisClass();
 
     @Inject
     Configuration config;

@@ -16,6 +16,7 @@ import com.sun.jersey.api.json.JSONConfiguration;
 import com.sun.jersey.spi.container.servlet.ServletContainer;
 import org.apache.commons.configuration.SystemConfiguration;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import halfpipe.configuration.Configuration;
 import halfpipe.configuration.DynamicURLConfiguration;
@@ -32,7 +33,7 @@ import java.util.Map;
  * Time: 10:13 PM
  */
 public class HalfpipeConfiguration {
-    private static final Log LOG = Log.forThisClass();
+    private static final Logger LOG = Log.forThisClass();
     public static AnnotationConfigWebApplicationContext rootContext;
 
     public static Map<String, String> jerseyProperties(Map<String,Object> resources, Configuration config) {

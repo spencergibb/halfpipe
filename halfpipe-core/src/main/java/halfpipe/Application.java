@@ -5,9 +5,10 @@ import static halfpipe.HalfpipeConfiguration.*;
 import com.google.common.base.Throwables;
 import halfpipe.cli.Shell;
 import halfpipe.logging.Log;
-import halfpipe.logging.LoggingUtils;
+import halfpipe.logging.LoggingFactory;
 import halfpipe.web.DefualtServletEnvironment;
 import halfpipe.web.ServletContextInitializer;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.web.WebApplicationInitializer;
@@ -25,10 +26,10 @@ import javax.servlet.ServletException;
 public abstract class Application<C> extends ContextAware<C>
         implements WebApplicationInitializer {
 
-    private static final Log LOG = Log.forThisClass();
+    private static final Logger LOG = Log.forThisClass();
 
     static {
-        LoggingUtils.bootstrap();
+        LoggingFactory.bootstrap();
     }
 
     /**
@@ -82,8 +83,6 @@ public abstract class Application<C> extends ContextAware<C>
         if (serverViewContextClass != null) {
             registerCtx(rootContext).registerSingleton("viewContextClass", serverViewContextClass);
         }
-
-        LoggingUtils.configure(config(rootContext).logging);
 
         LOG.info("Starting {} via {}", config(rootContext).appName.get(), appType);
     }

@@ -9,6 +9,7 @@ import org.codehaus.jackson.map.*;
 import org.codehaus.jackson.map.annotate.JsonCachable;
 import org.codehaus.jackson.type.JavaType;
 import halfpipe.logging.Log;
+import org.slf4j.Logger;
 
 import java.io.IOException;
 
@@ -18,7 +19,7 @@ import java.io.IOException;
  * Time: 10:16 PM
  */
 public class DynamicPropertiesModule extends Module {
-    private static final Log LOG = Log.forThisClass();
+    private static final Logger LOG = Log.forThisClass();
 
     @JsonCachable
     private static class DynamicStringPropertyDeserializer extends JsonDeserializer<DynamicStringProperty> {

@@ -20,6 +20,7 @@ import halfpipe.jersey.HalfpipeObjectMapperProvider;
 import halfpipe.jersey.InvalidEntityExceptionMapper;
 import halfpipe.jersey.JacksonMessageBodyProvider;
 import halfpipe.jersey.OptionalQueryParamInjectableProvider;
+import halfpipe.logging.LoggingFactory;
 import halfpipe.web.ServletContextInitializer;
 import halfpipe.web.ServletEnvironment;
 import org.springframework.aop.framework.ProxyConfig;
@@ -43,7 +44,8 @@ import java.util.Set;
 @ComponentScan(basePackageClasses = {
         PropBuilder.class,
         ServletEnvironment.class,
-        HalfpipeServer.class
+        HalfpipeServer.class,
+        LoggingFactory.class
 })
 public class BaseContext {
 

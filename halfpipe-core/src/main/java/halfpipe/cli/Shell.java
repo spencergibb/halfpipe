@@ -25,7 +25,7 @@ import static org.springframework.shell.support.logging.HandlerUtils.*;
  * see org.springframework.shell.Bootstrap
  */
 public class Shell {
-    private static final Log LOG = Log.forThisClass();
+    private static final org.slf4j.Logger LOG = Log.forThisClass();
 
     protected AnnotationConfigApplicationContext ctxt;
     protected ConfigurableApplicationContext ctx;

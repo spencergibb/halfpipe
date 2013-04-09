@@ -11,7 +11,8 @@ Features
 - [Executable](https://github.com/brianm/really-executable-jars-maven-plugin)
 - WAR deployment or executable jar
 - Spring enabled (no or little XML)
-    - mvc [no xml] (http://rockhoppertech.com/blog/spring-mvc-configuration-without-xml/)
+    - mvc [no xml] (http://rockhoppertech.com/blog/spring-mvc-configuration-without-xml/) or
+       [spring security javaconfig] (https://github.com/SpringSource/spring-security-javaconfig/)
     - [java security, not xml](http://blog.springsource.org/2011/08/01/spring-security-configuration-with-scala/), see [scala example](https://github.com/32degrees/halfpipe/tree/master/halfpipe-scala-example)
     - data
     - integration

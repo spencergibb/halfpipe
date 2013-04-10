@@ -135,7 +135,7 @@ public class LoggingFactory {
 
         Map<String, Level> loggers = Maps.newHashMap();
         loggers.put("org.springframework.shell", Level.INFO);
-        loggers.put("com.sun.jersey.api.core.ScanningResourceConfig", Level.INFO);
+        loggers.put("com.sun.jersey.api.core.ScanningResourceConfig", Level.WARN);
         loggers.put("halfpipe", Level.INFO);
 
         //DEFAULTS

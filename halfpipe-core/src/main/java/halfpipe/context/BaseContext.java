@@ -16,26 +16,21 @@ import halfpipe.configuration.convert.StringToTimeZoneConverter;
 import halfpipe.jackson.AnnotationSensitivePropertyNamingStrategy;
 import halfpipe.jackson.GuavaExtrasModule;
 import halfpipe.jackson.ObjectMapperFactory;
-import halfpipe.jersey.HalfpipeObjectMapperProvider;
-import halfpipe.jersey.InvalidEntityExceptionMapper;
-import halfpipe.jersey.JacksonMessageBodyProvider;
-import halfpipe.jersey.OptionalQueryParamInjectableProvider;
+import halfpipe.jersey.*;
 import halfpipe.logging.LoggingFactory;
+import halfpipe.validation.ConstraintMappingResource;
 import halfpipe.validation.HalfpipeValidator;
 import halfpipe.web.ServletContextInitializer;
 import halfpipe.web.ServletEnvironment;
 import org.springframework.aop.framework.ProxyConfig;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.*;
 import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import javax.inject.Named;
+import javax.validation.ConstraintValidator;
 import java.util.List;
 import java.util.Set;
 
@@ -139,10 +134,15 @@ public class BaseContext {
     }
 
     @Bean @Scope("singleton")
-    public LocalValidatorFactoryBean validator() {
+    public LocalValidatorFactoryBean validator(Set<ConstraintValidator> validators) {
         LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
-        bean.setMappingLocations(new Resource[]{new ClassPathResource("/META-INF/constraint-mapping.xml")});
+        bean.setMappingLocations(new Resource[]{new ConstraintMappingResource(validators)});
         return bean;
+    }
+
+    @Bean @Scope("singleton") @Lazy(false)
+    public JerseyLogger jerseyLogger() {
+        return new JerseyLogger();
     }
 
     @Bean @Scope("singleton")

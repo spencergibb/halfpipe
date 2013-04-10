@@ -2,6 +2,7 @@ package halfpipe.validation.configuration;
 
 import halfpipe.configuration.DynaProp;
 import halfpipe.validation.PortRange;
+import org.springframework.stereotype.Component;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -10,6 +11,7 @@ import javax.validation.ConstraintValidatorContext;
  * Allow 0 to indicate dynamic port range allocation. If not zero, it must be within the {min,max}
  * range, inclusive.
  */
+@Component
 public class PortRangeValidator implements ConstraintValidator<PortRange, DynaProp<Integer>> {
     private int min;
     private int max;

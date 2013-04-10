@@ -1,11 +1,16 @@
 package halfpipe;
 
+import static com.google.common.base.Predicates.*;
+import static com.google.common.collect.Iterables.*;
+import static com.google.common.collect.Lists.*;
 import static halfpipe.HalfpipeConfiguration.*;
 
 import com.google.common.base.Throwables;
 import halfpipe.cli.Shell;
+import halfpipe.jersey.JerseyLogger;
 import halfpipe.logging.Log;
 import halfpipe.logging.LoggingFactory;
+import halfpipe.util.Generics;
 import halfpipe.web.DefaultServletEnvironment;
 import halfpipe.web.ServletContextInitializer;
 import org.slf4j.Logger;
@@ -23,7 +28,7 @@ import javax.servlet.ServletException;
  * Time: 10:41 PM
  * http://rockhoppertech.com/blog/spring-mvc-configuration-without-xml/
  */
-public abstract class Application<C> extends ContextAware<C>
+public abstract class Application<C>
         implements WebApplicationInitializer {
 
     private static final Logger LOG = Log.forThisClass();
@@ -66,6 +71,9 @@ public abstract class Application<C> extends ContextAware<C>
             ServletContextInitializer initializer = rootContext.getBean(ServletContextInitializer.class);
 
             initializer.init(new DefaultServletEnvironment(sc));
+
+            //TODO: some kind of after initialzed marker?
+            rootContext.getBean(JerseyLogger.class).logEndpoints();
         } catch (Exception e) {
             e.printStackTrace();
             sc.log("Unable to initialize Halfpipe web application", e);
@@ -105,4 +113,15 @@ public abstract class Application<C> extends ContextAware<C>
         return shell;
     }
 
+    private Class<C> getContextClass() {
+        return (Class<C>) Generics.getTypeParameter(getClass());
+    }
+
+    protected String findConfig(String[] args) {
+        return find(newArrayList(args), containsPattern(".*\\.json$|.*\\.yml|.*\\.yaml$"), null);
+    }
+
+    protected Class<?> getViewContext() {
+        return null;
+    }
 }

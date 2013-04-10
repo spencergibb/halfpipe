@@ -1,6 +1,7 @@
 package halfpipe.cli;
 
 import halfpipe.configuration.Configuration;
+import halfpipe.jersey.JerseyLogger;
 import halfpipe.logging.Log;
 import halfpipe.web.JettyServletEnvironment;
 import halfpipe.web.ServerFactory;
@@ -32,6 +33,9 @@ public class HalfpipeServer implements CommandMarker {
     @Inject
     ServerFactory serverFactory;
 
+    @Inject
+    JerseyLogger jerseyLogger;
+
     @CliAvailabilityIndicator({"server"})
     public boolean isCommandAvailable() {
         return true;
@@ -48,6 +52,8 @@ public class HalfpipeServer implements CommandMarker {
 
     public void run(CommandLine commandLine) throws Exception {
         Server server = serverFactory.buildServer(new JettyServletEnvironment());
+
+        jerseyLogger.logEndpoints();
 
         LOG.info("staring jetty on port {}", config.http.port.get());
         server.start();

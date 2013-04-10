@@ -9,4 +9,5 @@ public interface DynaProp<V> {
     public V get();
     public V getValue();
     public String getName();
+    //TODO: integrate hibernate validator and DynamicProperty.validate
 }

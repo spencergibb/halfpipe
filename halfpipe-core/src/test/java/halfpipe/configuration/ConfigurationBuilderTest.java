@@ -5,10 +5,12 @@ import static org.hamcrest.Matchers.*;
 
 import ch.qos.logback.classic.Level;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.netflix.config.ConcurrentMapConfiguration;
 import com.netflix.config.DynamicPropertyFactory;
 import com.netflix.config.PropertyWrapper;
 import halfpipe.configuration.builder.*;
+import halfpipe.validation.HalfpipeValidator;
 import org.junit.Test;
 import org.springframework.core.convert.support.DefaultConversionService;
 import halfpipe.configuration.convert.StringToTimeZoneConverter;
@@ -16,7 +18,11 @@ import halfpipe.context.MetricsContext;
 import halfpipe.util.Duration;
 import halfpipe.util.Size;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+import javax.validation.metadata.BeanDescriptor;
 import java.util.List;
+import java.util.Set;
 
 /**
  * User: spencergibb
@@ -44,7 +50,6 @@ public class ConfigurationBuilderTest {
 
         DynamicPropertyFactory.initWithConfigurationSource(testProperties);
 
-        TestConfiguration config = new TestConfiguration();
         DefaultConversionService conversionService = new DefaultConversionService();
         conversionService.addConverter(new StringToTimeZoneConverter());
         List<PropBuilder<?, ?>> builders = Lists.newArrayList();
@@ -55,7 +60,41 @@ public class ConfigurationBuilderTest {
         builders.add(new LongBuilder());
         builders.add(new FloatBuilder());
         builders.add(new DoubleBuilder());
-        new ConfigurationBuilder(conversionService, builders).build(config);
+        builders.add(new StringMapBuilder());
+        ConfigurationBuilder builder = new ConfigurationBuilder(conversionService, builders);
+        builder.validator = new HalfpipeValidator();
+        builder.validator.setValidator(new Validator() {
+            @Override
+            public <T> Set<ConstraintViolation<T>> validate(T object, Class<?>... groups) {
+                return Sets.newHashSet();
+            }
+
+            @Override
+            public <T> Set<ConstraintViolation<T>> validateProperty(T object, String propertyName, Class<?>... groups) {
+                return Sets.newHashSet();
+            }
+
+            @Override
+            public <T> Set<ConstraintViolation<T>> validateValue(Class<T> beanType, String propertyName, Object value, Class<?>... groups) {
+                return Sets.newHashSet();
+            }
+
+            @Override
+            public BeanDescriptor getConstraintsForClass(Class<?> clazz) {
+                return null;
+            }
+
+            @Override
+            public <T> T unwrap(Class<T> type) {
+                return null;
+            }
+        });
+
+        TestBadConfiguration bad = new TestBadConfiguration();
+        builder.build(bad);
+
+        TestConfiguration config = new TestConfiguration();
+        builder.build(config);
 
         assertProp("config", config);
 
@@ -99,14 +138,15 @@ public class ConfigurationBuilderTest {
         if (config.appConfigClass != MetricsContext.class) {
             throw new Exception();
         }
+
     }
 
-    private <T> void assertProp(String propName, DynamicProp<T> property, T expected) {
+    /*private <T> void assertProp(String propName, DynamicProp<T> property, T expected) {
         assertProp(propName, property);
         assertThat(propName +" is bad", property.getValue(), is(expected));
-    }
+    }*/
 
-    private <T> void assertProp(String propName, PropertyWrapper<T> property, T expected) {
+    private <T> void assertProp(String propName, DynaProp<T> property, T expected) {
         assertProp(propName, property);
         assertThat(propName +" is bad", property.getValue(), is(expected));
     }

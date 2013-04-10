@@ -26,12 +26,12 @@ import org.slf4j.LoggerFactory;
 public class Log {
 
 	/**
-	 * Returns a {@link Log} instance for the current class.
+	 * Returns a {@link org.slf4j.Logger} instance for the current class.
 	 * The current class is determined in the static context by inspecting the stack.
 	 * Further details about this approach may be found
 	 * <a href="http://www.javaspecialists.eu/archive/Issue137.html">here</a>.
 	 *
-	 * @return a {@link Log} instance with the current class name
+	 * @return a {@link org.slf4j.Logger} instance with the current class name
 	 */
 	public static Logger forThisClass() {
 		Throwable t = new Throwable();
@@ -40,10 +40,10 @@ public class Log {
 	}
 
 	/**
-     * Returns a {@link Log} instance for the given class.
+     * Returns a {@link org.slf4j.Logger} instance for the given class.
      *
      * @param klass    a given class
-     * @return a {@link Log} instance with {@code klass}'s name
+     * @return a {@link org.slf4j.Logger} instance with {@code klass}'s name
      */
     public static Logger forClass(Class<?> klass) {
         // a thread-safe SLF4J initialization routine is apparently hard, so I get to do dumb
@@ -57,10 +57,10 @@ public class Log {
     }
 
     /**
-     * Returns a {@link Log} instance with the given name.
+     * Returns a {@link org.slf4j.Logger} instance with the given name.
      *
      * @param name    a given name
-     * @return a {@link Log} instance with the given name
+     * @return a {@link org.slf4j.Logger} instance with the given name
      */
     public static Logger named(String name) {
         // a thread-safe SLF4J initialization routine is apparently hard, so I get to do dumb

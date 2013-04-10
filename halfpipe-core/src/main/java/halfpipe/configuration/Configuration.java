@@ -4,19 +4,23 @@ import static halfpipe.configuration.Defaults.*;
 
 import com.netflix.config.DynamicStringProperty;
 
+import javax.validation.Valid;
+
 /**
  * User: spencergibb
  * Date: 10/4/12
  * Time: 11:14 PM
  */
 public class Configuration {
-    public DynamicStringProperty appName = prop("Halfpipe");
+    public DynaProp<String> appName = prop("Halfpipe");
 
-    public DynamicStringProperty bannerFile = prop("halfpipebanner.txt");
+    public DynaProp<String> bannerFile = prop("halfpipebanner.txt");
 
-    public DynamicStringProperty resourcePackages;
+    public DynaProp<String> resourcePackages;
 
+    @Valid
     public HttpConfiguration http;
 
+    @Valid
     public LoggingConfiguration logging;
 }

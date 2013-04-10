@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<constraint-mappings
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://jboss.org/xml/ns/javax/validation/mapping validation-mapping-1.0.xsd"
+        xmlns="http://jboss.org/xml/ns/javax/validation/mapping">
+<!-- TODO auto generate this file -->
+    <constraint-definition annotation="javax.validation.constraints.Max">
+        <validated-by include-existing-validators="true">
+            <value>halfpipe.validation.configuration.MaxValidatorForDynaPropNumber</value>
+        </validated-by>
+    </constraint-definition>
+
+    <constraint-definition annotation="javax.validation.constraints.Min">
+        <validated-by include-existing-validators="true">
+            <value>halfpipe.validation.configuration.MinValidatorForDynaPropNumber</value>
+        </validated-by>
+    </constraint-definition>
+
+    <constraint-definition annotation="halfpipe.validation.PortRange">
+        <validated-by include-existing-validators="true">
+            <value>halfpipe.validation.configuration.PortRangeValidator</value>
+        </validated-by>
+    </constraint-definition>
+</constraint-mappings>

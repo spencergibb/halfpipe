@@ -79,7 +79,7 @@ public class ServerFactory {
         server.addConnector(createExternalConnector());
 
         // if we're dynamically allocating ports, no worries if they are the same (i.e. 0)
-        if (config.adminPort.get() == 0 || (config.adminPort.get() != config.port.get()) ) {
+        if (config.adminPort.get().equals(0) || !config.adminPort.get().equals(config.port.get()) ) {
             //server.addConnector(createInternalConnector());
             throw new NotImplementedException("admin connector");
         }

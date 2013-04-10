@@ -3,9 +3,6 @@ package halfpipe.configuration;
 import static halfpipe.Halfpipe.*;
 import static halfpipe.configuration.Defaults.*;
 
-import com.netflix.config.DynamicBooleanProperty;
-import com.netflix.config.DynamicIntProperty;
-import com.netflix.config.DynamicStringProperty;
 import halfpipe.util.Duration;
 import halfpipe.util.Size;
 import halfpipe.validation.PortRange;
@@ -52,82 +49,82 @@ public class HttpConfiguration {
     @Valid
     public SslConfiguration ssl;
 
-    public DynamicStringProperty viewPattern = prop(ROOT_URL_PATTERN);
+    public DynaProp<String> viewPattern = prop(ROOT_URL_PATTERN);
 
-    public DynamicStringProperty resourcePattern = prop(RESOURCE_URL_PATTERN);
+    public DynaProp<String> resourcePattern = prop(RESOURCE_URL_PATTERN);
 
     @PortRange
     @PropertyCallback(PortCallback.class)
-    public DynamicIntProperty port = prop(8080);
+    public DynaProp<Integer> port = prop(8080);
 
     @PortRange
-    public DynamicIntProperty adminPort = prop(8080); //TODO: implement admin port
+    public DynaProp<Integer> adminPort = prop(8080); //TODO: implement admin port
 
     @Min(2)
     @Max(1000000)
-    public DynamicIntProperty maxThreads = prop(1024);
+    public DynaProp<Integer> maxThreads = prop(1024);
 
     @Min(1)
     @Max(1000000)
-    public DynamicIntProperty minThreads = prop(8);
+    public DynaProp<Integer> minThreads = prop(8);
 
     @NotNull
-    public DynamicProp<ConnectorType> connectorType = prop(ConnectorType.BLOCKING);
+    public DynaProp<ConnectorType> connectorType = prop(ConnectorType.BLOCKING);
 
     @NotNull
-    public DynamicProp<Duration> maxIdleTime = prop(Duration.seconds(200));
+    public DynaProp<Duration> maxIdleTime = prop(Duration.seconds(200));
 
     @Min(1)
     @Max(128)
-    public DynamicIntProperty acceptorThreads = prop(1);
+    public DynaProp<Integer> acceptorThreads = prop(1);
 
     @Min(-Thread.NORM_PRIORITY)
     @Max(Thread.NORM_PRIORITY)
-    public DynamicIntProperty acceptorThreadPriorityOffset = prop(0);
+    public DynaProp<Integer> acceptorThreadPriorityOffset = prop(0);
 
     @Min(-1)
-    public DynamicIntProperty acceptQueueSize = prop(-1);
+    public DynaProp<Integer> acceptQueueSize = prop(-1);
 
     @Min(1)
-    public DynamicIntProperty maxBufferCount = prop(1024);
+    public DynaProp<Integer> maxBufferCount = prop(1024);
 
     @NotNull
-    public DynamicProp<Size> requestBufferSize = prop(Size.kilobytes(16));
+    public DynaProp<Size> requestBufferSize = prop(Size.kilobytes(16));
 
     @NotNull
-    public DynamicProp<Size> requestHeaderBufferSize = prop(Size.kilobytes(6));
+    public DynaProp<Size> requestHeaderBufferSize = prop(Size.kilobytes(6));
 
     @NotNull
-    public DynamicProp<Size> responseBufferSize = prop(Size.kilobytes(32));
+    public DynaProp<Size> responseBufferSize = prop(Size.kilobytes(32));
 
     @NotNull
-    public DynamicProp<Size> responseHeaderBufferSize = prop(Size.kilobytes(6));
+    public DynaProp<Size> responseHeaderBufferSize = prop(Size.kilobytes(6));
 
-    public DynamicBooleanProperty reuseAddress = prop(true);
+    public DynaProp<Boolean> reuseAddress = prop(true);
 
-    public DynamicProp<Duration> soLingerTime;
+    public DynaProp<Duration> soLingerTime;
 
-    public DynamicIntProperty lowResourcesConnectionThreshold = prop(0);
-
-    @NotNull
-    public DynamicProp<Duration> lowResourcesMaxIdleTime = prop(Duration.seconds(0));
+    public DynaProp<Integer> lowResourcesConnectionThreshold = prop(0);
 
     @NotNull
-    public DynamicProp<Duration> shutdownGracePeriod = prop(Duration.seconds(2));
+    public DynaProp<Duration> lowResourcesMaxIdleTime = prop(Duration.seconds(0));
 
-    public DynamicBooleanProperty useServerHeader = prop(false);
+    @NotNull
+    public DynaProp<Duration> shutdownGracePeriod = prop(Duration.seconds(2));
 
-    public DynamicBooleanProperty useDateHeader = prop(true);
+    public DynaProp<Boolean> useServerHeader = prop(false);
 
-    public DynamicBooleanProperty useForwardedHeaders = prop(true);
+    public DynaProp<Boolean> useDateHeader = prop(true);
 
-    public DynamicBooleanProperty useDirectBuffers = prop(true);
+    public DynaProp<Boolean> useForwardedHeaders = prop(true);
 
-    public DynamicStringProperty bindHost;
+    public DynaProp<Boolean> useDirectBuffers = prop(true);
 
-    public DynamicStringProperty adminUsername;
+    public DynaProp<String> bindHost;
 
-    public DynamicStringProperty adminPassword;
+    public DynaProp<String> adminUsername;
+
+    public DynaProp<String> adminPassword;
 
     public static class PortCallback extends AbstractCallback<HttpConfiguration, Integer> {
         @Override

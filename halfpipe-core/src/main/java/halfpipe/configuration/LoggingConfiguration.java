@@ -3,10 +3,7 @@ package halfpipe.configuration;
 import static halfpipe.configuration.Defaults.*;
 
 import ch.qos.logback.classic.Level;
-import com.netflix.config.DynamicBooleanProperty;
-import com.netflix.config.DynamicIntProperty;
 import com.netflix.config.DynamicStringMapProperty;
-import com.netflix.config.DynamicStringProperty;
 import halfpipe.validation.ValidationMethod;
 
 import javax.validation.Valid;
@@ -24,37 +21,37 @@ public class LoggingConfiguration {
     static final TimeZone UTC = TimeZone.getTimeZone("UTC");
 
     public static class ConsoleConfiguration {
-        public DynamicBooleanProperty enabled = prop(true);
+        public DynaProp<Boolean> enabled = prop(true);
 
         @NotNull
-        public DynamicProp<Level> threshold = prop(Level.ALL);
+        public DynaProp<Level> threshold = prop(Level.ALL);
 
         @NotNull
-        public DynamicProp<TimeZone> timeZone = prop(UTC);
+        public DynaProp<TimeZone> timeZone = prop(UTC);
 
-        public DynamicStringProperty logFormat;
+        public DynaProp<String> logFormat;
     }
 
     public static class FileConfiguration {
-        public DynamicBooleanProperty enabled = prop(false);
+        public DynaProp<Boolean> enabled = prop(false);
 
         @NotNull
-        public DynamicProp<Level> threshold = prop(Level.ALL);
+        public DynaProp<Level> threshold = prop(Level.ALL);
 
-        public DynamicStringProperty currentLogFilename;
+        public DynaProp<String> currentLogFilename;
 
-        public DynamicBooleanProperty archive = prop(true);
+        public DynaProp<Boolean> archive = prop(true);
 
-        public DynamicStringProperty archivedLogFilenamePattern;
+        public DynaProp<String> archivedLogFilenamePattern;
 
         @Min(1)
         @Max(50)
-        public DynamicIntProperty archivedFileCount = prop(5);
+        public DynaProp<Integer> archivedFileCount = prop(5);
 
         @NotNull
-        public DynamicProp<TimeZone> timeZone = prop(UTC);
+        public DynaProp<TimeZone> timeZone = prop(UTC);
 
-        public DynamicStringProperty logFormat;
+        public DynaProp<String> logFormat;
 
         @ValidationMethod(message = "must have logging.file.archivedLogFilenamePattern if logging.file.archive is true")
         public boolean isValidArchiveConfiguration() {
@@ -82,21 +79,21 @@ public class LoggingConfiguration {
             }*/
         }
 
-        public DynamicBooleanProperty enabled = prop(false);
+        public DynaProp<Boolean> enabled = prop(false);
 
         @NotNull
-        public DynamicProp<Level> threshold = prop(Level.ALL);
+        public DynaProp<Level> threshold = prop(Level.ALL);
 
         @NotNull
-        public DynamicStringProperty host = prop("localhost");
+        public DynaProp<String> host = prop("localhost");
 
         @NotNull
-        public DynamicProp<Facility> facility = prop(Facility.LOCAL0);
+        public DynaProp<Facility> facility = prop(Facility.LOCAL0);
 
         @NotNull
-        public DynamicProp<TimeZone> timeZone = prop(UTC);
+        public DynaProp<TimeZone> timeZone = prop(UTC);
 
-        public DynamicStringProperty logFormat;
+        public DynaProp<String> logFormat;
     }
 
     @Valid
@@ -111,7 +108,7 @@ public class LoggingConfiguration {
     @NotNull
     public SyslogConfiguration syslog;
 
-    public DynamicProp<Level> level = prop(Level.WARN);
+    public DynaProp<Level> level = prop(Level.WARN);
 
     //TODO: either a DynamicMapProp from string or from yaml
     public DynamicStringMapProperty loggers;

@@ -1,13 +1,13 @@
 package halfpipe.validation.tests;
 
 import com.google.common.collect.ImmutableList;
+import halfpipe.validation.HalfpipeValidator;
 import org.junit.Test;
 import halfpipe.util.Size;
 import halfpipe.util.SizeUnit;
 import halfpipe.validation.MaxSize;
 import halfpipe.validation.MinSize;
 import halfpipe.validation.SizeRange;
-import halfpipe.validation.Validator;
 
 import java.util.Locale;
 
@@ -38,7 +38,7 @@ public class SizeValidatorTest {
         }
     }
 
-    private final Validator validator = new Validator();
+    private final HalfpipeValidator validator = new HalfpipeValidator();
 
     @Test
     public void returnsASetOfErrorsForAnObject() throws Exception {

@@ -6,7 +6,7 @@ import halfpipe.util.Duration;
 import halfpipe.validation.DurationRange;
 import halfpipe.validation.MaxDuration;
 import halfpipe.validation.MinDuration;
-import halfpipe.validation.Validator;
+import halfpipe.validation.HalfpipeValidator;
 
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
@@ -38,7 +38,7 @@ public class DurationValidatorTest {
         }
     }
 
-    private final Validator validator = new Validator();
+    private final HalfpipeValidator validator = new HalfpipeValidator();
 
     @Test
     public void returnsASetOfErrorsForAnObject() throws Exception {

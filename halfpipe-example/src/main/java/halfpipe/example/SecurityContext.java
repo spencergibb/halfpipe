@@ -10,7 +10,7 @@ import org.springframework.security.config.annotation.web.WebSecurityConfigurerA
 import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
 
 /**
- * User: gibbsb
+ * User: spencergibb
  * Date: 4/8/13
  * Time: 10:18 PM
  */

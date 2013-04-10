@@ -14,35 +14,35 @@ import halfpipe.util.Size;
  * Time: 12:09 AM
  */
 public class TestConfiguration extends Configuration {
-    DynamicIntProperty defaultIntProp = prop(1);
+    DynaProp<Integer> defaultIntProp = prop(1);
 
-    DynamicBooleanProperty defaultBooleanProp = prop(true);
+    DynaProp<Boolean> defaultBooleanProp = prop(true);
 
-    DynamicLongProperty defaultLongProp = prop(1L);
+    DynaProp<Long> defaultLongProp = prop(1L);
 
-    DynamicFloatProperty defaultFloatProp = prop(1.0f);
+    DynaProp<Float> defaultFloatProp = prop(1.0f);
 
-    DynamicDoubleProperty defaultDoubleProp = prop(1.0d);
+    DynaProp<Double> defaultDoubleProp = prop(1.0d);
 
-    DynamicStringProperty defaultStringProp = prop("one");
+    DynaProp<String> defaultStringProp = prop("one");
 
-    DynamicProp<Level> defaultLevel = prop(Level.WARN);
+    DynaProp<Level> defaultLevel = prop(Level.WARN);
 
-    DynamicProp<Level> level;
+    DynaProp<Level> level;
 
-    DynamicProp<Size> defaultSize = prop(Size.bytes(2));
+    DynaProp<Size> defaultSize = prop(Size.bytes(2));
 
-    DynamicProp<Size> size;
+    DynaProp<Size> size;
 
-    DynamicProp<Duration> defaultDuration = prop(Duration.minutes(2));
+    DynaProp<Duration> defaultDuration = prop(Duration.minutes(2));
 
-    DynamicProp<Duration> duration;
+    DynaProp<Duration> duration;
 
-    DynamicLongProperty longProp;
+    DynaProp<Long> longProp;
 
-    DynamicFloatProperty floatProp;
+    DynaProp<Float> floatProp;
 
-    DynamicDoubleProperty doubleProp;
+    DynaProp<Double> doubleProp;
 
     Class<?> appConfigClass = MetricsContext.class;
 

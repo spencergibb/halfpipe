@@ -4,8 +4,8 @@ import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 import com.google.common.collect.ImmutableList;
 import com.fasterxml.jackson.annotation.JsonIgnoreType;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import halfpipe.validation.HalfpipeValidator;
 import halfpipe.validation.InvalidEntityException;
-import halfpipe.validation.Validator;
 
 import javax.validation.Valid;
 import javax.ws.rs.core.MediaType;
@@ -27,7 +27,8 @@ import java.lang.reflect.Type;
  */
 @Provider
 public class JacksonMessageBodyProvider extends JacksonJaxbJsonProvider {
-    private static final Validator VALIDATOR = new Validator();
+    //TODO: remove static validator
+    private static final HalfpipeValidator VALIDATOR = new HalfpipeValidator();
 
     public JacksonMessageBodyProvider(ObjectMapper mapper) {
         setMapper(mapper);

@@ -1,4 +1,5 @@
 helloText: "Hello from yaml config file"
+helloInt: 5
 
 appName: Example Halfpipe Java App
 bannerFile: example.txt

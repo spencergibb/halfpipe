@@ -21,6 +21,7 @@ import halfpipe.jersey.InvalidEntityExceptionMapper;
 import halfpipe.jersey.JacksonMessageBodyProvider;
 import halfpipe.jersey.OptionalQueryParamInjectableProvider;
 import halfpipe.logging.LoggingFactory;
+import halfpipe.validation.HalfpipeValidator;
 import halfpipe.web.ServletContextInitializer;
 import halfpipe.web.ServletEnvironment;
 import org.springframework.aop.framework.ProxyConfig;
@@ -30,6 +31,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import javax.inject.Named;
 import java.util.List;
@@ -45,7 +49,8 @@ import java.util.Set;
         PropBuilder.class,
         ServletEnvironment.class,
         HalfpipeServer.class,
-        LoggingFactory.class
+        LoggingFactory.class,
+        HalfpipeValidator.class
 })
 public class BaseContext {
 
@@ -131,6 +136,13 @@ public class BaseContext {
     @Bean @Scope("singleton")
     public StringToTimeZoneConverter stringToTimeZoneConverter() {
         return new StringToTimeZoneConverter();
+    }
+
+    @Bean @Scope("singleton")
+    public LocalValidatorFactoryBean validator() {
+        LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
+        bean.setMappingLocations(new Resource[]{new ClassPathResource("/META-INF/constraint-mapping.xml")});
+        return bean;
     }
 
     @Bean @Scope("singleton")

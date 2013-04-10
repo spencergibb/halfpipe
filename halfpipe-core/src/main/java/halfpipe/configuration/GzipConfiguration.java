@@ -10,12 +10,12 @@ import javax.validation.constraints.NotNull;
 
 @SuppressWarnings("UnusedDeclaration")
 public class GzipConfiguration {
-    public DynamicBooleanProperty enabled = prop(true);
+    public DynaProp<Boolean> enabled = prop(true);
 
     @NotNull
-    public DynamicProp<Size> minimumEntitySize = prop(Size.bytes(256));
+    public DynaProp<Size> minimumEntitySize = prop(Size.bytes(256));
 
-    public DynamicProp<Size> bufferSize = prop(Size.kilobytes(8));
+    public DynaProp<Size> bufferSize = prop(Size.kilobytes(8));
 
     //TODO: handle set props public ImmutableSet<String> excludedUserAgents = ImmutableSet.of();
 

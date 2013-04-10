@@ -19,6 +19,7 @@ import java.util.List;
 @Import(BaseContext.class)
 public class DefaultContext {
 
+    //TODO: use spring profiles for java vs scala stuff
     @Bean @Scope("singleton")
     public ConfigurationBuilder configurationBuilder(ConversionService conversionService, List<PropBuilder<?, ?>> builders) {
         return new ConfigurationBuilder(conversionService, builders);

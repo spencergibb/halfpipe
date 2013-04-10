@@ -3,13 +3,16 @@ package halfpipe.configuration;
 import static org.springframework.util.ReflectionUtils.*;
 
 import com.google.common.base.Throwables;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.netflix.config.*;
 import halfpipe.configuration.builder.*;
+import halfpipe.validation.HalfpipeValidator;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.util.Assert;
 
+import javax.inject.Inject;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
@@ -28,6 +31,9 @@ public class ConfigurationBuilder {
 
     ConversionService conversionService;
 
+    @Inject
+    HalfpipeValidator validator;
+
     public ConfigurationBuilder(ConversionService conversionService, List<PropBuilder<?, ?>> builders) {
         this.builders.addAll(builders);
         this.conversionService = conversionService;
@@ -37,6 +43,7 @@ public class ConfigurationBuilder {
     public void build(Object config) throws Exception {
         //TODO: validate configuration
         build(config, "");
+        validate(config);
     }
 
     @SuppressWarnings("unchecked")
@@ -176,5 +183,13 @@ public class ConfigurationBuilder {
 
         return valueClass;
     }
+
+    private void validate(Object config) throws ConfigurationException {
+        final ImmutableList<String> errors = validator.validate(config);
+        if (!errors.isEmpty()) {
+            throw new ConfigurationException("configuration", errors);
+        }
+    }
+
 
 }

@@ -1,8 +1,13 @@
 package halfpipe.example;
 
+import static halfpipe.configuration.Defaults.*;
+
 import com.netflix.config.DynamicStringProperty;
-import org.springframework.stereotype.Component;
 import halfpipe.configuration.Configuration;
+import halfpipe.configuration.DynaProp;
+import org.springframework.stereotype.Component;
+
+import javax.validation.constraints.Max;
 
 /**
  * User: spencergibb
@@ -13,4 +18,7 @@ import halfpipe.configuration.Configuration;
 public class ExampleConfiguration extends Configuration {
 
     public DynamicStringProperty helloText;
+
+    @Max(5)
+    public DynaProp<Integer> helloInt = prop(4);
 }

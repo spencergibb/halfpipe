@@ -7,8 +7,12 @@ import com.netflix.config.PropertyWrapper;
  * Date: 10/14/12
  * Time: 1:28 PM
  */
-public class DynamicProp<V> extends PropertyWrapper<V> {
+public class DynamicProp<V> extends PropertyWrapper<V> implements DynaProp<V> {
     protected Class<V> valueClass;
+
+    public DynamicProp(String propName, V defaultValue) {
+        this(propName, defaultValue, defaultValue.getClass());
+    }
 
     @SuppressWarnings("unchecked")
     public DynamicProp(String propName, V defaultValue, Class<?> valueClass) {

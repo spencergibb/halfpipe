@@ -1,8 +1,8 @@
 package halfpipe.validation.tests;
 
 import com.google.common.collect.ImmutableList;
+import halfpipe.validation.HalfpipeValidator;
 import org.junit.Test;
-import halfpipe.validation.Validator;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
@@ -30,7 +30,7 @@ public class ValidatorTest {
         }
     }
 
-    private final Validator validator = new Validator();
+    private final HalfpipeValidator validator = new HalfpipeValidator();
 
     @Test
     public void returnsASetOfErrorsForAnObject() throws Exception {

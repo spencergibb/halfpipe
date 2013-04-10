@@ -1,5 +1,6 @@
 package halfpipe.configuration.builder;
 
+import halfpipe.configuration.DynaProp;
 import halfpipe.configuration.DynamicProp;
 import org.springframework.stereotype.Component;
 
@@ -10,14 +11,14 @@ import org.springframework.stereotype.Component;
 */
 @SuppressWarnings("unchecked")
 @Component
-public class GenericBuilder extends PropBuilder<DynamicProp, Object> {
-    public Class<DynamicProp> getPropType() {
-        return DynamicProp.class;
+public class GenericBuilder extends PropBuilder<DynaProp, Object> {
+    public Class<DynaProp> getPropType() {
+        return DynaProp.class;
     }
 
     public Object defaultVal() { return null; }
 
-    public DynamicProp<Object> getProp(String propName, Object defaultVal, Class<?> valueClass) {
+    public DynaProp<Object> getProp(String propName, Object defaultVal, Class<?> valueClass) {
         return new DynamicProp<Object>(propName, defaultVal, valueClass);
     }
 }

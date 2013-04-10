@@ -3,7 +3,7 @@ package halfpipe.validation.tests;
 import com.google.common.collect.ImmutableList;
 import org.junit.Test;
 import halfpipe.validation.ValidationMethod;
-import halfpipe.validation.Validator;
+import halfpipe.validation.HalfpipeValidator;
 
 import javax.validation.Valid;
 
@@ -37,7 +37,7 @@ public class MethodValidatorTest {
 
     @Test
     public void complainsAboutMethodsWhichReturnFalse() throws Exception {
-        assertThat(new Validator().validate(new Example()),
+        assertThat(new HalfpipeValidator().validate(new Example()),
                    is(ImmutableList.of("must have a false thing", "subExample also needs something special")));
     }
 }

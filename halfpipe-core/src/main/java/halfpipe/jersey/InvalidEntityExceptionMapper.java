@@ -2,6 +2,7 @@ package halfpipe.jersey;
 
 import com.google.common.collect.ImmutableList;
 import halfpipe.validation.InvalidEntityException;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
@@ -16,6 +17,7 @@ import java.io.Writer;
 
 // see original https://github.com/codahale/dropwizard/tree/master/dropwizard-core/src/main/java/com/yammer/dropwizard/jersey
 @Provider
+@Component
 public class InvalidEntityExceptionMapper implements ExceptionMapper<InvalidEntityException> {
     //private static final Log LOG = Log.forClass(InvalidEntityExceptionMapper.class);
     private static final int UNPROCESSABLE_ENTITY = 422;

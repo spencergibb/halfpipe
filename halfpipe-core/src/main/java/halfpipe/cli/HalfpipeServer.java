@@ -55,9 +55,9 @@ public class HalfpipeServer implements CommandMarker {
 
         jerseyLogger.logEndpoints();
 
-        LOG.info("staring jetty on port {}", config.http.port.get());
+        LOG.trace("staring jetty on port {}", config.http.port.get());
         server.start();
-        LOG.info("waiting for connections on port {}", config.http.port.get());
+        LOG.trace("waiting for connections on port {}", config.http.port.get());
         server.join();
     }
 

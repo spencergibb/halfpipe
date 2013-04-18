@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Path;
+import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.groups.Default;
 import java.util.Set;
@@ -22,6 +23,11 @@ import java.util.Set;
 public class HalfpipeValidator {
     @Autowired
     Validator validator;
+
+    public HalfpipeValidator() {
+        //mostly for tests that won't set validator created by spring
+        validator = Validation.buildDefaultValidatorFactory().getValidator();
+    }
 
     public void setValidator(Validator validator) {
         this.validator = validator;

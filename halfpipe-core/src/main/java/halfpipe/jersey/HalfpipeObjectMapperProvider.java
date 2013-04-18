@@ -1,7 +1,9 @@
 package halfpipe.jersey;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.stereotype.Service;
 
+import javax.inject.Inject;
 import javax.ws.rs.ext.ContextResolver;
 import javax.ws.rs.ext.Provider;
 
@@ -11,13 +13,11 @@ import javax.ws.rs.ext.Provider;
  * Time: 10:35 PM
  */
 @Provider
+@Service
 public class HalfpipeObjectMapperProvider implements ContextResolver<ObjectMapper> {
 
-    private ObjectMapper mapper;
-
-    public HalfpipeObjectMapperProvider(ObjectMapper mapper) {
-        this.mapper = mapper;
-    }
+    @Inject
+    ObjectMapper mapper;
 
     @Override
     public ObjectMapper getContext(Class<?> type) {

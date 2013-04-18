@@ -14,16 +14,17 @@ import halfpipe.configuration.ConfigurationBeanPostProcessor;
 import halfpipe.configuration.builder.PropBuilder;
 import halfpipe.configuration.convert.StringToTimeZoneConverter;
 import halfpipe.jackson.AnnotationSensitivePropertyNamingStrategy;
-import halfpipe.jackson.GuavaExtrasModule;
 import halfpipe.jackson.ObjectMapperFactory;
-import halfpipe.jersey.*;
+import halfpipe.jersey.JerseyLogger;
 import halfpipe.logging.LoggingFactory;
 import halfpipe.validation.ConstraintMappingResource;
 import halfpipe.validation.HalfpipeValidator;
-import halfpipe.web.ServletContextInitializer;
 import halfpipe.web.ServletEnvironment;
 import org.springframework.aop.framework.ProxyConfig;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.io.Resource;
@@ -45,19 +46,13 @@ import java.util.Set;
         ServletEnvironment.class,
         HalfpipeServer.class,
         LoggingFactory.class,
-        HalfpipeValidator.class
+        HalfpipeValidator.class,
+        JerseyLogger.class,
+        AnnotationSensitivePropertyNamingStrategy.class,
+        StringToTimeZoneConverter.class,
+        ConfigurationBeanPostProcessor.class
 })
 public class BaseContext {
-
-    @Bean @Scope("singleton")
-    public OptionalQueryParamInjectableProvider optionalQueryParamInjectableProvider() {
-        return new OptionalQueryParamInjectableProvider();
-    }
-
-    @Bean @Scope("singleton")
-    public GuavaExtrasModule guavaExtrasModule() {
-        return new GuavaExtrasModule();
-    }
 
     @Bean @Scope("singleton")
     public GuavaModule guavaModule() {
@@ -65,29 +60,9 @@ public class BaseContext {
     }
 
     @Bean @Scope("singleton")
-    public InvalidEntityExceptionMapper invalidEntityExceptionMapper() {
-        return new InvalidEntityExceptionMapper();
-    }
-
-    @Bean @Scope("singleton")
     public ObjectMapper objectMapper(AnnotationSensitivePropertyNamingStrategy namingStrategy,
                                      List<Module> modules) {
         return ObjectMapperFactory.create(namingStrategy, modules);
-    }
-
-    @Bean @Scope("singleton")
-    public HalfpipeObjectMapperProvider objectMapperProvider(ObjectMapper objectMapper) {
-        return new HalfpipeObjectMapperProvider(objectMapper);
-    }
-
-    @Bean @Scope("singleton")
-    public AnnotationSensitivePropertyNamingStrategy jsonNamingStrategy() {
-        return new AnnotationSensitivePropertyNamingStrategy();
-    }
-
-    @Bean @Scope("singleton")
-    public JacksonMessageBodyProvider jacksonMessageBodyProvider(ObjectMapper objectMapper) {
-        return new JacksonMessageBodyProvider(objectMapper);
     }
 
     @Bean @Scope("singleton")
@@ -119,30 +94,10 @@ public class BaseContext {
     }
 
     @Bean @Scope("singleton")
-    public ConfigurationBeanPostProcessor configurationBeanPostProcessor() {
-        return new ConfigurationBeanPostProcessor();
-    }
-
-    @Bean @Scope("singleton")
-    public ServletContextInitializer servletContextInitializer() {
-        return new ServletContextInitializer();
-    }
-
-    @Bean @Scope("singleton")
-    public StringToTimeZoneConverter stringToTimeZoneConverter() {
-        return new StringToTimeZoneConverter();
-    }
-
-    @Bean @Scope("singleton")
     public LocalValidatorFactoryBean validator(Set<ConstraintValidator> validators) {
         LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
         bean.setMappingLocations(new Resource[]{new ConstraintMappingResource(validators)});
         return bean;
-    }
-
-    @Bean @Scope("singleton") @Lazy(false)
-    public JerseyLogger jerseyLogger() {
-        return new JerseyLogger();
     }
 
     @Bean @Scope("singleton")

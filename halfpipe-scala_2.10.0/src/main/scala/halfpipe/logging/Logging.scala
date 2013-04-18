@@ -1,5 +1,7 @@
 package halfpipe.logging
 
+import org.slf4j.Logger
+
 /**
  * User: spencergibb
  * Date: 12/7/12
@@ -7,5 +9,5 @@ package halfpipe.logging
  */
 trait Logging {
 
-  protected lazy val log: Log = Log.forClass(getClass)
+  protected lazy val log: Logger = Log.forClass(getClass)
 }

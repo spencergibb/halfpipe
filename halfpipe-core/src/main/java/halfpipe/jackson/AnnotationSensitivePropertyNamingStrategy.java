@@ -5,8 +5,10 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.introspect.AnnotatedField;
 import com.fasterxml.jackson.databind.introspect.AnnotatedMethod;
 import com.fasterxml.jackson.databind.introspect.AnnotatedParameter;
+import org.springframework.stereotype.Component;
 
 // see original https://github.com/codahale/dropwizard/blob/master/dropwizard-core/src/main/java/com/yammer/dropwizard/json/AnnotationSensitivePropertyNamingStrategy.java
+@Component("jsonNamingStrategy")
 public class AnnotationSensitivePropertyNamingStrategy extends PropertyNamingStrategy {
     private final PropertyNamingStrategy snakeCase;
 

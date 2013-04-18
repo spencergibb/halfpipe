@@ -7,9 +7,11 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.deser.Deserializers;
 import com.google.common.cache.CacheBuilderSpec;
 import com.google.common.net.HostAndPort;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+@Component
 public class GuavaExtrasModule extends Module {
     private static class HostAndPortDeserializer extends JsonDeserializer<HostAndPort> {
         @Override

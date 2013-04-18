@@ -134,9 +134,11 @@ public class LoggingFactory {
         root.setLevel(logging.level.get());
 
         Map<String, Level> loggers = Maps.newHashMap();
+        //loggers.put("org.springframework", Level.WARN);
+        //loggers.put("com.sun.jersey.api.core.ScanningResourceConfig", Level.WARN);
         loggers.put("org.springframework.shell", Level.INFO);
-        loggers.put("com.sun.jersey.api.core.ScanningResourceConfig", Level.WARN);
         loggers.put("halfpipe", Level.INFO);
+        loggers.put("org.eclipse.jetty.server", Level.INFO);
 
         //DEFAULTS
         for (Map.Entry<String, Level> entry : loggers.entrySet()) {

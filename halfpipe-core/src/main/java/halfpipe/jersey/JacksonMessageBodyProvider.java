@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import halfpipe.validation.HalfpipeValidator;
 import halfpipe.validation.InvalidEntityException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
 import javax.ws.rs.core.MediaType;
@@ -25,11 +27,13 @@ import java.lang.reflect.Type;
  * (Essentially, extends {@link org.codehaus.jackson.jaxrs.JacksonJaxbJsonProvider} with validation and support for
  * {@link org.codehaus.jackson.annotate.JsonIgnoreType}.)
  */
+@Service
 @Provider
 public class JacksonMessageBodyProvider extends JacksonJaxbJsonProvider {
-    //TODO: remove static validator
-    private static final HalfpipeValidator VALIDATOR = new HalfpipeValidator();
+    @Autowired
+    HalfpipeValidator validator;
 
+    @Autowired
     public JacksonMessageBodyProvider(ObjectMapper mapper) {
         setMapper(mapper);
     }
@@ -68,7 +72,7 @@ public class JacksonMessageBodyProvider extends JacksonJaxbJsonProvider {
         }
 
         if (validating) {
-            final ImmutableList<String> errors = VALIDATOR.validate(value);
+            final ImmutableList<String> errors = validator.validate(value);
             if (!errors.isEmpty()) {
                 throw new InvalidEntityException("The request entity had the following errors:",
                                                  errors);

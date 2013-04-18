@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import javax.ws.rs.HttpMethod;
@@ -21,6 +22,7 @@ import java.util.Map;
  * Date: 4/10/13
  * Time: 9:44 AM
  */
+@Service
 public class JerseyLogger implements ApplicationContextAware {
     private static final Logger LOGGER = Log.forThisClass();
 

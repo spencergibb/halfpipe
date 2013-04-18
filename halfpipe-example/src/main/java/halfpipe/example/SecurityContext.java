@@ -6,7 +6,7 @@ import org.springframework.security.config.annotation.authentication.Authenticat
 import org.springframework.security.config.annotation.web.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.ExpressionUrlAuthorizations;
 import org.springframework.security.config.annotation.web.HttpConfiguration;
-import org.springframework.security.config.annotation.web.WebSecurityConfigurerAdapater;
+import org.springframework.security.config.annotation.web.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
 
 /**
@@ -16,7 +16,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationEn
  */
 @Configuration
 @EnableWebSecurity
-public class SecurityContext extends WebSecurityConfigurerAdapater {
+public class SecurityContext extends WebSecurityConfigurerAdapter {
     @Override
     protected AuthenticationManager authenticationManager(AuthenticationBuilder builder) throws Exception {
         return builder

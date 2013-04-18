@@ -7,6 +7,7 @@ import com.sun.jersey.server.impl.model.parameter.multivalued.MultivaluedParamet
 import com.sun.jersey.server.impl.model.parameter.multivalued.StringReaderFactory;
 import com.sun.jersey.spi.inject.Injectable;
 import com.sun.jersey.spi.inject.InjectableProvider;
+import org.springframework.stereotype.Service;
 
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
@@ -16,6 +17,7 @@ import java.lang.reflect.Type;
 
 //see original https://github.com/codahale/dropwizard/blob/master/dropwizard-core/src/main/java/com/yammer/dropwizard/jersey/OptionalQueryParamInjectableProvider.java
 @Provider
+@Service
 public class OptionalQueryParamInjectableProvider implements InjectableProvider<QueryParam, Parameter> {
     @Context private ProviderServices services;
     private MultivaluedParameterExtractorFactory factory;

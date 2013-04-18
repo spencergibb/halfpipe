@@ -14,16 +14,15 @@ import org.eclipse.jetty.servlet.DefaultServlet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.security.web.FilterChainProxy;
+import org.springframework.stereotype.Service;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.DispatcherServlet;
 
 import javax.inject.Inject;
-import javax.servlet.DispatcherType;
 import javax.servlet.ServletContext;
 import javax.ws.rs.Path;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,6 +31,7 @@ import java.util.Map;
  * Date: 4/5/13
  * Time: 11:03 AM
  */
+@Service
 public class ServletContextInitializer {
 
     @Inject

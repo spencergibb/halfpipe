@@ -17,14 +17,12 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationEn
 @Configuration
 @EnableWebSecurity
 public class SecurityContext extends WebSecurityConfigurerAdapter {
+
     @Override
-    protected AuthenticationManager authenticationManager(AuthenticationBuilder builder) throws Exception {
-        return builder
-                .inMemoryAuthentication()
-                    .withUser("admin").password("password").roles("USER", "ADMIN").and()
-                    .withUser("user").password("password").roles("USER").and()
-                .and()
-                .build();
+    protected void registerAuthentication(AuthenticationBuilder builder) throws Exception {
+        builder.inMemoryAuthentication()
+            .withUser("admin").password("password").roles("USER", "ADMIN").and()
+            .withUser("user").password("password").roles("USER");
     }
 
     @Override

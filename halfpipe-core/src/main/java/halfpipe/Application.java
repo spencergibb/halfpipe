@@ -6,6 +6,7 @@ import static com.google.common.collect.Lists.*;
 import static halfpipe.HalfpipeConfiguration.*;
 
 import com.google.common.base.Throwables;
+import com.netflix.config.DynamicStringListProperty;
 import halfpipe.cli.Shell;
 import halfpipe.jersey.JerseyLogger;
 import halfpipe.logging.Log;
@@ -16,11 +17,14 @@ import halfpipe.web.ServletContextInitializer;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * User: spencergibb
@@ -85,7 +89,16 @@ public abstract class Application<C>
         createConfig(configFile);
 
         registerRootContext(contextClass);
-        rootContext.getEnvironment().addActiveProfile(appType);
+        ConfigurableEnvironment env = rootContext.getEnvironment();
+        env.addActiveProfile(appType);
+
+        //because we don't have Configuration object yet, use a dynamic prop directly
+        DynamicStringListProperty profilesProp = new DynamicStringListProperty("profiles", Collections.<String>emptyList());
+        List<String> profiles = profilesProp.get();
+        for (String profile: profiles) {
+            env.addActiveProfile(profile);
+        }
+
         rootContext.refresh();
 
         if (serverViewContextClass != null) {

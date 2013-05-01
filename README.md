@@ -2,14 +2,15 @@
 ====================
 
 HTTP+JSON Services using industry best Java libraries.
-Spring enabled, with embedded jetty or netty.  Fork of [dropwizard](http://dropwizard.codahale.com/).
+Spring enabled, with embedded jetty or netty.  Inspired by [dropwizard](http://dropwizard.codahale.com/).
 
 Features
 -----
 - Gradle
 - [Embedded Jetty](http://www.eclipse.org/jetty/documentation/current/embedding-jetty.html)
+    - TODO: [SPDY](http://www.eclipse.org/jetty/documentation/current/spdy-configuring.html)
 - [Executable](https://github.com/brianm/really-executable-jars-maven-plugin)
-- WAR deployment or executable jar
+- WAR deployment or [really executable jar](https://github.com/brianm/really-executable-jars-maven-plugin)
 - Spring enabled (no or little XML)
     - mvc [no xml] (http://rockhoppertech.com/blog/spring-mvc-configuration-without-xml/) or
        [spring security javaconfig] (https://github.com/SpringSource/spring-security-javaconfig/)
@@ -18,8 +19,9 @@ Features
     - integration
 - [Finagle](http://twitter.github.com/finagle/) integrational ala [finagle resteasy](https://github.com/opower/finagle-resteasy)
     - TODO: Finagle client integration
-- Multilingual java/Scala
+- Multilingual java/scala/groovy
     - [scala-spring](https://github.com/ewolff/scala-spring), see [scala example](https://github.com/32degrees/halfpipe/tree/master/halfpipe-scala-example)
+    - see [groovy example](https://github.com/32degrees/halfpipe/tree/master/halfpipe-groovy-example)
 - Guava integration
 - Validation
 - Commands

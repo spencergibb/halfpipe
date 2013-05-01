@@ -1,5 +1,6 @@
 package halfpipe.cli;
 
+import halfpipe.util.Banner;
 import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.context.*;
@@ -83,8 +84,7 @@ public class Shell {
             boolean successful = false;
             exitShellRequest = ExitShellRequest.FATAL_EXIT;
 
-            HalfpipeBannerProvider provider = ctx.getBean(HalfpipeBannerProvider.class);
-            LOG.info("\n"+provider.getBanner());
+            Banner.logBanner(LOG, ctx);
 
             for (String cmd : executeThenQuit) {
                 successful = shell.executeCommand(cmd);

@@ -1,14 +1,12 @@
-package halfpipe.web;
+package halfpipe.jetty;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Iterables;
 import com.yammer.metrics.jetty.*;
 import halfpipe.configuration.*;
-import halfpipe.jetty.BiDiGzipHandler;
-import halfpipe.jetty.UnbrandedErrorHandler;
 import halfpipe.util.Duration;
 import halfpipe.util.Size;
-import org.apache.commons.lang.NotImplementedException;
+import halfpipe.web.ServletContextInitializer;
 import org.eclipse.jetty.server.AbstractConnector;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Handler;

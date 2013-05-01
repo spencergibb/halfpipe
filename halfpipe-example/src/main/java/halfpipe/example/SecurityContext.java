@@ -1,11 +1,10 @@
 package halfpipe.example;
 
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.AuthenticationBuilder;
+import org.springframework.security.config.annotation.authentication.AuthenticationRegistry;
 import org.springframework.security.config.annotation.web.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.ExpressionUrlAuthorizations;
-import org.springframework.security.config.annotation.web.HttpConfiguration;
+import org.springframework.security.config.annotation.web.HttpConfigurator;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
 
@@ -19,8 +18,8 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationEn
 public class SecurityContext extends WebSecurityConfigurerAdapter {
 
     @Override
-    protected void registerAuthentication(AuthenticationBuilder builder) throws Exception {
-        builder.inMemoryAuthentication()
+    protected void registerAuthentication(AuthenticationRegistry registry) throws Exception {
+        registry.inMemoryAuthentication()
             .withUser("admin").password("password").roles("USER", "ADMIN").and()
             .withUser("user").password("password").roles("USER");
     }
@@ -34,7 +33,7 @@ public class SecurityContext extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(HttpConfiguration http) throws Exception {
+    protected void configure(HttpConfigurator http) throws Exception {
         http
             .httpBasic()
             ;

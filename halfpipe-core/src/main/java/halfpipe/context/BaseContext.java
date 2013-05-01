@@ -16,6 +16,7 @@ import halfpipe.configuration.convert.StringToTimeZoneConverter;
 import halfpipe.jackson.AnnotationSensitivePropertyNamingStrategy;
 import halfpipe.jackson.ObjectMapperFactory;
 import halfpipe.jersey.JerseyLogger;
+import halfpipe.jetty.ServerFactory;
 import halfpipe.logging.LoggingFactory;
 import halfpipe.validation.ConstraintMappingResource;
 import halfpipe.validation.HalfpipeValidator;
@@ -50,7 +51,8 @@ import java.util.Set;
         JerseyLogger.class,
         AnnotationSensitivePropertyNamingStrategy.class,
         StringToTimeZoneConverter.class,
-        ConfigurationBeanPostProcessor.class
+        ConfigurationBeanPostProcessor.class,
+        ServerFactory.class
 })
 public class BaseContext {
 

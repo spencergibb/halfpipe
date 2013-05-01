@@ -1,5 +1,6 @@
-package halfpipe.web;
+package halfpipe.jetty;
 
+import halfpipe.web.ServletEnvironment;
 import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.webapp.WebAppContext;

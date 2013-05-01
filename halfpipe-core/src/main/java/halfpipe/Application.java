@@ -11,6 +11,7 @@ import halfpipe.cli.Shell;
 import halfpipe.jersey.JerseyLogger;
 import halfpipe.logging.Log;
 import halfpipe.logging.LoggingFactory;
+import halfpipe.util.Banner;
 import halfpipe.util.Generics;
 import halfpipe.web.DefaultServletEnvironment;
 import halfpipe.web.ServletContextInitializer;
@@ -53,6 +54,7 @@ public abstract class Application<C>
             String configFile = findConfig(args);
             startApplication(configFile, contextClass, serverViewContextClass, "CLI");
 
+            //TODO: move the rest of this method to a startable impl?
             Shell shell = getShell(rootContext);
             shell.start(args);
 
@@ -72,11 +74,15 @@ public abstract class Application<C>
             String configFile = System.getProperty("halfpipe.config.file");
             startApplication(configFile, getContextClass(), getViewContext(), "WAR");
 
+            //TODO: move the rest of this method to a startable impl?
             ServletContextInitializer initializer = rootContext.getBean(ServletContextInitializer.class);
 
             initializer.init(new DefaultServletEnvironment(sc));
 
             //TODO: some kind of after initialzed marker?
+
+            Banner.logBanner(LOG, rootContext);
+
             rootContext.getBean(JerseyLogger.class).logEndpoints();
         } catch (Exception e) {
             e.printStackTrace();

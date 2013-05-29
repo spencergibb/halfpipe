@@ -52,7 +52,9 @@ project(':halfpipe-common') {
         compile "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}"
         compile "com.google.guava:guava:${guavaVersion}"
         compile "org.hibernate:hibernate-validator:${hibernateValidatorVersion}"
-        compile "com.netflix.archaius:archaius-core:${netfixArchaiusVersion}"
+        compile(group: 'com.netflix.archaius', name: 'archaius-core', version: netfixArchaiusVersion) {
+            exclude(module: 'slf4j-api')
+        }
         compile "org.springframework:spring-context:${springVersion}"
     }
 }

@@ -1,7 +1,0 @@
-rootProject.name='halfpipe'
-include 'halfpipe-common'
-include 'halfpipe-core'
-include 'halfpipe-example'
-include 'halfpipe-groovy-example'
-include 'halfpipe-scala_2.10.0'
-include 'halfpipe-scala-example'

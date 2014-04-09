@@ -12,7 +12,7 @@ Features
     - TODO: data
     - TODO: integration
 - Spring Boot
-    - TODO: Spring Boot Actuator to automatically configure halfpipe/Netflix OSS components
+    - Spring Boot Auto Configuration to automatically configure halfpipe/Netflix OSS components
     - TODO: Commands
 - Multilingual java TODO: scala/groovy
 - TODO: Guava integration
@@ -22,12 +22,14 @@ Features
     - Health Checks
     - web metrics
     - spring metrics, TODO: including forking metrics-spring which is no longer maintained
-- TODO: Dynamic Config [Archaius](https://github.com/Netflix/archaius)
+- Dynamic Config [Archaius](https://github.com/Netflix/archaius)
     - config classes
     - TODO: dynamic reload of config files
-    - yaml or property config files
+    - TODO: yaml or property config files
     - TODO: callbacks when config property changes
     - TODO: validate config
+- TODO: configure logback like dropwizard, in config file
+
 - Model example after RSS recipe and flux capacitor see [32degrees/recipes-rss](https://github.com/32degrees/recipes-rss)
 - TODO: Netflix OSS Platform [flux capacitor example app](https://github.com/cfregly/fluxcapacitor)
     - TODO: Service registry and loadbalancer [Eureka](https://github.com/Netflix/eureka)

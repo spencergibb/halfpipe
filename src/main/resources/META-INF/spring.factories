@@ -1,0 +1,7 @@
+# Initializers
+#org.springframework.context.ApplicationContextInitializer=\
+#org.springframework.boot.autoconfigure.logging.AutoConfigurationReportLoggingInitializer
+
+# Auto Configure
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+halfpipe.config.HalfpipeAutoConfig

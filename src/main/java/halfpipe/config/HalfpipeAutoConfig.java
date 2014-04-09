@@ -23,7 +23,7 @@ import java.util.Map;
  * Time: 3:07 AM
  */
 @Configuration
-public class HalfpipeConfig {
+public class HalfpipeAutoConfig {
 
     @Bean
     public ArchaiusPropertiesProcessor archaiusProcessor() {

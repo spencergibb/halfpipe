@@ -1,7 +1,7 @@
 package halfpipe.example.endpoint;
 
 import halfpipe.example.api.Message;
-import halfpipe.example.config.HelloProperties;
+import halfpipe.example.properties.HelloProperties;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;

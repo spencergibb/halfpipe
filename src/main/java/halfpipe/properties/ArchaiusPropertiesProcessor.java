@@ -1,7 +1,10 @@
 package halfpipe.properties;
 
+import com.google.common.base.Throwables;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.context.ApplicationContext;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.TypeUtils;
@@ -25,6 +28,9 @@ public class ArchaiusPropertiesProcessor implements BeanPostProcessor {
 
     @Inject
     ConversionService conversionService;
+
+    @Inject
+    ApplicationContext context;
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
@@ -66,18 +72,39 @@ public class ArchaiusPropertiesProcessor implements BeanPostProcessor {
                     }
 
                     String propertyName = field.getName();
-                    if (isNotBlank(annotation.value())) {
-                        propertyName = annotation.value() + "." + propertyName;
+                    String prefix = annotation.value();
+                    if (isNotBlank(prefix)) {
+                        propertyName = prefix + "." + propertyName;
                     }
                     DynamicProp dynamicProp = new DynamicProp(propertyName, defaultValue, (Class<?>) typeArgument);
                     dynamicProp.conversionService = conversionService;
+
+                    addCallback(bean, dynamicProp, prefix);
+                    addCallback(bean, dynamicProp, propertyName);
+
                     field.set(bean, dynamicProp);
                 } else {
                     throw new IllegalArgumentException(
-                            "Field type of field annoteted with Log annotation. Expected field type: "
-                                    + DynaProp.class.getCanonicalName());
+                            "Field type of "+field.getType()+". Expected field type: " + DynaProp.class.getCanonicalName());
                 }
             }
         });
+    }
+
+    private void addCallback(Object bean, DynamicProp dynamicProp, String beanPrefix) {
+        String beanName = beanPrefix+".callback";
+        try {
+            Runnable callback = context.getBean(beanName, Runnable.class);
+            if (callback instanceof AbstractCallback) {
+                AbstractCallback abstractCallback = AbstractCallback.class.cast(callback);
+                abstractCallback.setProperties(bean);
+                abstractCallback.setProp(dynamicProp);
+            }
+            dynamicProp.addCallback(callback);
+        } catch (NoSuchBeanDefinitionException e) {
+            return;
+        } catch (Exception e) {
+            Throwables.propagate(e);
+        }
     }
 }

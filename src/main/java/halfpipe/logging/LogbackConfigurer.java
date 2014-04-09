@@ -26,15 +26,8 @@ public class LogbackConfigurer {
         logger.info("Setting rootLogger to {}", properties.getLevel());
         setLogLevel(null, properties.getLevel());
 
-        for (String entry: properties.getLoggers()) {
-            String[] entryValues = entry.split(":");
-            if (entryValues.length != 2) {
-                throw new IllegalArgumentException(entry +" is an illegal loggers entry.  Must be of form 'log.name=LEVEL");
-            }
-            Level level = Level.valueOf(entryValues[1]);
-            String loggerName = entryValues[0];
-            logger.info("Setting {} to {}", loggerName, level);
-            setLogLevel(loggerName, level);
+        for (LogbackEntry entry: properties.getLoggers()) {
+            setLogLevel(entry.getName(), entry.getLevel());
         }
     }
 

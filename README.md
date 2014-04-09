@@ -2,8 +2,8 @@
 ====================
 
 HTTP+JSON Services using industry best Java libraries.
-Spring enabled, with embedded jetty or tomcat.
-Inspired by [dropwizard](http://dropwizard.io) and [Spring Boot](http://projects.spring.io/spring-boot/) .
+Based on [Spring Boot](http://projects.spring.io/spring-boot/) with Netflix OSS integration.
+Originally inspired by [dropwizard](http://dropwizard.io)
 
 Features
 -----

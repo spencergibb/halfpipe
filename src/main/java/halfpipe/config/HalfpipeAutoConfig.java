@@ -30,8 +30,6 @@ public class HalfpipeAutoConfig {
 
     @Bean
     public ArchaiusPropertiesProcessor archaiusProcessor() {
-        //TODO: configurable?
-        System.setProperty("archaius.configurationSource.defaultFileName", "application.properties");
         return new ArchaiusPropertiesProcessor();
     }
 

@@ -24,11 +24,11 @@ Features
     - spring metrics, TODO: including forking metrics-spring which is no longer maintained
 - Dynamic Config [Archaius](https://github.com/Netflix/archaius)
     - config classes
-    - TODO: dynamic reload of config files
+    - dynamic reload of config files
     - TODO: yaml or property config files
     - TODO: callbacks when config property changes
     - TODO: validate config
-- TODO: configure logback like dropwizard, in config file
+- configure logback like dropwizard, in config file
 
 - Model example after RSS recipe and flux capacitor see [32degrees/recipes-rss](https://github.com/32degrees/recipes-rss)
 - TODO: Netflix OSS Platform [flux capacitor example app](https://github.com/cfregly/fluxcapacitor)

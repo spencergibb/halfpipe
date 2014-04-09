@@ -1,9 +1,20 @@
-# Initializers
-#org.springframework.context.ApplicationContextInitializer=\
-#org.springframework.boot.autoconfigure.logging.AutoConfigurationReportLoggingInitializer
-
-# Auto Configure
+# Auto Configuration
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 halfpipe.config.HalfpipeAutoConfig,\
 halfpipe.config.LogbackAutoConfig
 
+# Application Listeners
+org.springframework.context.ApplicationListener=\
+halfpipe.properties.ArchaiusApplicationListener
+
+# ProperySource Loaders
+#org.springframework.boot.env.PropertySourceLoader=\
+#org.springframework.boot.env.YamlPropertySourceLoader
+
+# Run Listeners
+#org.springframework.boot.SpringApplicationRunListener=\
+#org.springframework.boot.context.event.EventPublishingRunListener
+
+# Application Context Initializers
+#org.springframework.context.ApplicationContextInitializer=\
+#org.springframework.boot.context.config.DelegatingApplicationContextInitializer

@@ -7,10 +7,10 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @EnableAutoConfiguration
-@ComponentScan(basePackageClasses = HelloApp.class)
-public class HelloApp {
+@ComponentScan(basePackageClasses = ExampleApp.class)
+public class ExampleApp {
 
     public static void main(String[] args) {
-        SpringApplication.run(HelloApp.class, args);
+        SpringApplication.run(ExampleApp.class, args);
     }
 }

@@ -11,6 +11,7 @@ import org.glassfish.jersey.server.spring.scope.RequestContextFilter;
 public class JerseyConfig extends ResourceConfig {
 
     public JerseyConfig() {
+        //TODO: get packages from spring
         packages(HelloEndpoint.class.getPackage().getName());
         property(ServerProperties.BV_SEND_ERROR_IN_RESPONSE, true);
         property(ServerProperties.JSON_PROCESSING_FEATURE_DISABLE, false);

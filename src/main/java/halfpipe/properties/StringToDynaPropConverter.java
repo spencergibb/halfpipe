@@ -1,4 +1,4 @@
-package halfpipe.config;
+package halfpipe.properties;
 
 import com.google.common.base.Throwables;
 import org.springframework.core.ResolvableType;
@@ -24,6 +24,7 @@ public class StringToDynaPropConverter implements ConditionalGenericConverter {
         System.out.println("converter");
         this.conversionService = conversionService;
         try {
+            //FIXME: avoid reflection?
             resolvableType = TypeDescriptor.class.getDeclaredField("resolvableType");
         } catch (NoSuchFieldException e) {
             Throwables.propagate(e);
@@ -39,7 +40,7 @@ public class StringToDynaPropConverter implements ConditionalGenericConverter {
     @Override
     public boolean matches(TypeDescriptor sourceType, TypeDescriptor targetType) {
         try {
-            TypeDescriptor generic = getGenericType(targetType);
+            TypeDescriptor generic = getGenericType(getResolvableType(targetType));
             return this.conversionService.canConvert(sourceType, generic);
         } catch (Exception e) {
             e.printStackTrace();  //TODO: implement catch
@@ -47,11 +48,13 @@ public class StringToDynaPropConverter implements ConditionalGenericConverter {
         return false;
     }
 
-    private TypeDescriptor getGenericType(TypeDescriptor targetType) throws NoSuchFieldException, IllegalAccessException {
-        Field resolvableType = this.resolvableType;
-        ResolvableType r = (ResolvableType) resolvableType.get(targetType);
-        ResolvableType generic = r.getGeneric(0);
+    private TypeDescriptor getGenericType(ResolvableType targetType) throws NoSuchFieldException, IllegalAccessException {
+        ResolvableType generic = targetType.getGeneric(0);
         return TypeDescriptor.valueOf(generic.getRawClass());
+    }
+
+    private ResolvableType getResolvableType(TypeDescriptor targetType) throws IllegalAccessException {
+        return (ResolvableType) resolvableType.get(targetType);
     }
 
     @Override
@@ -60,8 +63,13 @@ public class StringToDynaPropConverter implements ConditionalGenericConverter {
             return null;
         }
         try {
-            TypeDescriptor typeDescriptor = getGenericType(targetType);
-            return new DynaProp(conversionService.convert(source, sourceType, typeDescriptor));
+            ResolvableType tgtResolvableType = getResolvableType(targetType);
+            TypeDescriptor typeDescriptor = getGenericType(tgtResolvableType);
+            //TODO: discover propName
+            String propName = "hello.defaultMessage";
+            //TODO: discover defaultValue
+            Object defaultValue = conversionService.convert(source, sourceType, typeDescriptor);
+            return new DynamicProp(propName, defaultValue);
         } catch (Exception e) {
             Throwables.propagate(e);
         }

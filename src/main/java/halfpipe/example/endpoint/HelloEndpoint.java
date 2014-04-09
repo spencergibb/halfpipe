@@ -11,7 +11,6 @@ import javax.ws.rs.core.MediaType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @Path("/hello")
-@XmlRootElement
 public class HelloEndpoint {
 
     @Inject
@@ -20,6 +19,6 @@ public class HelloEndpoint {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
    	public Message message() {
-   		return new Message(helloProperties.getDefaultMessage());
+   		return new Message(helloProperties.getDefaultMessage().get());
    	}
 }

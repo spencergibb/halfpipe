@@ -1,10 +1,11 @@
 package halfpipe.example.config;
 
-import static halfpipe.config.DynaProp.*;
-
-import halfpipe.config.DynaProp;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import halfpipe.properties.ArchaiusProperties;
+import halfpipe.properties.DynaProp;
+import lombok.Data;
 import org.springframework.stereotype.Component;
+
+import static halfpipe.properties.DynamicProp.*;
 
 /**
  * User: spencergibb
@@ -12,20 +13,9 @@ import org.springframework.stereotype.Component;
  * Time: 4:43 PM
  */
 @Component
-@ConfigurationProperties("hello")
+//@ConfigurationProperties("hello")
+@ArchaiusProperties("hello")
+@Data
 public class HelloProperties {
-
     private DynaProp<String> defaultMessage = prop("HelloWorld");
-
-    public HelloProperties() {
-        System.out.println("here");
-    }
-
-    public String getDefaultMessage() {
-        return defaultMessage.get();
-    }
-
-    public void setDefaultMessage(DynaProp<String> defaultMessage) {
-        this.defaultMessage = defaultMessage;
-    }
 }

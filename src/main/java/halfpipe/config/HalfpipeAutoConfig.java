@@ -21,6 +21,9 @@ import java.util.Map;
  * User: spencergibb
  * Date: 4/9/14
  * Time: 3:07 AM
+ * TODO: spring @ConditionalOn*
+ * @ConditionalOnClass({ EnableAspectJAutoProxy.class, Aspect.class, Advice.class })
+ * @ConditionalOnExpression("${spring.aop.auto:true}")
  */
 @Configuration
 public class HalfpipeAutoConfig {

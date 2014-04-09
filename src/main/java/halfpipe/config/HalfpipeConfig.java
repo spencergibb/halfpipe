@@ -23,7 +23,6 @@ import java.util.Map;
  * Time: 3:07 AM
  */
 @Configuration
-
 public class HalfpipeConfig {
 
     @Bean
@@ -48,7 +47,6 @@ public class HalfpipeConfig {
         return new ServletRegistrationBean(new ServletContainer(jerseyConfig()), halfpipeProperties().getUrlMapping());
     }
 
-    //TODO: move to core?
     @Bean
     public ConversionService conversionService(BeanFactory beanFactory) {
         DefaultConversionService service = new DefaultConversionService();

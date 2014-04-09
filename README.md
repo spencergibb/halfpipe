@@ -8,7 +8,7 @@ Originally inspired by [dropwizard](http://dropwizard.io)
 Features
 -----
 - Maven
-- Spring 4 enabled (no or little XML)
+- Spring 4 enabled (no XML)
     - TODO: data
     - TODO: integration
 - Spring Boot
@@ -22,7 +22,6 @@ Features
     - Health Checks
     - web metrics
     - spring metrics, TODO: including forking metrics-spring which is no longer maintained
-- TODO: Spring command line [spring shell](http://www.springsource.org/spring-shell/)
 - TODO: Dynamic Config [Archaius](https://github.com/Netflix/archaius)
     - config classes
     - TODO: dynamic reload of config files
@@ -35,9 +34,10 @@ Features
 - TODO: upload to [sonatype](https://docs.sonatype.org/display/Repository/Sonatype+OSS+Maven+Repository+Usage+Guide)
 - TODO: Feign
 - TODO: Feign/Hysterix
-- TODO: Yammer metrics to hysterix?
+- TODO: coda hale metrics to hysterix?
 - TODO: Cloud formation templates?
 - TODO: Admin like karyon
 - TODO: metrics aws cloudwatch
 - TODO: metrics graphite
+- TODO: Spring command line? [spring shell](http://www.springsource.org/spring-shell/)
 

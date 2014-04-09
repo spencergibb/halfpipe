@@ -3,8 +3,8 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.thirty2</groupId>
     <artifactId>halfpipe-parent</artifactId>
-    <packaging>war</packaging>
-    <version>0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <version>2.0.0-SNAPSHOT</version>
     <name>Halfpipe</name>
 
     <url>https://github.com/32degrees/halfpipe</url>
@@ -18,13 +18,15 @@
     <properties>
         <jackson.version>2.3.1</jackson.version>
         <jersey.version>2.5.1</jersey.version>
-        <jetty-maven-plugin.version>8.1.14.v20131031</jetty-maven-plugin.version>
         <joda-time.version>2.3</joda-time.version>
         <jetty.port>8080</jetty.port>
         <junit.version>4.11</junit.version>
-        <lombok.version>1.12.2</lombok.version>
-        <spring.version>4.0.0.RELEASE</spring.version>
-        <spring.security.version>3.1.4.RELEASE</spring.security.version>
+        <lombok.version>1.12.6</lombok.version>
+        <spring.version>4.0.3.RELEASE</spring.version>
+        <spring.security.version>3.2.3.RELEASE</spring.security.version>
+        <jetty.version>9.1.4.v20140401</jetty.version>
+        <jetty-maven-plugin.version>9.1.4.v20140401</jetty-maven-plugin.version>
+        <servlet-api.version>3.1.0</servlet-api.version>
     </properties>
 
     <dependencyManagement>
@@ -107,7 +109,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
-        <!--<dependency>
+        <!--TODO: actuator<dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
@@ -158,7 +160,7 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.mortbay.jetty</groupId>
+                <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
                 <version>${jetty-maven-plugin.version}</version>
                 <configuration>

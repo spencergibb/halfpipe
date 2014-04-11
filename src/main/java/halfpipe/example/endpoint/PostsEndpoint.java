@@ -58,6 +58,13 @@ public class PostsEndpoint {
 
 
     @GET
+    @Path("findbytitle/{title}")
+    public Post findByTitle(@PathParam("title") String title) {
+        return posts.findPostByTitleIgnoreCase(title);
+    }
+
+
+    @GET
     @Path("/test")
     public Post testPost() {
         Post post = new Post();

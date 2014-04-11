@@ -10,8 +10,8 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @EnableAutoConfiguration
-@ComponentScan(basePackageClasses = ExampleApp.class)
-public class ExampleApp {
+@ComponentScan(basePackageClasses = ExampleServiceApp.class)
+public class ExampleServiceApp {
 
     @Bean(name = "hello.callback")
     Runnable helloPropertiesCallback() {
@@ -34,6 +34,6 @@ public class ExampleApp {
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(ExampleApp.class, args);
+        SpringApplication.run(ExampleServiceApp.class, args);
     }
 }

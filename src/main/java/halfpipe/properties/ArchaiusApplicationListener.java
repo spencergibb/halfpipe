@@ -36,7 +36,8 @@ public class ArchaiusApplicationListener implements SmartApplicationListener {
 
         if (url == null) {
             String urls = event.getEnvironment().getProperty("archaius.urls");
-            System.setProperty("archaius.configurationSource.additionalUrls", urls);
+            if (urls != null)
+                System.setProperty("archaius.configurationSource.additionalUrls", urls);
         } else {
             System.setProperty("archaius.configurationSource.additionalUrls", url);
         }

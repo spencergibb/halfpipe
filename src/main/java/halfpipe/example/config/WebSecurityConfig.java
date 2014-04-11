@@ -18,7 +18,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", "/home").permitAll()
                 .antMatchers("/v1/**").hasRole("USER")
                 .anyRequest().authenticated();
-        http.httpBasic().realmName("My API");
+        http.httpBasic().realmName("My API")
+            .and()
+            .csrf().disable();
     }
 
     @Override

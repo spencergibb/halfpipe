@@ -1,7 +1,6 @@
 package halfpipe.jersey;
 
 import org.glassfish.jersey.filter.LoggingFilter;
-import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.ServerProperties;
 import org.glassfish.jersey.server.spring.scope.RequestContextFilter;
@@ -26,7 +25,7 @@ public class HalfpipeResourceConfig extends ResourceConfig {
         property(ServerProperties.WADL_FEATURE_DISABLE, true);
         register(RequestContextFilter.class);
         register(LoggingFilter.class);
-        register(JacksonFeature.class);
+        //register(JacksonFeature.class);
     }
 
     @PostConstruct

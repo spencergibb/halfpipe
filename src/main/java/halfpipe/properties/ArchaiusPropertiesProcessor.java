@@ -8,13 +8,14 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.TypeUtils;
+import org.springframework.validation.Validator;
 
 import javax.inject.Inject;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
-import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.apache.commons.lang.StringUtils.*;
 import static org.springframework.core.annotation.AnnotationUtils.*;
 import static org.springframework.util.ReflectionUtils.*;
 
@@ -30,6 +31,9 @@ public class ArchaiusPropertiesProcessor implements BeanPostProcessor {
     ConversionService conversionService;
 
     @Inject
+    Validator validator;
+
+    @Inject
     ApplicationContext context;
 
     @Override
@@ -40,12 +44,13 @@ public class ArchaiusPropertiesProcessor implements BeanPostProcessor {
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
         ArchaiusProperties annotation = findAnnotation(bean.getClass(), ArchaiusProperties.class);
-        if (annotation != null)
-            postProcessAfterInitialization(bean, beanName, annotation);
+        if (annotation != null) {
+            postProcessAfterInitialization(bean, annotation);
+        }
         return bean;
     }
 
-    protected void postProcessAfterInitialization(Object bean, String beanName, ArchaiusProperties annotation) {
+    protected void postProcessAfterInitialization(Object bean, ArchaiusProperties annotation) {
         doWithFields(bean.getClass(), new FieldCallback() {
             @Override
             public void doWith(Field field) throws IllegalArgumentException, IllegalAccessException {
@@ -102,7 +107,7 @@ public class ArchaiusPropertiesProcessor implements BeanPostProcessor {
             }
             dynamicProp.addCallback(callback);
         } catch (NoSuchBeanDefinitionException e) {
-            return;
+            return; //if there is no callback bean for this property, ignore
         } catch (Exception e) {
             Throwables.propagate(e);
         }

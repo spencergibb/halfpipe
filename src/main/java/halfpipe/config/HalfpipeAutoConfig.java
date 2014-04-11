@@ -9,12 +9,19 @@ import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.converter.ConditionalGenericConverter;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.converter.GenericConverter;
 import org.springframework.core.convert.support.DefaultConversionService;
+import org.springframework.web.servlet.HandlerMapping;
+import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
+import org.springframework.web.servlet.handler.AbstractHandlerMapping;
 
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
@@ -44,8 +51,37 @@ public class HalfpipeAutoConfig {
     }
 
     @Bean
-    public ServletRegistrationBean jerseyServlet() {
-        return new ServletRegistrationBean(new ServletContainer(jerseyConfig()), halfpipeProperties().getUrlMapping());
+    public ServletRegistrationBean jerseyServlet() throws ServletException {
+        ServletRegistrationBean bean = new ServletRegistrationBean(new ServletContainer(jerseyConfig()), halfpipeProperties().getUrlMapping());
+        bean.setOrder(Ordered.HIGHEST_PRECEDENCE);
+        return bean;
+    }
+
+    /**
+     * TODO: WebMvcConfigurationSupport.defaultServletHandlerMapping runs with a null servletContext
+     * @param servletContext
+     * @return
+     */
+    @Bean
+    public HandlerMapping defaultServletHandlerMapping(ServletContext servletContext) {
+        LocalConfigurer configurer = new LocalConfigurer(servletContext);
+        AbstractHandlerMapping handlerMapping = configurer.getHandlerMapping();
+        handlerMapping = handlerMapping != null ? handlerMapping : new AbstractHandlerMapping(){
+            @Override
+            protected Object getHandlerInternal(HttpServletRequest request) throws Exception { return null; }
+        };
+        return handlerMapping;
+    }
+
+    private class LocalConfigurer extends DefaultServletHandlerConfigurer {
+        public LocalConfigurer(ServletContext servletContext) {
+            super(servletContext);
+        }
+
+        @Override
+        public AbstractHandlerMapping getHandlerMapping() {
+            return super.getHandlerMapping();
+        }
     }
 
     @Bean

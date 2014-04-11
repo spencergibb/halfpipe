@@ -26,7 +26,7 @@ Features
     - config classes
     - dynamic reload of config files
     - TODO: yaml or property config files
-    - TODO: callbacks when config property changes
+    - callbacks when config property changes
     - TODO: validate config
 - configure logback like dropwizard, in config file
 

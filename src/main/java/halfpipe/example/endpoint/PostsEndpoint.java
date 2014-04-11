@@ -2,6 +2,7 @@ package halfpipe.example.endpoint;
 
 import halfpipe.example.model.Post;
 import halfpipe.example.repo.PostRepository;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
@@ -24,8 +25,8 @@ public class PostsEndpoint {
     PostRepository posts;
 
     @GET
-    public Iterable<Post> get() {
-        return posts.findAll();
+    public Iterable<Post> get(@QueryParam("page") @DefaultValue("0") int page) {
+        return posts.findAll(new PageRequest(page, 2));
     }
 
     @POST
@@ -37,7 +38,7 @@ public class PostsEndpoint {
     @GET
     @Path("{id}")
     public Post get(@PathParam("id") Long id) {
-        return posts.findOne(id);
+        return posts.getOne(id);
     }
 
     @PUT

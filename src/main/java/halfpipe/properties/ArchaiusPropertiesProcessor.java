@@ -50,7 +50,7 @@ public class ArchaiusPropertiesProcessor implements BeanPostProcessor {
         return bean;
     }
 
-    protected void postProcessAfterInitialization(Object bean, ArchaiusProperties annotation) {
+    protected void postProcessAfterInitialization(final Object bean, final ArchaiusProperties annotation) {
         doWithFields(bean.getClass(), new FieldCallback() {
             @Override
             public void doWith(Field field) throws IllegalArgumentException, IllegalAccessException {

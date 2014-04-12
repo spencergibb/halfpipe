@@ -1,7 +1,9 @@
 package halfpipe.example.frontend;
 
-import halfpipe.example.properties.HelloProperties;
-import halfpipe.properties.AbstractCallback;
+import feign.Logger;
+import halfpipe.client.BasicAuthenticationInterceptor;
+import halfpipe.client.ClientConfigurer;
+import halfpipe.example.client.PostClient;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -11,26 +13,14 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @EnableAutoConfiguration
 @ComponentScan(basePackageClasses = ExampleFrontendApp.class)
-public class ExampleFrontendApp {
+public class ExampleFrontendApp extends ClientConfigurer {
 
-    @Bean(name = "hello.callback")
-    Runnable helloPropertiesCallback() {
-        return new AbstractCallback<HelloProperties, Object>() {
-            @Override
-            public void run() {
-                logger.info("property named: {} changed to {}", prop.getName(), prop.getValue());
-            }
-        };
-    }
-
-    @Bean(name = "hello.defaultMessage.callback")
-    Runnable helloDefaultMessageCallback() {
-        return new AbstractCallback<HelloProperties, String>() {
-            @Override
-            public void run() {
-                logger.info("hello.defaultMessage changed to {}", prop.getValue());
-            }
-        };
+    @Bean
+    public PostClient postClient() {
+        return builder(PostClient.class)
+                .requestInterceptor(new BasicAuthenticationInterceptor("test", "test123"))
+                .logLevel(Logger.Level.FULL)
+                .target("http://localhost:8080");
     }
 
     public static void main(String[] args) {

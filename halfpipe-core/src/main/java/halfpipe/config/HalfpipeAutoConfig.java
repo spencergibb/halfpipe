@@ -83,7 +83,7 @@ public class HalfpipeAutoConfig {
         }
     }
 
-    @Bean
+    /*@Bean
     public ConversionService conversionService(ApplicationContext applicationContext) {
         DefaultConversionService service = new DefaultConversionService();
         for (Converter<?, ?> converter : applicationContext.getBeansOfType(Converter.class).values()) {
@@ -95,5 +95,5 @@ public class HalfpipeAutoConfig {
         }
         //service.addConverter(new StringToDynaPropConverter(service));
         return service;
-    }
+    }*/
 }

@@ -3,6 +3,7 @@ package halfpipe.properties;
 import com.google.common.base.Throwables;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.convert.ConversionService;
@@ -28,6 +29,7 @@ import static org.springframework.util.ReflectionUtils.*;
 public class ArchaiusPropertiesProcessor implements BeanPostProcessor {
 
     @Inject
+    @Qualifier("mvcConversionService")
     ConversionService conversionService;
 
     @Inject

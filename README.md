@@ -9,7 +9,8 @@ Features
 -----
 - Maven
 - Spring 4 enabled (no XML)
-    - TODO: data
+    - Spring data
+    - Spring data rest
     - TODO: integration
 - Spring Boot
     - Spring Boot Auto Configuration to automatically configure halfpipe/Netflix OSS components
@@ -28,17 +29,18 @@ Features
     - TODO: yaml or property config files
     - callbacks when config property changes
     - TODO: validate config
+- Client
+    - Feign
+    - Hysterix
 - configure logback like dropwizard, in config file
 
+- TODO: Admin like karyon
 - Model example after RSS recipe and flux capacitor see [32degrees/recipes-rss](https://github.com/32degrees/recipes-rss)
 - TODO: Netflix OSS Platform [flux capacitor example app](https://github.com/cfregly/fluxcapacitor)
     - TODO: Service registry and loadbalancer [Eureka](https://github.com/Netflix/eureka)
 - TODO: upload to [sonatype](https://docs.sonatype.org/display/Repository/Sonatype+OSS+Maven+Repository+Usage+Guide)
-- TODO: Feign
-- TODO: Feign/Hysterix
 - TODO: coda hale metrics to hysterix?
 - TODO: Cloud formation templates?
-- TODO: Admin like karyon
 - TODO: metrics aws cloudwatch
 - TODO: metrics graphite
 - TODO: Spring command line? [spring shell](http://www.springsource.org/spring-shell/)

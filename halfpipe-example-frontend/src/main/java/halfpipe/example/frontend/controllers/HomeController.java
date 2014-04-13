@@ -1,5 +1,6 @@
 package halfpipe.example.frontend.controllers;
 
+import com.netflix.hystrix.HystrixExecutable;
 import halfpipe.example.client.PostClient;
 import halfpipe.example.model.Post;
 import org.springframework.stereotype.Controller;
@@ -35,6 +36,14 @@ public class HomeController {
         values(model);
         Future<List<Post>> posts = postClient.postsAsync();
         model.put("posts", posts.get());
+        return "home";
+    }
+
+    @RequestMapping("/exec")
+    public String exec(Map<String, Object> model) throws Exception {
+        values(model);
+        HystrixExecutable<List<Post>> posts = postClient.postsExecuatble();
+        model.put("posts", posts.execute());
         return "home";
     }
 

@@ -1,7 +1,7 @@
 package halfpipe.example.frontend;
 
 import feign.Logger;
-import halfpipe.client.BasicAuthenticationInterceptor;
+import feign.auth.BasicAuthRequestInterceptor;
 import halfpipe.client.ClientConfigurer;
 import halfpipe.example.client.PostClient;
 import org.springframework.boot.SpringApplication;
@@ -17,10 +17,10 @@ public class ExampleFrontendApp extends ClientConfigurer {
 
     @Bean
     public PostClient postClient() {
-        return builder(PostClient.class)
-                .requestInterceptor(new BasicAuthenticationInterceptor("test", "test123"))
+        return builder()
+                .requestInterceptor(new BasicAuthRequestInterceptor("test", "test123"))
                 .logLevel(Logger.Level.FULL)
-                .target("http://localhost:8080");
+                .target(PostClient.class, "http://localhost:8080");
     }
 
     public static void main(String[] args) {

@@ -131,7 +131,17 @@
         </dependency>
         <dependency>
             <groupId>com.netflix.feign</groupId>
+            <artifactId>feign-core</artifactId>
+            <version>${feign.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.netflix.feign</groupId>
             <artifactId>feign-jackson</artifactId>
+            <version>${feign.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.netflix.feign</groupId>
+            <artifactId>feign-slf4j</artifactId>
             <version>${feign.version}</version>
         </dependency>
         <dependency>
@@ -139,6 +149,17 @@
             <artifactId>hystrix-core</artifactId>
             <version>${hystrix.version}</version>
         </dependency>
+        <!--<dependency>
+            <groupId>com.squareup.dagger</groupId>
+            <artifactId>dagger</artifactId>
+            <version>1.2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.dagger</groupId>
+            <artifactId>dagger-compiler</artifactId>
+            <version>1.2.1</version>
+            <scope>provided</scope>
+        </dependency>-->
     </dependencies>
 
     <build>

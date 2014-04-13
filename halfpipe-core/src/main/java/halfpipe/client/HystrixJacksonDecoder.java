@@ -9,6 +9,7 @@ import java.util.concurrent.Future;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.RuntimeJsonMappingException;
+import com.netflix.hystrix.HystrixExecutable;
 import feign.Response;
 import feign.codec.DecodeException;
 import feign.codec.Decoder;
@@ -34,13 +35,12 @@ public class HystrixJacksonDecoder implements Decoder {
             if(type instanceof ParameterizedType) {
                 Type actualType = ((ParameterizedType) type).getActualTypeArguments()[0];
                 Type rawType = ((ParameterizedType) type).getRawType();
-                if(rawType == Future.class) {
+                if(rawType == Future.class || rawType == HystrixExecutable.class) {
                     //Let the Hystrix Proxy wrap this in a Future
-                    Object value = mapper.readValue(inputStream, mapper.constructType(actualType));
-                    return new DummyFuture<>(value);
+                    return mapper.readValue(inputStream, mapper.constructType(actualType));
                 }
-            } else if(type == Future.class) {
-                throw new DecodeException("Return type Future must be parameterized");
+            } else if(type == Future.class || type == HystrixExecutable.class) {
+                throw new DecodeException("Return type "+type+" must be parameterized");
             }
 
             return mapper.readValue(inputStream, mapper.constructType(type));

@@ -1,5 +1,6 @@
 package halfpipe.example.client;
 
+import com.netflix.hystrix.HystrixExecutable;
 import feign.RequestLine;
 import halfpipe.example.model.Post;
 
@@ -17,4 +18,7 @@ public interface PostClient {
 
     @RequestLine("GET /v1/posts")
     Future<List<Post>> postsAsync();
+
+    @RequestLine("GET /v1/posts")
+    HystrixExecutable<List<Post>> postsExecuatble();
 }

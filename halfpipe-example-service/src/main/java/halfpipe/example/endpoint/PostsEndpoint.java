@@ -1,5 +1,6 @@
 package halfpipe.example.endpoint;
 
+import com.google.common.base.Optional;
 import halfpipe.example.model.Post;
 import halfpipe.example.repo.PostRepository;
 import org.springframework.data.domain.PageRequest;
@@ -28,6 +29,11 @@ public class PostsEndpoint {
     public Iterable<Post> get(@QueryParam("page") @DefaultValue("0") int page) {
         return posts.findAll(new PageRequest(page, 2));
     }
+
+    /*@GET
+    public Iterable<Post> get(@QueryParam("page") Optional<Integer> page) {
+        return posts.findAll(new PageRequest(page.or(0), 2));
+    }*/
 
     @POST
     public Post create(@Valid Post post) {

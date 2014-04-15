@@ -97,7 +97,6 @@
     </dependencies>
 
     <build>
-        <finalName>halfpipe-example</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>

@@ -10,6 +10,7 @@ import javax.inject.Inject;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 
 /**
@@ -32,19 +33,23 @@ public class HomeController {
     }
 
     @RequestMapping("/async")
-    public String async(Map<String, Object> model) throws Exception {
-        values(model);
-        Future<List<Post>> posts = postClient.postsAsync();
-        model.put("posts", posts.get());
-        return "home";
+    public Callable<String> async(final Map<String, Object> model) throws Exception {
+        return () -> {
+            values(model);
+            Future<List<Post>> posts = postClient.postsAsync();
+            model.put("posts", posts.get());
+            return "home";
+        };
     }
 
     @RequestMapping("/exec")
-    public String exec(Map<String, Object> model) throws Exception {
-        values(model);
-        HystrixExecutable<List<Post>> posts = postClient.postsExecuatble();
-        model.put("posts", posts.execute());
-        return "home";
+    public Callable<String> exec(Map<String, Object> model) throws Exception {
+        return () -> {
+            values(model);
+            HystrixExecutable<List<Post>> posts = postClient.postsExecuatble();
+            model.put("posts", posts.execute());
+            return "home";
+        };
     }
 
     private void values(Map<String, Object> model) {

@@ -1,0 +1,13 @@
+#management.port=8081
+
+halfpipe:
+  urlMapping: /v1/*
+
+logging:
+  level: INFO
+  loggers:
+    - org.springframework.boot:INFO
+    - org.springframework.security:ERROR
+
+hello:
+  defaultMessage: Hi from default config file

@@ -26,18 +26,19 @@ Features
 - Dynamic Config [Archaius](https://github.com/Netflix/archaius)
     - config classes
     - dynamic reload of config files
-    - TODO: yaml or property config files
+    - yaml or property config files
     - callbacks when config property changes
     - TODO: validate config
+    - TODO: Custom sources: Jdbc, DynamoDb, Zookeeper, jclouds, etc...
 - Client
     - Feign
     - Hysterix
 - configure logback like dropwizard, in config file
 
-- TODO: Admin like karyon
+- TODO: Admin like karyon (In progress)
 - Model example after RSS recipe and flux capacitor see [32degrees/recipes-rss](https://github.com/32degrees/recipes-rss)
 - TODO: Netflix OSS Platform [flux capacitor example app](https://github.com/cfregly/fluxcapacitor)
-    - TODO: Service registry and loadbalancer [Eureka](https://github.com/Netflix/eureka)
+    - TODO: Service registry [Eureka](https://github.com/Netflix/eureka) and loadbalancer [Ribbon](https://github.com/Netflix/ribbon)
 - TODO: upload to [sonatype](https://docs.sonatype.org/display/Repository/Sonatype+OSS+Maven+Repository+Usage+Guide)
 - TODO: coda hale metrics to hysterix?
 - TODO: Cloud formation templates?

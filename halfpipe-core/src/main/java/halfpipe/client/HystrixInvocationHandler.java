@@ -7,7 +7,9 @@ import com.netflix.hystrix.HystrixExecutable;
 import feign.InvocationHandlerFactory;
 import feign.MethodHandler;
 import feign.Target;
+import org.springframework.context.ApplicationContext;
 
+import javax.inject.Inject;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -31,6 +33,9 @@ public class HystrixInvocationHandler implements InvocationHandler {
         }
     }
 
+    @Inject
+    ApplicationContext context;
+
     private final Target target;
     private final Map<Method, MethodHandler> methodToHandler;
 
@@ -52,8 +57,10 @@ public class HystrixInvocationHandler implements InvocationHandler {
             return hashCode();
         }
 
+        //TODO: get setter from context
+        //TODO: get group from config? Use app name as default
         HystrixCommand.Setter setter = HystrixCommand.Setter
-                .withGroupKey(HystrixCommandGroupKey.Factory.asKey("mygroup"))
+                .withGroupKey(HystrixCommandGroupKey.Factory.asKey("default"))
                 .andCommandKey(HystrixCommandKey.Factory.asKey(method.getName()))
                 ;
 

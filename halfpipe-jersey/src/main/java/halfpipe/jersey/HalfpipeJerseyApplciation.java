@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
+import halfpipe.jackson.ObjectMapperProvider;
 import halfpipe.logging.Log;
 import halfpipe.properties.HalfpipeProperties;
 import org.glassfish.jersey.filter.LoggingFilter;
@@ -39,7 +40,7 @@ public class HalfpipeJerseyApplciation extends ResourceConfig {
     HalfpipeProperties properties;
 
     @Inject
-    JerseyObjectMapperProvider jerseyObjectMapperProvider;
+    ObjectMapperProvider objectMapperProvider;
 
     public HalfpipeJerseyApplciation() {
         property(ServerProperties.BV_SEND_ERROR_IN_RESPONSE, true);
@@ -58,7 +59,7 @@ public class HalfpipeJerseyApplciation extends ResourceConfig {
 
     @PostConstruct
     public void init() {
-        register(jerseyObjectMapperProvider);
+        register(objectMapperProvider);
 
         Map<String, Object> resources = context.getBeansWithAnnotation(Path.class);
         List<String> beanPackages = new ArrayList<>();

@@ -50,6 +50,7 @@
     <modules>
         <module>halfpipe-core</module>
         <module>halfpipe-jersey</module>
+        <module>halfpipe-admin</module>
         <module>halfpipe-resteasy</module>
         <module>halfpipe-example-service</module>
         <module>halfpipe-example-frontend</module>

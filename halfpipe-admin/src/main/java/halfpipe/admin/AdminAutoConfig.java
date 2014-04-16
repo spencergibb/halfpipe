@@ -1,4 +1,4 @@
-package halfpipe.jersey;
+package halfpipe.admin;
 
 import com.netflix.adminresources.resources.*;
 import com.netflix.adminresources.resources.jmx.JMXResource;

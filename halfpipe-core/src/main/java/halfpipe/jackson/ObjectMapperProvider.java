@@ -1,4 +1,4 @@
-package halfpipe.jersey;
+package halfpipe.jackson;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -11,11 +11,11 @@ import javax.ws.rs.ext.Provider;
  * Time: 3:08 PM
  */
 @Provider
-public class JerseyObjectMapperProvider implements ContextResolver<ObjectMapper> {
+public class ObjectMapperProvider implements ContextResolver<ObjectMapper> {
 
     private final ObjectMapper objectMapper;
 
-    public JerseyObjectMapperProvider(ObjectMapper objectMapper) {
+    public ObjectMapperProvider(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }
 

@@ -1,7 +1,6 @@
 package halfpipe.jersey;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import halfpipe.jersey.HalfpipeJerseyApplciation;
 import halfpipe.properties.HalfpipeProperties;
 import org.glassfish.jersey.servlet.ServletContainer;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -32,12 +31,6 @@ public class JerseyAutoConfig {
     public HalfpipeJerseyApplciation jerseyConfig() {
         return new HalfpipeJerseyApplciation();
     }
-
-    @Bean
-    public JerseyObjectMapperProvider jerseyObjectMapperProvider() {
-        return new JerseyObjectMapperProvider(objectMapper);
-    }
-
 
     @Bean
     public ServletRegistrationBean jerseyServlet() throws ServletException {

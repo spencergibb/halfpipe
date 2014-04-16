@@ -7,6 +7,7 @@ import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
 import halfpipe.client.ClientProperties;
 import halfpipe.jackson.GuavaExtrasModule;
+import halfpipe.jackson.ObjectMapperProvider;
 import halfpipe.properties.ArchaiusPropertiesProcessor;
 import halfpipe.properties.HalfpipeProperties;
 import halfpipe.util.BeanUtils;
@@ -44,6 +45,11 @@ public class HalfpipeAutoConfig {
         objectMapper.registerModule(new JodaModule());
         objectMapper.registerModule(new JSR310Module());
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+    }
+
+    @Bean
+    public ObjectMapperProvider jerseyObjectMapperProvider() {
+        return new ObjectMapperProvider(objectMapper);
     }
 
     @Bean

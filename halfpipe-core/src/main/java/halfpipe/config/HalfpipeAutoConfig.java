@@ -1,6 +1,12 @@
 package halfpipe.config;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.guava.GuavaModule;
+import com.fasterxml.jackson.datatype.joda.JodaModule;
+import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
 import halfpipe.client.ClientProperties;
+import halfpipe.jackson.GuavaExtrasModule;
 import halfpipe.properties.ArchaiusPropertiesProcessor;
 import halfpipe.properties.HalfpipeProperties;
 import halfpipe.util.BeanUtils;
@@ -11,6 +17,8 @@ import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.handler.AbstractHandlerMapping;
 
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
@@ -24,6 +32,19 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Configuration
 public class HalfpipeAutoConfig {
+
+    @Inject
+    ObjectMapper objectMapper;
+
+    @PostConstruct
+    public void init() {
+        //TODO auto config configurer ala boot
+        objectMapper.registerModule(new GuavaModule());
+        objectMapper.registerModule(new GuavaExtrasModule());
+        objectMapper.registerModule(new JodaModule());
+        objectMapper.registerModule(new JSR310Module());
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+    }
 
     @Bean
     ClientProperties clientProperties() {

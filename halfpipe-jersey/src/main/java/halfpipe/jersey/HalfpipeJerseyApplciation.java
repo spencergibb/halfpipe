@@ -26,7 +26,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-public class HalfpipeResourceConfig extends ResourceConfig {
+public class HalfpipeJerseyApplciation extends ResourceConfig {
     private static final String NEWLINE = String.format("%n");
 
     @Log
@@ -38,12 +38,16 @@ public class HalfpipeResourceConfig extends ResourceConfig {
     @Inject
     HalfpipeProperties properties;
 
-    public HalfpipeResourceConfig() {
+    @Inject
+    JerseyObjectMapperProvider jerseyObjectMapperProvider;
+
+    public HalfpipeJerseyApplciation() {
         property(ServerProperties.BV_SEND_ERROR_IN_RESPONSE, true);
         property(ServerProperties.JSON_PROCESSING_FEATURE_DISABLE, false);
         property(ServerProperties.MOXY_JSON_FEATURE_DISABLE, true);
         property(ServerProperties.WADL_FEATURE_DISABLE, true);
         register(RequestContextFilter.class);
+        register(JacksonFeature.class);
         register(LoggingFilter.class);
         register(MvcFeature.class);
         register(FreemarkerMvcFeature.class);
@@ -54,6 +58,8 @@ public class HalfpipeResourceConfig extends ResourceConfig {
 
     @PostConstruct
     public void init() {
+        register(jerseyObjectMapperProvider);
+
         Map<String, Object> resources = context.getBeansWithAnnotation(Path.class);
         List<String> beanPackages = new ArrayList<>();
         for (Object bean: resources.values()) {
@@ -113,7 +119,7 @@ public class HalfpipeResourceConfig extends ResourceConfig {
             builder.add(resource.getClass());
         }
 
-        String rootPath = properties.getUrlMapping();
+        String rootPath = properties.getPrefix();
         if (rootPath.endsWith("/*")) {
             rootPath = rootPath.substring(0, rootPath.length() - 1);
         }

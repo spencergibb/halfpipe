@@ -2,9 +2,11 @@ package halfpipe.resteasy;
 
 import halfpipe.properties.HalfpipeProperties;
 import org.jboss.resteasy.spi.ResteasyDeployment;
+import org.jboss.resteasy.spi.ResteasyProviderFactory;
 import org.jboss.resteasy.springmvc.ResteasyHandlerAdapter;
 import org.jboss.resteasy.springmvc.ResteasyHandlerMapping;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -29,6 +31,9 @@ public class ResteasyAutoConfig extends WebMvcConfigurerAdapter {
     ResteasyHandlerAdapter resteasyHandlerAdapter;
 
     @Inject
+    ResteasyDeployment resteasyDeployment;
+
+    @Inject
     HalfpipeProperties properties;
 
     @PostConstruct
@@ -37,6 +42,20 @@ public class ResteasyAutoConfig extends WebMvcConfigurerAdapter {
         resteasyHandlerMapping.setPrefix(properties.getPrefix());
     }
 
+//    @Bean
+
+
+    @Bean
+    public HalfpipeInjectorFactory halfpipeInjectorFactory() {
+        return new HalfpipeInjectorFactory();
+    }
+
+    @Bean(name = "resteasy.providerFactory")
+    public ResteasyProviderFactory resteasyProviderFactory() {
+        ResteasyProviderFactory providerFactory = resteasyDeployment.getProviderFactory();
+        providerFactory.setInjectorFactory(halfpipeInjectorFactory());
+        return providerFactory;
+    }
 /*
     @Bean(initMethod = "start", destroyMethod = "stop")
     public ResteasyDeployment resteasyDeployment() {
@@ -53,10 +72,6 @@ public class ResteasyAutoConfig extends WebMvcConfigurerAdapter {
         return resteasyDeployment().getDispatcher();
     }
 
-    @Bean
-    public ResteasyProviderFactory resteasyProviderFactory() {
-        return resteasyDeployment().getProviderFactory();
-    }
 
     @Bean
     public SpringBeanProcessor springBeanProcessor() {

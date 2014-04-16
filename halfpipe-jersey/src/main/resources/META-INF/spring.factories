@@ -1,4 +1,4 @@
 # Auto Configuration
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-halfpipe.jersey.config.JerseyAutoConfig,\
-halfpipe.jersey.admin.AdminAutoConfig
+halfpipe.jersey.JerseyAutoConfig,\
+halfpipe.jersey.AdminAutoConfig

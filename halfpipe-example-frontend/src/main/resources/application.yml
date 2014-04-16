@@ -9,6 +9,8 @@ shell:
 halfpipe:
   urlMapping: /v1/*
 #  urlMapping: /v1
+  client:
+    defaultGroup: exampleFrontEnd
 
 logging:
   level: INFO

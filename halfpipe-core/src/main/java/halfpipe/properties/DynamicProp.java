@@ -1,5 +1,6 @@
 package halfpipe.properties;
 
+import com.google.common.base.Optional;
 import com.netflix.config.PropertyWrapper;
 import org.springframework.core.convert.ConversionService;
 
@@ -42,6 +43,10 @@ public class DynamicProp<V> extends PropertyWrapper<V> implements DynaProp<V> {
             return conversionService.convert(val, valueClass);
         }
         throw new IllegalArgumentException("Unable to convert '"+val+" to type "+valueClass);
+    }
+
+    public Optional<V> optional() {
+        return Optional.fromNullable(get());
     }
 
     public V getValue() { return get(); }

@@ -7,6 +7,7 @@ import feign.Logger;
 import feign.codec.Decoder;
 import feign.codec.Encoder;
 import feign.jackson.JacksonEncoder;
+import feign.slf4j.Slf4jLogger;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -31,7 +32,7 @@ public class ClientConfigurer {
 
     @Bean
     public Logger feignLogger() {
-        return new Logger.NoOpLogger();
+        return new Slf4jLogger(); //TODO pass Client classname in
     }
 
     @Bean

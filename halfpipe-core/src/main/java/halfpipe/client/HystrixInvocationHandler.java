@@ -1,22 +1,25 @@
 package halfpipe.client;
 
+import com.google.common.base.Optional;
+import com.google.common.base.Supplier;
 import com.netflix.hystrix.HystrixCommand;
+import com.netflix.hystrix.HystrixCommand.Setter;
 import com.netflix.hystrix.HystrixCommandGroupKey;
 import com.netflix.hystrix.HystrixCommandKey;
 import com.netflix.hystrix.HystrixExecutable;
 import feign.InvocationHandlerFactory;
 import feign.MethodHandler;
 import feign.Target;
-import org.springframework.context.ApplicationContext;
+import rx.Observable;
 
-import javax.inject.Inject;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Map;
 import java.util.concurrent.Future;
 
-import static feign.Util.checkNotNull;
+import static feign.Util.*;
+import static halfpipe.util.BeanUtils.*;
 
 /**
  * User: spencergibb
@@ -32,9 +35,6 @@ public class HystrixInvocationHandler implements InvocationHandler {
             return new HystrixInvocationHandler(target, methodToHandler);
         }
     }
-
-    @Inject
-    ApplicationContext context;
 
     private final Target target;
     private final Map<Method, MethodHandler> methodToHandler;
@@ -57,25 +57,37 @@ public class HystrixInvocationHandler implements InvocationHandler {
             return hashCode();
         }
 
-        //TODO: get setter from context
+        ClientProperties clientProps = getBean(ClientProperties.class);
+
+        String fallbackBeanName = method.getName() + ".fallback";
+        String setterBeanName = method.getName() + ".setter";
+
+        String groupKey = clientProps.getDefaultGroup().optional().or("default");
+
+        Optional<Setter> setterOptional = getOptionalBean(setterBeanName, Setter.class);
+
         //TODO: get group from config? Use app name as default
-        HystrixCommand.Setter setter = HystrixCommand.Setter
-                .withGroupKey(HystrixCommandGroupKey.Factory.asKey("default"))
-                .andCommandKey(HystrixCommandKey.Factory.asKey(method.getName()))
-                ;
+        Setter setter = setterOptional.or(Setter
+                        .withGroupKey(HystrixCommandGroupKey.Factory.asKey(groupKey))
+                        .andCommandKey(HystrixCommandKey.Factory.asKey(method.getName()))
+        );
+
+        //TODO: support for java 8 Supplier
+        Optional<Supplier> fallback = getOptionalBean(fallbackBeanName, Supplier.class);
 
         MethodHandler methodHandler = methodToHandler.get(method);
 
-        ProxiedCommand command = new ProxiedCommand(setter, methodHandler, args);
+        ProxiedCommand command = new ProxiedCommand(setter, methodHandler, args, fallback);
 
         Class<?> returnType = method.getReturnType();
 
         if (Future.class.isAssignableFrom(returnType)) {
             return command.queue();
+        } else if (Observable.class.isAssignableFrom(returnType)) {
+            return command.observe();
         } else if (HystrixExecutable.class.isAssignableFrom(returnType)) {
             return command;
         }
-        //TODO: add command.observe() support
 
         //TODO: add getFallback support through bean lookup
 
@@ -108,11 +120,13 @@ public class HystrixInvocationHandler implements InvocationHandler {
 
         private final MethodHandler methodHandler;
         private final Object[] args;
+        private final Optional<Supplier> fallback;
 
-        protected ProxiedCommand(Setter setter, MethodHandler methodHandler, Object[] args) {
+        protected ProxiedCommand(Setter setter, MethodHandler methodHandler, Object[] args, Optional<Supplier> fallback) {
             super(setter);
             this.methodHandler = methodHandler;
             this.args = args;
+            this.fallback = fallback;
         }
 
         @Override
@@ -124,6 +138,15 @@ public class HystrixInvocationHandler implements InvocationHandler {
             } catch (Throwable t) {
                 throw new Exception(t);
             }
+        }
+
+        @Override
+        protected Object getFallback() {
+            if (fallback.isPresent()) {
+                Supplier supplier = fallback.get();
+                return supplier.get();
+            }
+            return super.getFallback();
         }
     }
 }

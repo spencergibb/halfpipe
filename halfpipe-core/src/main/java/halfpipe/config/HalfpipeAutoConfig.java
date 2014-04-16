@@ -1,7 +1,10 @@
 package halfpipe.config;
 
+import halfpipe.client.ClientProperties;
 import halfpipe.properties.ArchaiusPropertiesProcessor;
 import halfpipe.properties.HalfpipeProperties;
+import halfpipe.util.BeanUtils;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.HandlerMapping;
@@ -21,6 +24,16 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Configuration
 public class HalfpipeAutoConfig {
+
+    @Bean
+    ClientProperties clientProperties() {
+        return new ClientProperties();
+    }
+
+    @Bean
+    BeanUtils halfpipeBeanUtils(ApplicationContext context) {
+        return new BeanUtils(context);
+    }
 
     @Bean
     public ArchaiusPropertiesProcessor archaiusProcessor() {

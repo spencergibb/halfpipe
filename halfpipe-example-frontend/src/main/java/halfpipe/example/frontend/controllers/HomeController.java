@@ -5,6 +5,7 @@ import halfpipe.example.client.PostClient;
 import halfpipe.example.model.Post;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import rx.Observable;
 
 import javax.inject.Inject;
 import java.util.Date;
@@ -48,6 +49,16 @@ public class HomeController {
             values(model);
             HystrixExecutable<List<Post>> posts = postClient.postsExecuatble();
             model.put("posts", posts.execute());
+            return "home";
+        };
+    }
+
+    @RequestMapping("/observe")
+    public Callable<String> observe(Map<String, Object> model) throws Exception {
+        return () -> {
+            values(model);
+            Observable<List<Post>> posts = postClient.postsObserve();
+            model.put("posts", posts.toBlockingObservable().first());
             return "home";
         };
     }

@@ -1,11 +1,11 @@
 package halfpipe.properties;
 
+import com.google.common.base.Optional;
 import com.google.common.base.Throwables;
+import halfpipe.util.BeanUtils;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springframework.context.ApplicationContext;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.TypeUtils;
@@ -36,7 +36,7 @@ public class ArchaiusPropertiesProcessor implements BeanPostProcessor {
     Validator validator;
 
     @Inject
-    ApplicationContext context;
+    BeanUtils beanUtils;
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
@@ -101,15 +101,17 @@ public class ArchaiusPropertiesProcessor implements BeanPostProcessor {
     private void addCallback(Object bean, DynamicProp dynamicProp, String beanPrefix) {
         String beanName = beanPrefix+".callback";
         try {
-            Runnable callback = context.getBean(beanName, Runnable.class);
-            if (callback instanceof AbstractCallback) {
-                AbstractCallback abstractCallback = AbstractCallback.class.cast(callback);
-                abstractCallback.setProperties(bean);
-                abstractCallback.setProp(dynamicProp);
+            Optional<Runnable> callback = beanUtils.getOptionalBean(beanName, Runnable.class);
+            if (callback.isPresent()) {
+                if (callback.get() instanceof AbstractCallback) {
+                    AbstractCallback abstractCallback = AbstractCallback.class.cast(callback.get());
+                    abstractCallback.setProperties(bean);
+                    abstractCallback.setProp(dynamicProp);
+                }
+                dynamicProp.addCallback(callback.get());
+            } else {
+                return;
             }
-            dynamicProp.addCallback(callback);
-        } catch (NoSuchBeanDefinitionException e) {
-            return; //if there is no callback bean for this property, ignore
         } catch (Exception e) {
             Throwables.propagate(e);
         }

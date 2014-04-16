@@ -27,23 +27,22 @@ public class HystrixJacksonDecoder implements Decoder {
 
     @Override
     public Object decode(Response response, Type type) throws IOException {
-        if(response.body() == null || response.body().length() <= 0) {
+        if(response.body() == null) { //TODO: checking body length with resteasy led to NPE
             return null;
         }
-        InputStream inputStream = response.body().asInputStream();
         try {
             if(type instanceof ParameterizedType) {
                 Type actualType = ((ParameterizedType) type).getActualTypeArguments()[0];
                 Type rawType = ((ParameterizedType) type).getRawType();
                 if(rawType == Future.class || rawType == HystrixExecutable.class) {
                     //Let the Hystrix Proxy wrap this in a Future
-                    return mapper.readValue(inputStream, mapper.constructType(actualType));
+                    return read(response, actualType);
                 }
             } else if(type == Future.class || type == HystrixExecutable.class) {
                 throw new DecodeException("Return type "+type+" must be parameterized");
             }
 
-            return mapper.readValue(inputStream, mapper.constructType(type));
+            return read(response, type);
 
         } catch(RuntimeJsonMappingException e) {
             if(e.getCause() != null && e.getCause() instanceof IOException) {
@@ -51,6 +50,11 @@ public class HystrixJacksonDecoder implements Decoder {
             }
             throw e;
         }
+    }
+
+    private Object read(Response response, Type type) throws IOException {
+        InputStream inputStream = response.body().asInputStream();
+        return mapper.readValue(inputStream, mapper.constructType(type));
     }
 
 }

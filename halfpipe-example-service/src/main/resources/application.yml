@@ -2,6 +2,7 @@
 
 halfpipe:
   urlMapping: /v1/*
+#  urlMapping: /v1
 
 logging:
   level: INFO

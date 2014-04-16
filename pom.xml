@@ -59,6 +59,7 @@
 
     <modules>
         <module>halfpipe-core</module>
+        <module>halfpipe-jersey</module>
         <module>halfpipe-example-service</module>
         <module>halfpipe-example-frontend</module>
     </modules>

@@ -1,8 +1,7 @@
 #management.port=8081
 
 halfpipe:
-  urlMapping: /v1/*
-#  urlMapping: /v1
+  prefix: /v1
 
 logging:
   level: INFO

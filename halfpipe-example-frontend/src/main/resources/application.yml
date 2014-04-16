@@ -7,8 +7,8 @@ shell:
     port: 3000
 
 halfpipe:
-  urlMapping: /v1/*
-#  urlMapping: /v1
+  #urlMapping: /v1/*
+  prefix: /v1
   client:
     defaultGroup: exampleFrontEnd
 

@@ -32,8 +32,16 @@ public class JerseyAutoConfig {
     @Bean
     public ServletRegistrationBean jerseyServlet() throws ServletException {
         ServletContainer servletContainer = new ServletContainer(jerseyConfig());
-        ServletRegistrationBean bean = new ServletRegistrationBean(servletContainer, halfpipeProperties.getUrlMapping());
+        String prefix = halfpipeProperties.getPrefix();
+        ServletRegistrationBean bean = new ServletRegistrationBean(servletContainer, toUrlMapping(prefix));
         bean.setOrder(Ordered.HIGHEST_PRECEDENCE);
         return bean;
+    }
+
+    private String toUrlMapping(String prefix) {
+        StringBuilder url = new StringBuilder(prefix);
+        url.append("/*");
+        //TODO: adjust if it ends in slash?
+        return url.toString();
     }
 }

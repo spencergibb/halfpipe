@@ -13,5 +13,5 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties("halfpipe")
 @Data
 public class HalfpipeProperties {
-    private String urlMapping;
+    private String prefix;
 }

@@ -34,7 +34,7 @@ public class ResteasyAutoConfig extends WebMvcConfigurerAdapter {
     @PostConstruct
     public void init() {
         resteasyHandlerMapping.setOrder(1);
-        resteasyHandlerMapping.setPrefix(properties.getUrlMapping());
+        resteasyHandlerMapping.setPrefix(properties.getPrefix());
     }
 
 /*

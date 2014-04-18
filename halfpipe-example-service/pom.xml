@@ -19,8 +19,18 @@
     <dependencies>
         <dependency>
             <groupId>net.thirty2</groupId>
-            <!--<artifactId>halfpipe-jersey</artifactId>-->
-            <artifactId>halfpipe-resteasy</artifactId>
+            <artifactId>halfpipe-jersey</artifactId>
+            <!--<artifactId>halfpipe-resteasy</artifactId>-->
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.thirty2</groupId>
+            <artifactId>halfpipe-consul</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.thirty2</groupId>
+            <artifactId>halfpipe-swagger</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

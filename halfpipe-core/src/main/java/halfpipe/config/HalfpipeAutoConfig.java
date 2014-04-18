@@ -8,6 +8,7 @@ import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
 import halfpipe.client.ClientProperties;
 import halfpipe.jackson.GuavaExtrasModule;
 import halfpipe.jackson.ObjectMapperProvider;
+import halfpipe.properties.ArchaiusInitializer;
 import halfpipe.properties.ArchaiusPropertiesProcessor;
 import halfpipe.properties.HalfpipeProperties;
 import halfpipe.util.BeanUtils;
@@ -68,6 +69,11 @@ public class HalfpipeAutoConfig {
     }
 
     @Bean
+    public ArchaiusInitializer archaiusInitializer() {
+        return new ArchaiusInitializer();
+    }
+
+    @Bean
     public HalfpipeProperties halfpipeProperties() {
         return new HalfpipeProperties();
     }
@@ -99,17 +105,4 @@ public class HalfpipeAutoConfig {
         }
     }
 
-    /*@Bean
-    public ConversionService conversionService(ApplicationContext applicationContext) {
-        DefaultConversionService service = new DefaultConversionService();
-        for (Converter<?, ?> converter : applicationContext.getBeansOfType(Converter.class).values()) {
-            service.addConverter(converter);
-        }
-        Map<String, ConditionalGenericConverter> beansOfType = applicationContext.getBeansOfType(ConditionalGenericConverter.class);
-        for (GenericConverter converter : beansOfType.values()) {
-            service.addConverter(converter);
-        }
-        //service.addConverter(new StringToDynaPropConverter(service));
-        return service;
-    }*/
 }

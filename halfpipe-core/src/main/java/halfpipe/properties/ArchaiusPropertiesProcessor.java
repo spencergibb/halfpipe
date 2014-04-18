@@ -9,8 +9,8 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.TypeUtils;
-import org.springframework.validation.Validator;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
@@ -33,10 +33,18 @@ public class ArchaiusPropertiesProcessor implements BeanPostProcessor {
     ConversionService conversionService;
 
     @Inject
-    Validator validator;
+    ArchaiusInitializer initializer;
+
+    /*@Inject
+    Validator validator;*/
 
     @Inject
     BeanUtils beanUtils;
+
+    @PostConstruct
+    public void init() {
+        initializer.initializeArchaius();;
+    }
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {

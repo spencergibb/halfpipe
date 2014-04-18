@@ -4,8 +4,8 @@ halfpipe.config.HalfpipeAutoConfig,\
 halfpipe.config.LogbackAutoConfig
 
 # Application Listeners
-org.springframework.context.ApplicationListener=\
-halfpipe.properties.ArchaiusApplicationListener
+#org.springframework.context.ApplicationListener=\
+#halfpipe.properties.ArchaiusApplicationListener
 
 # ProperySource Loaders
 #org.springframework.boot.env.PropertySourceLoader=\

@@ -2,11 +2,8 @@ package halfpipe.client;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Supplier;
-import com.netflix.hystrix.HystrixCommand;
+import com.netflix.hystrix.*;
 import com.netflix.hystrix.HystrixCommand.Setter;
-import com.netflix.hystrix.HystrixCommandGroupKey;
-import com.netflix.hystrix.HystrixCommandKey;
-import com.netflix.hystrix.HystrixExecutable;
 import feign.InvocationHandlerFactory;
 import feign.MethodHandler;
 import feign.Target;
@@ -62,11 +59,10 @@ public class HystrixInvocationHandler implements InvocationHandler {
         String fallbackBeanName = method.getName() + ".fallback";
         String setterBeanName = method.getName() + ".setter";
 
-        String groupKey = clientProps.getDefaultGroup().optional().or("default");
+        String groupKey = clientProps.getDefaultGroup(); //.optional().or("default");
 
         Optional<Setter> setterOptional = getOptionalBean(setterBeanName, Setter.class);
 
-        //TODO: get group from config? Use app name as default
         Setter setter = setterOptional.or(Setter
                         .withGroupKey(HystrixCommandGroupKey.Factory.asKey(groupKey))
                         .andCommandKey(HystrixCommandKey.Factory.asKey(method.getName()))
@@ -88,8 +84,6 @@ public class HystrixInvocationHandler implements InvocationHandler {
         } else if (HystrixExecutable.class.isAssignableFrom(returnType)) {
             return command;
         }
-
-        //TODO: add getFallback support through bean lookup
 
         return command.execute();
     }

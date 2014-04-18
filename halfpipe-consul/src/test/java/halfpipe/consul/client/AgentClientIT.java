@@ -30,7 +30,7 @@ public class AgentClientIT extends AbstractTestNGSpringContextTests {
     AgentClient client;
 
     @Test
-    public void testAddService() {
+    public void testRegisterService() {
         Service service = new Service();
         service.setId("test1id");
         service.setName("test1Name");
@@ -40,10 +40,10 @@ public class AgentClientIT extends AbstractTestNGSpringContextTests {
         check.setScript("/usr/local/bin/gtrue");
         check.setInterval(60);
         service.setCheck(check);
-        client.add(service);
+        client.register(service);
     }
 
-    @Test(dependsOnMethods = "testAddService")
+    @Test(dependsOnMethods = "testRegisterService")
     public void testGetServices() {
         Map<String, Service> services = client.getServices();
         assertNotNull(services, "services was null");
@@ -51,7 +51,7 @@ public class AgentClientIT extends AbstractTestNGSpringContextTests {
     }
 
     @Test(dependsOnMethods = "testGetServices")
-    public void testDeregister() {
+    public void testDeregisterService() {
         client.deregister("test1id");
     }
 }

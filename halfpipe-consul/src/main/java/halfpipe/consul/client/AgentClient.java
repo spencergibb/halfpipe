@@ -16,7 +16,7 @@ public interface AgentClient {
     Map<String, Service> getServices();
 
     @RequestLine("PUT /v1/agent/service/register")
-    void add(Service service);
+    void register(Service service);
 
     @RequestLine("PUT /v1/agent/service/deregister/{serviceId}")
     void deregister(@Named("serviceId") String serviceId);

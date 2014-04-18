@@ -1,3 +1,6 @@
 # Auto Configuration
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 halfpipe.consul.ConsulAutoConfig
+
+org.springframework.context.ApplicationListener=\
+halfpipe.consul.ConsulApplicationListener

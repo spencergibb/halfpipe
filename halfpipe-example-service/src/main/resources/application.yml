@@ -2,6 +2,11 @@
 
 halfpipe:
   prefix: /v1
+  consul:
+    serviceName: exampleService
+    tags:
+      - api
+      - example
 
 logging:
   level: INFO

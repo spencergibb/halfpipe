@@ -1,4 +1,4 @@
-package halfpipe.consul.keyvalue;
+package halfpipe.consul;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
@@ -23,7 +23,7 @@ public class TestConfiguration {
     }
 
     @Bean(name = "mvcConversionService")
-    public ConversionService conversionService() {//ApplicationContext applicationContext) {
+    public ConversionService conversionService() {
         DefaultConversionService service = new DefaultConversionService();
         return service;
     }

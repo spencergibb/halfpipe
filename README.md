@@ -29,8 +29,9 @@ Features
     - yaml or property config files
     - callbacks when config property changes
     - TODO: validate config
-    - TODO: Custom sources: Jdbc, DynamoDb, Zookeeper, jclouds, etc...
+    - Custom sources: consul.io kv, Jdbc, DynamoDb, Zookeeper, jclouds, etc...
 - Client
+    - Service Discovery (consul.io/TODO: Eureka)
     - Feign
     - Hysterix
 - configure logback like dropwizard, in config file
@@ -41,7 +42,7 @@ Features
     - TODO: Service registry [Eureka](https://github.com/Netflix/eureka) and loadbalancer [Ribbon](https://github.com/Netflix/ribbon)
 - TODO: upload to [sonatype](https://docs.sonatype.org/display/Repository/Sonatype+OSS+Maven+Repository+Usage+Guide)
 - TODO: coda hale metrics to hysterix?
-- TODO: Cloud formation templates?
+- TODO: Ansible playbooks
 - TODO: metrics aws cloudwatch
 - TODO: metrics graphite
 - TODO: Spring command line? [spring shell](http://www.springsource.org/spring-shell/)

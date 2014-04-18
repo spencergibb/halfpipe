@@ -1,4 +1,4 @@
-package halfpipe.consul.keyvalue;
+package halfpipe.consul.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
@@ -16,12 +16,16 @@ import static com.google.common.base.Objects.toStringHelper;
 public class KeyValue {
     @JsonProperty("Key")
     private String key;
+
     @JsonProperty("Value")
     private String value;
+
     @JsonProperty("CreateIndex")
     private Long createIndex;
+
     @JsonProperty("ModifyIndex")
     private Long modifyIndex;
+
     @JsonProperty("Flags")
     private Long flags;
 

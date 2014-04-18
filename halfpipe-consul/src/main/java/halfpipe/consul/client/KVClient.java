@@ -1,6 +1,7 @@
-package halfpipe.consul.keyvalue;
+package halfpipe.consul.client;
 
 import feign.RequestLine;
+import halfpipe.consul.model.KeyValue;
 
 import javax.inject.Named;
 import java.util.List;

@@ -8,6 +8,7 @@ import org.apache.commons.configuration.EnvironmentConfiguration;
 import org.apache.commons.configuration.SystemConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
 
@@ -22,7 +23,7 @@ import static com.netflix.config.ConfigurationManager.*;
  * Date: 4/9/14
  * Time: 1:30 PM
  */
-public class ArchaiusInitializer /*implements SmartApplicationListener*/ {
+public class ArchaiusInitializer {
     private static final Logger logger = LoggerFactory.getLogger(ArchaiusInitializer.class);
 
     private AtomicBoolean initialized = new AtomicBoolean(false);
@@ -30,41 +31,30 @@ public class ArchaiusInitializer /*implements SmartApplicationListener*/ {
     @Inject
     ConfigurableApplicationContext context;
 
-    @Inject
+    @Autowired(required = false)
     List<PropertiesSourceFactory> factories;
 
     public synchronized void initializeArchaius() {
         if (initialized.compareAndSet(false, true)) {
-            //ApplicationPreparedEvent event = (ApplicationPreparedEvent) applicationEvent;
-            //logger.debug("ArchaiusInitializer received " + event);
             ConfigurableEnvironment env = context.getEnvironment();
 
-            String url = null;
-        /*String[] args = event.getArgs();
-        if (args != null && args.length > 0) {
-            url = args[0];
-        }*/
-
-            if (url == null) {
-                String urls = env.getProperty("archaius.urls");
-                if (urls != null)
-                    System.setProperty("archaius.configurationSource.additionalUrls", urls);
-            } else {
-                System.setProperty("archaius.configurationSource.additionalUrls", url);
-            }
+            String urls = env.getProperty("archaius.urls");
+            if (urls != null)
+                System.setProperty("archaius.configurationSource.additionalUrls", urls);
 
             String defaultFileName = env.getProperty("archauis.file.name", "application.yml");
             System.setProperty("archaius.configurationSource.defaultFileName", defaultFileName);
 
             ConcurrentCompositeConfiguration config = new ConcurrentCompositeConfiguration();
 
-            //TODO: add support to add other Configurations (Jdbc, DynamoDb, Zookeeper, jclouds, etc...)
+            //support to add other Configurations (Jdbc, DynamoDb, Zookeeper, jclouds, etc...)
             if (factories != null && !factories.isEmpty()) {
                 for (PropertiesSourceFactory factory: factories) {
                     config.addConfiguration(factory.getConfiguration(), factory.getName());
                 }
             }
 
+            //TODO: move all of theses to PropertiesSourceFactory impls with @Ordered
             try {
                 FixedDelayPollingScheduler pollingScheduler = new FixedDelayPollingScheduler();
                 UrlPropertiesSource propertiesSource = new UrlPropertiesSource();
@@ -74,6 +64,7 @@ public class ArchaiusInitializer /*implements SmartApplicationListener*/ {
                 logger.warn("Failed to create default dynamic configuration", e);
             }
 
+            //TODO: sys/env above urls?
             if (!Boolean.getBoolean(DISABLE_DEFAULT_SYS_CONFIG)) {
                 SystemConfiguration sysConfig = new SystemConfiguration();
                 config.addConfiguration(sysConfig, SYS_CONFIG_NAME);
@@ -90,9 +81,4 @@ public class ArchaiusInitializer /*implements SmartApplicationListener*/ {
             ConfigurationManager.install(config);
         }
     }
-
-    /*@Override
-    public int getOrder() {
-        return order;
-    }*/
 }

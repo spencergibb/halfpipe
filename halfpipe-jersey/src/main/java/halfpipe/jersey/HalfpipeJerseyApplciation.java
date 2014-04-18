@@ -68,9 +68,10 @@ public class HalfpipeJerseyApplciation extends ResourceConfig {
         }
         packages(beanPackages.toArray(new String[0]));
 
-        logResources(resources.values());
+        //TODO: figure out proxied resource logging
+        /*logResources(resources.values());
         logProviders();
-        logEndpoints(resources.values());
+        logEndpoints(resources.values());*/
     }
     private void logResources(Collection<Object> resources) {
         final ImmutableSet.Builder<String> builder = ImmutableSet.builder();

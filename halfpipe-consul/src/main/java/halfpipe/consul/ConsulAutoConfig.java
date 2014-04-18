@@ -35,6 +35,11 @@ public class ConsulAutoConfig extends ClientConfigurer {
         return new ConsulPropertiesSource();
     }
 
+    @Bean
+    ShutdownDeregister shutdownDeregister() {
+        return new ShutdownDeregister();
+    }
+
     @Bean(name = "getKeyValueRecurse.fallback")
     Supplier<List<KeyValue>> getKeyValueRecurseFallback() {
         return new Supplier<List<KeyValue>>() {

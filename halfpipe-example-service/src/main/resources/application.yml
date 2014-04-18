@@ -1,4 +1,12 @@
 #management.port=8081
+security:
+  user:
+    name: admin
+    password: admin
+
+endpoints:
+  shutdown:
+    enabled: true
 
 halfpipe:
   prefix: /v1

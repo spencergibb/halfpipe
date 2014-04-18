@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
 
+import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -33,6 +34,7 @@ public class ArchaiusInitializer {
 
     @Autowired(required = false)
     List<PropertiesSourceFactory> factories;
+    private FixedDelayPollingScheduler pollingScheduler;
 
     public synchronized void initializeArchaius() {
         if (initialized.compareAndSet(false, true)) {
@@ -56,7 +58,7 @@ public class ArchaiusInitializer {
 
             //TODO: move all of theses to PropertiesSourceFactory impls with @Ordered
             try {
-                FixedDelayPollingScheduler pollingScheduler = new FixedDelayPollingScheduler();
+                pollingScheduler = new FixedDelayPollingScheduler();
                 UrlPropertiesSource propertiesSource = new UrlPropertiesSource();
                 DynamicConfiguration dynamicConfiguration = new DynamicConfiguration(propertiesSource, pollingScheduler);
                 config.addConfiguration(dynamicConfiguration, URL_CONFIG_NAME);
@@ -80,5 +82,10 @@ public class ArchaiusInitializer {
 
             ConfigurationManager.install(config);
         }
+    }
+
+    @PreDestroy
+    public void destroy() {
+        pollingScheduler.stop();
     }
 }

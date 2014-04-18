@@ -1,6 +1,5 @@
 package halfpipe.example.endpoint;
 
-import com.google.common.base.Optional;
 import halfpipe.example.model.Post;
 import halfpipe.example.repo.PostRepository;
 import org.springframework.data.domain.PageRequest;

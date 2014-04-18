@@ -12,7 +12,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
  * Date: 4/18/14
  * Time: 3:57 PM
  */
-public class ConsulApplicationListener implements ApplicationListener<ContextRefreshedEvent> {
+public class ConsulContextRefreshedListener implements ApplicationListener<ContextRefreshedEvent> {
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {

@@ -21,4 +21,6 @@ public class ConsulProperties {
     private String serviceName;
 
     private List<String> tags;
+
+    private boolean enabled = true;
 }

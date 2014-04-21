@@ -22,7 +22,6 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.ws.rs.Path;
 import javax.ws.rs.ext.Provider;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -62,11 +61,9 @@ public class HalfpipeJerseyApplciation extends ResourceConfig {
         register(objectMapperProvider);
 
         Map<String, Object> resources = context.getBeansWithAnnotation(Path.class);
-        List<String> beanPackages = new ArrayList<>();
         for (Object bean: resources.values()) {
-            beanPackages.add(bean.getClass().getPackage().getName());
+            register(bean.getClass());
         }
-        packages(beanPackages.toArray(new String[0]));
 
         //TODO: figure out proxied resource logging
         /*logResources(resources.values());

@@ -42,9 +42,6 @@ public class ResteasyAutoConfig extends WebMvcConfigurerAdapter {
         resteasyHandlerMapping.setPrefix(properties.getPrefix());
     }
 
-//    @Bean
-
-
     @Bean
     public HalfpipeInjectorFactory halfpipeInjectorFactory() {
         return new HalfpipeInjectorFactory();

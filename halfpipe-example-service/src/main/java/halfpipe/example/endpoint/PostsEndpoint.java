@@ -1,5 +1,8 @@
 package halfpipe.example.endpoint;
 
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
+import halfpipe.example.api.Message;
 import halfpipe.example.model.Post;
 import halfpipe.example.repo.PostRepository;
 import org.springframework.data.domain.PageRequest;
@@ -17,6 +20,7 @@ import javax.ws.rs.core.MediaType;
  */
 @Component
 @Path("/posts")
+@Api(value = "posts", description = "A blog posts endpoint")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class PostsEndpoint {
@@ -25,6 +29,7 @@ public class PostsEndpoint {
     PostRepository posts;
 
     @GET
+    @ApiOperation(value = "list", notes = "get all posts paged", response = Post.class)
     public Iterable<Post> get(@QueryParam("page") @DefaultValue("0") int page) {
         return posts.findAll(new PageRequest(page, 2));
     }
@@ -35,6 +40,7 @@ public class PostsEndpoint {
     }*/
 
     @POST
+    @ApiOperation(value = "create", notes = "create a post", response = Post.class)
     public Post create(@Valid Post post) {
         Post save = posts.save(post);
         return save;

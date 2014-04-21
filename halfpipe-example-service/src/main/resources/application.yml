@@ -15,6 +15,10 @@ halfpipe:
     tags:
       - api
       - example
+  swagger:
+    apiVersion: 1
+    apiUrl: http://localhost:8080/api-docs
+    basePath: http://localhost:8080/v1
 
 logging:
   level: INFO

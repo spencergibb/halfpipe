@@ -1,5 +1,7 @@
 package halfpipe.swagger;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.module.scala.DefaultScalaModule;
 import com.wordnik.swagger.config.ConfigFactory;
 import com.wordnik.swagger.config.ScannerFactory;
 import com.wordnik.swagger.config.SwaggerConfig;
@@ -13,6 +15,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.inject.Inject;
+
 /**
  * User: spencergibb
  * Date: 4/17/14
@@ -21,6 +25,14 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConditionalOnClass(SwaggerConfig.class)
 public class SwaggerAutoConfig {
+    @Inject
+    ObjectMapper objectMapper;
+
+    @Bean
+    SwaggerProperties swaggerProperties() {
+        return new SwaggerProperties();
+    }
+
     @Bean
     SwaggerController swaggerController() {
         return new SwaggerController();
@@ -29,16 +41,15 @@ public class SwaggerAutoConfig {
     @Bean
     SwaggerConfig swaggerConfig() {
         SwaggerConfig config = ConfigFactory.config();
-        config.setApiVersion("1");
-        config.setBasePath("http://localhost:8080/v1");
+        //TODO: swagger properties
+        config.setApiVersion(swaggerProperties().getApiVersion().get());
+        config.setBasePath(swaggerProperties().getBasePath().get());
         ScannerFactory.setScanner(new DefaultJaxrsScanner());
         ClassReaders.setReader(new DefaultJaxrsApiReader());
-        return config;
-    }
 
-    @Bean
-    ApiListingResourceJSON apiListingResourceJSON() {
-        return new ApiListingResourceJSON();
+        objectMapper.registerModule(new DefaultScalaModule());
+
+        return config;
     }
 
     @Bean

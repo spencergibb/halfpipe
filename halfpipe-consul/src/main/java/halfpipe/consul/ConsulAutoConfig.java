@@ -2,7 +2,9 @@ package halfpipe.consul;
 
 import com.google.common.base.Supplier;
 import halfpipe.client.ClientConfigurer;
+import halfpipe.client.HystrixCommandProperties;
 import halfpipe.consul.client.AgentClient;
+import halfpipe.consul.client.CatalogClient;
 import halfpipe.consul.client.KVClient;
 import halfpipe.consul.model.KeyValue;
 import halfpipe.properties.PropertiesSourceFactory;
@@ -19,6 +21,11 @@ import java.util.List;
  */
 @Configuration
 public class ConsulAutoConfig extends ClientConfigurer {
+
+    @Bean
+    public HystrixCommandProperties commandConfigurer() {
+        return new ConsulCommandProperties();
+    }
 
     @Bean
     ConsulProperties consulProperties() {
@@ -52,11 +59,16 @@ public class ConsulAutoConfig extends ClientConfigurer {
 
     @Bean
     KVClient kvClient() {
-        return builder().target(KVClient.class, consulProperties().getHost());
+        return client().target(KVClient.class, consulProperties().getHost());
     }
 
     @Bean
     AgentClient agentClient() {
-        return builder().target(AgentClient.class, consulProperties().getHost());
+        return client().target(AgentClient.class, consulProperties().getHost());
+    }
+
+    @Bean
+    CatalogClient catalogClient() {
+        return client().target(CatalogClient.class, consulProperties().getHost());
     }
 }

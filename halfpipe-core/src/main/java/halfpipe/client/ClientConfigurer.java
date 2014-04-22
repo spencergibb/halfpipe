@@ -20,6 +20,11 @@ public class ClientConfigurer {
     ObjectMapper objectMapper;
 
     @Bean
+    public HystrixCommandProperties commandConfigurer() {
+        return new HystrixCommandProperties();
+    }
+
+    @Bean
     public Encoder feignEncoder() {
         return new JacksonEncoder(objectMapper);
     }
@@ -40,7 +45,7 @@ public class ClientConfigurer {
         return new HystrixInvocationHandler.Factory();
     }
 
-    protected Feign.Builder builder() {
+    protected Feign.Builder client() {
         return Feign.builder()
                 .logger(feignLogger())
                 .encoder(feignEncoder())

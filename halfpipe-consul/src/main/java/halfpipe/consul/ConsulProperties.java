@@ -23,4 +23,6 @@ public class ConsulProperties {
     private List<String> tags;
 
     private boolean enabled = true;
+
+    private List<String> clients;
 }

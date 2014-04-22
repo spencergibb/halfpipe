@@ -152,6 +152,16 @@
             <version>${feign.version}</version>
         </dependency>
         <dependency>
+            <groupId>com.netflix.feign</groupId>
+            <artifactId>feign-ribbon</artifactId>
+            <version>${feign.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.netflix.ribbon</groupId>
+            <artifactId>ribbon-core</artifactId>
+            <version>0.3.11</version>
+        </dependency>
+        <dependency>
             <groupId>com.netflix.hystrix</groupId>
             <artifactId>hystrix-core</artifactId>
             <version>${hystrix.version}</version>

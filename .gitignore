@@ -11,3 +11,4 @@ tomcat.8080
 .halfpipe
 *.log
 *.swp
+.vagrant

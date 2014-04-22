@@ -58,7 +58,7 @@ public class HomeController {
         return () -> {
             values(model);
             Observable<List<Post>> posts = postClient.postsObserve();
-            model.put("posts", posts.toBlockingObservable().first());
+            model.put("posts", posts.toBlockingObservable().single());
             return "home";
         };
     }

@@ -3,8 +3,11 @@ package halfpipe.consul;
 import com.netflix.config.AbstractPollingScheduler;
 import com.netflix.config.DynamicConfiguration;
 import com.netflix.config.FixedDelayPollingScheduler;
+import halfpipe.consul.loadbalancer.ConsulServerList;
 import halfpipe.properties.PropertiesSourceFactory;
 import org.apache.commons.configuration.AbstractConfiguration;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
@@ -16,9 +19,13 @@ import java.util.List;
 * Date: 4/18/14
 * Time: 11:01 AM
 */
+@Order(Ordered.HIGHEST_PRECEDENCE)
 public class ConsulPropertiesSourceFactory implements PropertiesSourceFactory {
     @Inject
     ConsulPropertiesSource propertiesSource;
+
+    @Inject
+    ConsulProperties props;
 
     List<AbstractPollingScheduler> schedulers = new ArrayList<>();
 
@@ -33,6 +40,14 @@ public class ConsulPropertiesSourceFactory implements PropertiesSourceFactory {
         FixedDelayPollingScheduler pollingScheduler = new FixedDelayPollingScheduler();
         schedulers.add(pollingScheduler);
         DynamicConfiguration dynamicConfiguration = new DynamicConfiguration(propertiesSource, pollingScheduler);
+
+        // add ribbon properties now before archaius is configured fully
+        if (props.getClients() != null && !props.getClients().isEmpty()) {
+            for (String client : props.getClients()) {
+                dynamicConfiguration.addProperty(client + ".ribbon.NIWSServerListClassName", ConsulServerList.class.getName());
+            }
+        }
+
         return dynamicConfiguration;
     }
 

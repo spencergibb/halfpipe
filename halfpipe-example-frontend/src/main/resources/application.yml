@@ -7,13 +7,23 @@ shell:
     port: 3000
 
 halfpipe:
-  #urlMapping: /v1/*
   prefix: /v1
-  client:
-    defaultGroup: exampleFrontEnd
+  consul:
+    clients:
+      - exampleService
+  #TODO: consolidate serviceName and defaultGroup
+    serviceName: exampleFrontendService
+  #client:
+  #  defaultGroup: exampleFrontend
+
+exampleService:
+  ribbon:
+    #listOfServers: 192.168.33.1:8080
+    #NIWSServerListClassName: halfpipe.consul.loadbalancer.ConsulServerList
 
 logging:
   level: INFO
   loggers:
     - org.springframework.boot:INFO
     - org.springframework.security:ERROR
+    - com.netflix.hystrix.HystrixCommand:DEBUG

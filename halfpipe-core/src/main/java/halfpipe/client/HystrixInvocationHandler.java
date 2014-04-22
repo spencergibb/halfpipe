@@ -54,12 +54,12 @@ public class HystrixInvocationHandler implements InvocationHandler {
             return hashCode();
         }
 
-        ClientProperties clientProps = getBean(ClientProperties.class);
+        HystrixCommandProperties properties = getBean(HystrixCommandProperties.class);
 
         String fallbackBeanName = method.getName() + ".fallback";
         String setterBeanName = method.getName() + ".setter";
 
-        String groupKey = clientProps.getDefaultGroup(); //.optional().or("default");
+        String groupKey = properties.getDefaultGroup(); //.optional().or("default");
 
         Optional<Setter> setterOptional = getOptionalBean(setterBeanName, Setter.class);
 
@@ -73,7 +73,8 @@ public class HystrixInvocationHandler implements InvocationHandler {
 
         MethodHandler methodHandler = methodToHandler.get(method);
 
-        ProxiedCommand command = new ProxiedCommand(setter, methodHandler, args, fallback);
+        String name = groupKey + ":" + method.getName();
+        ProxiedCommand command = new ProxiedCommand(name, setter, methodHandler, args, fallback);
 
         Class<?> returnType = method.getReturnType();
 
@@ -112,12 +113,14 @@ public class HystrixInvocationHandler implements InvocationHandler {
 
     public class ProxiedCommand extends HystrixCommand<Object> {
 
+        private final String name;
         private final MethodHandler methodHandler;
         private final Object[] args;
         private final Optional<Supplier> fallback;
 
-        protected ProxiedCommand(Setter setter, MethodHandler methodHandler, Object[] args, Optional<Supplier> fallback) {
+        protected ProxiedCommand(String name, Setter setter, MethodHandler methodHandler, Object[] args, Optional<Supplier> fallback) {
             super(setter);
+            this.name = name;
             this.methodHandler = methodHandler;
             this.args = args;
             this.fallback = fallback;
@@ -140,7 +143,7 @@ public class HystrixInvocationHandler implements InvocationHandler {
                 Supplier supplier = fallback.get();
                 return supplier.get();
             }
-            return super.getFallback();
+            throw new UnsupportedOperationException("No fallback available for "+name);
         }
     }
 }

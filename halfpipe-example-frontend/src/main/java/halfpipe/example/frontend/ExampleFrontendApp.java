@@ -4,7 +4,7 @@ import com.google.common.base.Supplier;
 import com.google.common.collect.Lists;
 import feign.Logger;
 import feign.auth.BasicAuthRequestInterceptor;
-import halfpipe.client.ClientConfigurer;
+import halfpipe.consul.ConsulConfigurer;
 import halfpipe.example.client.PostClient;
 import halfpipe.example.model.Post;
 import org.springframework.boot.SpringApplication;
@@ -18,14 +18,14 @@ import java.util.List;
 @Configuration
 @EnableAutoConfiguration
 @ComponentScan(basePackageClasses = ExampleFrontendApp.class)
-public class ExampleFrontendApp extends ClientConfigurer {
+public class ExampleFrontendApp extends ConsulConfigurer {
 
     @Bean
     public PostClient postClient() {
-        return builder()
+        return client()
                 .requestInterceptor(new BasicAuthRequestInterceptor("test", "test123"))
                 .logLevel(Logger.Level.FULL)
-                .target(PostClient.class, "http://localhost:8080");
+                .target(loadBalance(PostClient.class, "http://exampleService"));
     }
 
     @Bean(name = "postsAsync.fallback")

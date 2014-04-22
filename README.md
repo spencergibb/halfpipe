@@ -45,7 +45,6 @@ Features
 - TODO: Admin like karyon (In progress)
 - Model example after RSS recipe and flux capacitor see [32degrees/recipes-rss](https://github.com/32degrees/recipes-rss)
 - TODO: Netflix OSS Platform [flux capacitor example app](https://github.com/cfregly/fluxcapacitor)
-    - TODO: Service registry [Eureka](https://github.com/Netflix/eureka) and loadbalancer [Ribbon](https://github.com/Netflix/ribbon)
 - TODO: upload to [sonatype](https://docs.sonatype.org/display/Repository/Sonatype+OSS+Maven+Repository+Usage+Guide)
 - TODO: coda hale metrics to hysterix?
 - TODO: Ansible playbooks

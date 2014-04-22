@@ -11,13 +11,13 @@ endpoints:
 halfpipe:
   prefix: /v1
   consul:
+    #TODO: move to app id, use for archaius app id
     serviceName: exampleService
     tags:
       - api
       - example
   swagger:
     apiVersion: 1
-    apiUrl: http://localhost:8080/api-docs
     basePath: http://localhost:8080/v1
 
 logging:

@@ -8,17 +8,20 @@ import com.wordnik.swagger.model.ApiListingReference;
 import com.wordnik.swagger.model.ResourceListing;
 import com.wordnik.swagger.reader.ClassReader;
 import com.wordnik.swagger.reader.ClassReaders;
+import halfpipe.mvc.NoOpEndpoint;
+import org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import scala.Option;
 
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.ws.rs.Path;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,29 +33,33 @@ import static com.google.common.collect.Lists.transform;
  * Date: 4/17/14
  * Time: 5:01 PM
  */
-@Controller
-public class SwaggerController {
+public class SwaggerEndpoint extends EndpointMvcAdapter {
+    public static final String API_DOCS = "/api-docs";
 
     @Inject
-    ApplicationContext context;
+    private ApplicationContext context;
 
     @Inject
-    SwaggerConfig swaggerConfig;
+    private SwaggerConfig swaggerConfig;
 
-    @Inject
-    SwaggerProperties props;
+    private final SwaggerProperties properties;
 
-    @RequestMapping("/swagger")
-    public String swagger(Map<String, Object> model) {
-        model.put("apiUrl", props.getApiUrl().get());
-        return "swagger";
+    public SwaggerEndpoint(SwaggerProperties properties) {
+        super(new NoOpEndpoint(properties));
+        this.properties = properties;
     }
 
-    //TODO: configurable path?
-    @RequestMapping(value = "/api-docs", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Override
+    @RequestMapping(method = RequestMethod.GET)
+    public Object invoke() {
+        HashMap<String, Object> model = new HashMap<>();
+        model.put("apiUrl", getApiUrl());
+        model.put("staticPath", cleanRoute(properties.getStaticPath().get()));
+        return new ModelAndView(properties.getTemplateName().get(), model);
+    }
+
+    @RequestMapping(value = API_DOCS, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody ResourceListing resourcesListing() {
-
-
         List<ApiListing> apiListings = gatherListings();
         Iterable<ApiListingReference> listings = transform(apiListings, new Function<ApiListing, ApiListingReference>() {
             @Nullable
@@ -78,18 +85,13 @@ public class SwaggerController {
 
         List<ApiListing> listings = new ArrayList<>();
         for (Object endpoint : endpoints.values()) {
-            //TODO: derive /api-docs string
-            Option<ApiListing> listing = classReader.read("/api-docs", endpoint.getClass(), swaggerConfig);
+            Option<ApiListing> listing = classReader.read(getApiUrl(), endpoint.getClass(), swaggerConfig);
             if (listing.nonEmpty()) {
                 listings.add(listing.get());
             }
         }
 
         return listings;
-    }
-
-    public static <T> scala.collection.immutable.List<T> scalaList(Iterable<T> javaList) {
-        return scala.collection.JavaConversions.asScalaIterable(javaList).toList();
     }
 
     @RequestMapping(value = "/api-docs/{route}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -113,6 +115,14 @@ public class SwaggerController {
         return listing;
     }
 
+    private String getApiUrl() {
+        return "/"+properties.getId().get()+ API_DOCS;
+    }
+
+    private static <T> scala.collection.immutable.List<T> scalaList(Iterable<T> javaList) {
+        return scala.collection.JavaConversions.asScalaIterable(javaList).toList();
+    }
+
     private String cleanRoute(String route) {
         String cleanStart = (route.startsWith("/")) ? route : "/"+route ;
 
@@ -123,5 +133,5 @@ public class SwaggerController {
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public static class ResourceNotFoundException extends RuntimeException {}
+    private static class ResourceNotFoundException extends RuntimeException {}
 }

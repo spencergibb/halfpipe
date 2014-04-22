@@ -2,23 +2,25 @@
 <html>
 <head>
   <title>Swagger UI</title>
+    <!-- TODO: replace swaggerfiles with variable -->
   <link href='https://fonts.googleapis.com/css?family=Droid+Sans:400,700' rel='stylesheet' type='text/css'/>
-  <link href='swagger/css/reset.css' media='screen' rel='stylesheet' type='text/css'/>
-  <link href='swagger/css/screen.css' media='screen' rel='stylesheet' type='text/css'/>
-  <script type="text/javascript" src="swagger/lib/shred.bundle.js"></script>
-  <script src='swagger/lib/jquery-1.8.0.min.js' type='text/javascript'></script>
-  <script src='swagger/lib/jquery.slideto.min.js' type='text/javascript'></script>
-  <script src='swagger/lib/jquery.wiggle.min.js' type='text/javascript'></script>
-  <script src='swagger/lib/jquery.ba-bbq.min.js' type='text/javascript'></script>
-  <script src='swagger/lib/handlebars-1.0.0.js' type='text/javascript'></script>
-  <script src='swagger/lib/underscore-min.js' type='text/javascript'></script>
-  <script src='swagger/lib/backbone-min.js' type='text/javascript'></script>
-  <script src='swagger/lib/swagger.js' type='text/javascript'></script>
-  <script src='swagger/swagger-ui.js' type='text/javascript'></script>
-  <script src='swagger/lib/highlight.7.3.pack.js' type='text/javascript'></script>
+  <link th:href="|${staticPath}/css/reset.css|" href='/swaggerfiles/css/reset.css' media='screen' rel='stylesheet' type='text/css'/>
+  <link th:href="|${staticPath}/css/screen.css|" href='/swaggerfiles/css/screen.css' media='screen' rel='stylesheet' type='text/css'/>
+  <script th:src="|${staticPath}/lib/shred.bundle.js|" src='/swaggerfiles/lib/shred.bundle.js' type="text/javascript"></script>
+  <script th:src="|${staticPath}/lib/jquery-1.8.0.min.js|" src='/swaggerfiles/lib/jquery-1.8.0.min.js' type='text/javascript'></script>
+  <script th:src="|${staticPath}/lib/jquery.slideto.min.js|" src='/swaggerfiles/lib/jquery.slideto.min.js' type='text/javascript'></script>
+  <script th:src="|${staticPath}/lib/jquery.wiggle.min.js|" src='/swaggerfiles/lib/jquery.wiggle.min.js' type='text/javascript'></script>
+  <script th:src="|${staticPath}/lib/jquery.ba-bbq.min.js|" src='/swaggerfiles/lib/jquery.ba-bbq.min.js' type='text/javascript'></script>
+  <script th:src="|${staticPath}/lib/handlebars-1.0.0.js|" src='/swaggerfiles/lib/handlebars-1.0.0.js' type='text/javascript'></script>
+  <script th:src="|${staticPath}/lib/underscore-min.js|" src='/swaggerfiles/lib/underscore-min.js' type='text/javascript'></script>
+  <script th:src="|${staticPath}/lib/backbone-min.js|" src='/swaggerfiles/lib/backbone-min.js' type='text/javascript'></script>
+  <script th:src="|${staticPath}/lib/swagger.js|" src='/swaggerfiles/lib/swagger.js' type='text/javascript'></script>
+  <script th:src="|${staticPath}/swagger-ui.js|" src='/swaggerfilesswagger-ui.js' type='text/javascript'></script>
+  <script th:src="|${staticPath}/lib/highlight.7.3.pack.js|" src='/swaggerfiles/lib/highlight.7.3.pack.js' type='text/javascript'></script>
 
   <!-- enabling this will enable oauth2 implicit scope support -->
-  <script src='swagger/lib/swagger-oauth.js' type='text/javascript'></script>
+  <script th:src="|${staticPath}/lib/swagger-oauth.js|" src='/swaggerfiles/lib/swagger-oauth.js' type='text/javascript'></script>
+
 
   <script th:inline="javascript">
   /*<![CDATA[*/
@@ -69,10 +71,10 @@
     <a id="logo" href="http://swagger.wordnik.com">swagger</a>
     <form id='api_selector'>
       <div class='input icon-btn'>
-        <img id="show-pet-store-icon" src="swagger/images/pet_store_api.png" title="Show Swagger Petstore Example Apis"/>
+        <img id="show-pet-store-icon" th:src="|${staticPath}/images/pet_store_api.png|" src="/swaggerfiles/images/pet_store_api.png" title="Show Swagger Petstore Example Apis"/>
       </div>
       <div class='input icon-btn'>
-        <img id="show-wordnik-dev-icon" src="swagger/images/wordnik_api.png" title="Show Wordnik Developer Apis"/>
+        <img id="show-wordnik-dev-icon" th:src="|${staticPath}/images/wordnik_api.png|" src="/swaggerfiles/images/wordnik_api.png" title="Show Wordnik Developer Apis"/>
       </div>
       <div class='input'><input placeholder="http://example.com/api" id="input_baseUrl" name="baseUrl" type="text"/></div>
       <div class='input'><input placeholder="api_key" id="input_apiKey" name="apiKey" type="text"/></div>

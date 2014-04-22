@@ -15,6 +15,9 @@ import java.util.Map;
  * Date: 4/17/14
  * Time: 10:56 PM
  * TODO: use consul blocking calls to implement WatchedConfigurationSource?
+ * TODO: Make ConsulPropertiesSource load different archaius DeploymentContext properties
+ * @see com.netflix.config.ConfigurationManager#loadCascadedPropertiesFromResources(String)
+ * https://github.com/Netflix/archaius/wiki/Deployment-context
  */
 public class ConsulPropertiesSource implements PolledConfigurationSource {
 

@@ -7,7 +7,6 @@ import com.wordnik.swagger.config.ScannerFactory;
 import com.wordnik.swagger.config.SwaggerConfig;
 import com.wordnik.swagger.jaxrs.config.DefaultJaxrsScanner;
 import com.wordnik.swagger.jaxrs.listing.ApiDeclarationProvider;
-import com.wordnik.swagger.jaxrs.listing.ApiListingResourceJSON;
 import com.wordnik.swagger.jaxrs.listing.ResourceListingProvider;
 import com.wordnik.swagger.jaxrs.reader.DefaultJaxrsApiReader;
 import com.wordnik.swagger.reader.ClassReaders;
@@ -34,19 +33,19 @@ public class SwaggerAutoConfig {
     }
 
     @Bean
-    SwaggerController swaggerController() {
-        return new SwaggerController();
+    SwaggerEndpoint swaggerEndpoint() {
+        return new SwaggerEndpoint(swaggerProperties());
     }
 
     @Bean
     SwaggerConfig swaggerConfig() {
         SwaggerConfig config = ConfigFactory.config();
-        //TODO: swagger properties
         config.setApiVersion(swaggerProperties().getApiVersion().get());
         config.setBasePath(swaggerProperties().getBasePath().get());
         ScannerFactory.setScanner(new DefaultJaxrsScanner());
         ClassReaders.setReader(new DefaultJaxrsApiReader());
 
+        //TODO: move to another module?
         objectMapper.registerModule(new DefaultScalaModule());
 
         return config;

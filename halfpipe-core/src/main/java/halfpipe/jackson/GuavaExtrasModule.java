@@ -48,7 +48,6 @@ public class GuavaExtrasModule extends Module {
     }
 
     public GuavaExtrasModule() {
-        System.out.println("GuavaExtrasModule");
     }
 
     @Override

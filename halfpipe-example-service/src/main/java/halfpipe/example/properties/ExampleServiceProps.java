@@ -18,11 +18,15 @@ import static com.google.common.collect.Lists.*;
 @Component
 @ArchaiusProperties("hello")
 @Data
-public class HelloProperties {
+public class ExampleServiceProps {
 
     private DynaProp<String> defaultMessage = prop("HelloWorld");
 
     private DynaProp<Integer> myNumber = prop(1);
 
     private DynaProp<List<String>> myThings = prop(newArrayList("z", "y"));
+
+    private DynaProp<String> user = prop("test");
+
+    private DynaProp<String> password = prop("test123");
 }

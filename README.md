@@ -30,8 +30,9 @@ Features
     - dynamic reload of config files
     - yaml or property config files
     - callbacks when config property changes
-    - TODO: validate config
+    - TODO: validate archaius config
     - Custom sources: consul.io kv, Jdbc, DynamoDb, Zookeeper, jclouds, etc...
+    - TODO: consul deployment context aware configuration
 - Client
     - Service Discovery (consul.io/TODO: Eureka)
     - Feign

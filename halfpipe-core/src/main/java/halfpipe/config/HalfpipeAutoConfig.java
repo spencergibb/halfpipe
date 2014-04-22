@@ -8,6 +8,7 @@ import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
 import halfpipe.client.ClientProperties;
 import halfpipe.jackson.GuavaExtrasModule;
 import halfpipe.jackson.ObjectMapperProvider;
+import halfpipe.mvc.HystrixStreamEndpoint;
 import halfpipe.properties.ArchaiusInitializer;
 import halfpipe.properties.ArchaiusPropertiesProcessor;
 import halfpipe.properties.HalfpipeProperties;
@@ -76,6 +77,11 @@ public class HalfpipeAutoConfig {
     @Bean
     public HalfpipeProperties halfpipeProperties() {
         return new HalfpipeProperties();
+    }
+
+    @Bean
+    public HystrixStreamEndpoint hystrixStreamEndpoint() {
+        return new HystrixStreamEndpoint();
     }
 
     /**

@@ -7,13 +7,11 @@ shell:
     port: 3000
 
 halfpipe:
+  id: exampleFrontend
   prefix: /v1
   consul:
     clients:
       - exampleService
-    serviceName: exampleFrontendService
-  #client:
-  #  defaultGroup: exampleFrontend
 
 exampleService:
   ribbon:

@@ -1,9 +1,6 @@
 package halfpipe.properties;
 
-import com.netflix.config.ConcurrentCompositeConfiguration;
-import com.netflix.config.ConfigurationManager;
-import com.netflix.config.DynamicConfiguration;
-import com.netflix.config.FixedDelayPollingScheduler;
+import com.netflix.config.*;
 import org.apache.commons.configuration.EnvironmentConfiguration;
 import org.apache.commons.configuration.SystemConfiguration;
 import org.slf4j.Logger;
@@ -18,6 +15,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.netflix.config.ConfigurationManager.*;
+import static com.netflix.config.ConfigurationBasedDeploymentContext.*;
 
 /**
  * User: spencergibb
@@ -34,8 +32,13 @@ public class ArchaiusInitializer {
 
     @Autowired(required = false)
     List<PropertiesSourceFactory> factories;
+
+    @Inject
+    HalfpipeProperties properties;
+
     private FixedDelayPollingScheduler pollingScheduler;
 
+    @SuppressWarnings("deprecated")
     public synchronized void initializeArchaius() {
         if (initialized.compareAndSet(false, true)) {
             ConfigurableEnvironment env = context.getEnvironment();
@@ -46,6 +49,11 @@ public class ArchaiusInitializer {
 
             String defaultFileName = env.getProperty("archauis.file.name", "application.yml");
             System.setProperty("archaius.configurationSource.defaultFileName", defaultFileName);
+
+            //this is deprecated, but currently it seams the only way to set it initially
+            System.setProperty(DEPLOYMENT_APPLICATION_ID_PROPERTY, properties.getId());
+
+            //TODO: support for other DeploymentContexts
 
             ConcurrentCompositeConfiguration config = new ConcurrentCompositeConfiguration();
 

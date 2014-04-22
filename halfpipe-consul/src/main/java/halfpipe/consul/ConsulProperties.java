@@ -17,9 +17,6 @@ public class ConsulProperties {
     @NotNull
     private String host = "http://localhost:8500";
 
-    @NotNull
-    private String serviceName;
-
     private List<String> tags;
 
     private boolean enabled = true;

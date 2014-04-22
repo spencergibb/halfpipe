@@ -7,6 +7,7 @@ import com.netflix.hystrix.HystrixCommand.Setter;
 import feign.InvocationHandlerFactory;
 import feign.MethodHandler;
 import feign.Target;
+import halfpipe.properties.HalfpipeProperties;
 import rx.Observable;
 
 import java.lang.reflect.InvocationHandler;
@@ -54,12 +55,12 @@ public class HystrixInvocationHandler implements InvocationHandler {
             return hashCode();
         }
 
-        HystrixCommandProperties properties = getBean(HystrixCommandProperties.class);
+        HalfpipeProperties properties = getBean(HalfpipeProperties.class);
 
         String fallbackBeanName = method.getName() + ".fallback";
         String setterBeanName = method.getName() + ".setter";
 
-        String groupKey = properties.getDefaultGroup(); //.optional().or("default");
+        String groupKey = properties.getId(); //.optional().or("default");
 
         Optional<Setter> setterOptional = getOptionalBean(setterBeanName, Setter.class);
 

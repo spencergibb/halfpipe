@@ -2,6 +2,7 @@ package halfpipe.consul;
 
 import com.netflix.hystrix.Hystrix;
 import halfpipe.consul.client.AgentClient;
+import halfpipe.properties.HalfpipeProperties;
 
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
@@ -18,10 +19,13 @@ public class ShutdownDeregister {
     @Inject
     ConsulProperties consulProperties;
 
+    @Inject
+    HalfpipeProperties properties;
+
     @PreDestroy
     public void destroy() {
         if (consulProperties.isEnabled()) {
-            agentClient.deregister(consulProperties.getServiceName()); //TODO: non-hystrix client?
+            agentClient.deregister(properties.getId()); //TODO: non-hystrix client?
         }
         Hystrix.reset(); //TODO: where should this live.  It needs be after the above.
     }

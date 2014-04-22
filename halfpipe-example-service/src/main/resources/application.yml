@@ -9,10 +9,9 @@ endpoints:
     enabled: true
 
 halfpipe:
+  id: exampleService
   prefix: /v1
   consul:
-    #TODO: move to app id, use for archaius app id
-    serviceName: exampleService
     tags:
       - api
       - example

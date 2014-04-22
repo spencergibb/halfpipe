@@ -20,11 +20,6 @@ public class ClientConfigurer {
     ObjectMapper objectMapper;
 
     @Bean
-    public HystrixCommandProperties commandConfigurer() {
-        return new HystrixCommandProperties();
-    }
-
-    @Bean
     public Encoder feignEncoder() {
         return new JacksonEncoder(objectMapper);
     }

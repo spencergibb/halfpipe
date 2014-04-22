@@ -4,6 +4,8 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * User: spencergibb
  * Date: 4/9/14
@@ -14,4 +16,7 @@ import org.springframework.stereotype.Component;
 @Data
 public class HalfpipeProperties {
     private String prefix;
+
+    @NotNull
+    private String id;
 }

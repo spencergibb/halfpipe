@@ -9,18 +9,18 @@ import org.springframework.boot.actuate.endpoint.Endpoint;
  * Time: 8:59 AM
  */
 @Data
-public class NoOpEndpoint implements Endpoint<Object> {
+public class EndpointDelegate implements Endpoint<Object> {
     private final String id;
     private final boolean enabled;
     private final boolean sensitive;
 
-    public NoOpEndpoint(EndpointDynaProps props) {
+    public EndpointDelegate(EndpointDynaProps props) {
         id = props.getId().get();
         enabled = props.getEnabled().get();
         sensitive = props.getSensitive().get();
     }
 
-    public NoOpEndpoint(EndpointProperties props) {
+    public EndpointDelegate(EndpointProperties props) {
         id = props.getId();
         enabled = props.isEnabled();
         sensitive = props.isSensitive();
@@ -28,6 +28,6 @@ public class NoOpEndpoint implements Endpoint<Object> {
 
     @Override
     public Object invoke() {
-        throw new UnsupportedOperationException("NoOpEndpoint.invoke should never be called");
+        throw new UnsupportedOperationException("EndpointDelegate.invoke should never be called");
     }
 }

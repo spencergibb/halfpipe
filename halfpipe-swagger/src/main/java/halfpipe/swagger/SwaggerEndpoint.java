@@ -8,7 +8,7 @@ import com.wordnik.swagger.model.ApiListingReference;
 import com.wordnik.swagger.model.ResourceListing;
 import com.wordnik.swagger.reader.ClassReader;
 import com.wordnik.swagger.reader.ClassReaders;
-import halfpipe.mvc.NoOpEndpoint;
+import halfpipe.mvc.EndpointDelegate;
 import org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
@@ -45,7 +45,7 @@ public class SwaggerEndpoint extends EndpointMvcAdapter {
     private final SwaggerProperties properties;
 
     public SwaggerEndpoint(SwaggerProperties properties) {
-        super(new NoOpEndpoint(properties));
+        super(new EndpointDelegate(properties));
         this.properties = properties;
     }
 
@@ -78,6 +78,27 @@ public class SwaggerEndpoint extends EndpointMvcAdapter {
         return resourceListing;
     }
 
+    @RequestMapping(value = "/api-docs/{route}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody ApiListing resourceListing(@PathVariable String route) {
+        final String path = cleanRoute(route);
+        Iterable<ApiListing> listings = filter(gatherListings(), new Predicate<ApiListing>() {
+            @Override
+            public boolean apply(@Nullable ApiListing input) {
+                String listingPath = input.resourcePath();
+                if (!listingPath.startsWith("/"))
+                    listingPath = "/" + listingPath;
+                return path.equals(listingPath);
+            }
+        });
+
+        ApiListing listing = getFirst(listings, null);
+
+        if (listing == null) {
+            throw new ResourceNotFoundException();
+        }
+        return listing;
+    }
+
     private List<ApiListing> gatherListings() {
         Map<String, Object> endpoints = context.getBeansWithAnnotation(Path.class);
 
@@ -92,27 +113,6 @@ public class SwaggerEndpoint extends EndpointMvcAdapter {
         }
 
         return listings;
-    }
-
-    @RequestMapping(value = "/api-docs/{route}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ApiListing resourceListing(@PathVariable String route) {
-        final String path = cleanRoute(route);
-        Iterable<ApiListing> listings = filter(gatherListings(), new Predicate<ApiListing>() {
-            @Override
-            public boolean apply(@Nullable ApiListing input) {
-                String listingPath = input.resourcePath();
-                if (!listingPath.startsWith("/"))
-                    listingPath = "/"+listingPath;
-                return path.equals(listingPath);
-            }
-        });
-
-        ApiListing listing = getFirst(listings, null);
-
-        if (listing == null) {
-            throw new ResourceNotFoundException();
-        }
-        return listing;
     }
 
     private String getApiUrl() {

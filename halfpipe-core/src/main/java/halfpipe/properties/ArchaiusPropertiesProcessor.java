@@ -13,6 +13,7 @@ import org.springframework.util.TypeUtils;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
@@ -107,7 +108,7 @@ public class ArchaiusPropertiesProcessor implements BeanPostProcessor {
                     addCallback(bean, dynamicProp, propertyName);
 
                     field.set(bean, dynamicProp);
-                } else {
+                } else if (!Modifier.isStatic(field.getModifiers())) {
                     throw new IllegalArgumentException(
                             "Field type of "+field.getType()+". Expected field type: " + DynaProp.class.getCanonicalName());
                 }

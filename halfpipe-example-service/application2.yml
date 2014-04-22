@@ -1,3 +1,5 @@
+logging:
+  level: INFO
 
 hello:
   defaultMessage: Hi from reloadable config file

@@ -16,9 +16,11 @@ Features
     - Spring Boot Auto Configuration to automatically configure halfpipe/Netflix OSS components
     - TODO: Commands
 - Multilingual java TODO: scala/groovy
-- TODO: Guava integration
 - Validation
-- Jersey 2
+- JAX-RS: Choice of providers
+    - Guava integration (TODO: jersey)
+    - Jersey 2
+    - Resteasy
 - Metrics
     - Health Checks
     - web metrics
@@ -34,7 +36,11 @@ Features
     - Service Discovery (consul.io/TODO: Eureka)
     - Feign
     - Hysterix
-- configure logback like dropwizard, in config file
+    - Ribbon
+- Logging
+    - Logback
+    - yaml/properties based configuration
+    - dynamically update log levels (based on Archaius)
 
 - TODO: Admin like karyon (In progress)
 - Model example after RSS recipe and flux capacitor see [32degrees/recipes-rss](https://github.com/32degrees/recipes-rss)

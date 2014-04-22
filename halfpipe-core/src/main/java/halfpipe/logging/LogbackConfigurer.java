@@ -24,9 +24,11 @@ public class LogbackConfigurer {
     @PostConstruct
     public void init() {
         logger.info("Setting rootLogger to {}", properties.getLevel());
-        setLogLevel(null, properties.getLevel());
+        setLogLevel(null, properties.getLevel().get());
 
-        for (LogbackEntry entry: properties.getLoggers()) {
+        for (String s: properties.getLoggers().get()) {
+            //TODO: have conversion service do this
+            LogbackEntry entry = LogbackEntry.valueOf(s);
             setLogLevel(entry.getName(), entry.getLevel());
         }
     }

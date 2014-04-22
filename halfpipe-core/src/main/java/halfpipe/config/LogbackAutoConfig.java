@@ -1,6 +1,7 @@
 package halfpipe.config;
 
 import ch.qos.logback.classic.Level;
+import halfpipe.logging.LevelCallback;
 import halfpipe.logging.LogInjector;
 import halfpipe.logging.LogbackConfigurer;
 import halfpipe.properties.LoggingProperties;
@@ -32,4 +33,11 @@ public class LogbackAutoConfig {
     LogbackConfigurer logbackConfigurer() {
         return new LogbackConfigurer();
     }
+
+    @Bean(name = "logging.level.callback")
+    LevelCallback levelCallback() {
+        return new LevelCallback();
+    }
+
+    //TODO: create logging.loggers.callback
 }

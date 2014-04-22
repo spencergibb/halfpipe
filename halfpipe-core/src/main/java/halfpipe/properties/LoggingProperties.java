@@ -1,12 +1,13 @@
 package halfpipe.properties;
 
 import ch.qos.logback.classic.Level;
-import halfpipe.logging.LogbackEntry;
 import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import static halfpipe.properties.DynamicProp.*;
 
 /**
  * User: spencergibb
@@ -14,10 +15,11 @@ import java.util.List;
  * Time: 3:12 AM
  */
 @Component
-//TODO: make ArchaiusProperties
-@ConfigurationProperties("logging")
+@ArchaiusProperties("logging")
 @Data
 public class LoggingProperties {
-    private List<LogbackEntry> loggers;
-    private Level level;
+    private static final List<String> EMPTY = new ArrayList<>();
+
+    private DynaProp<List<String>> loggers = prop(EMPTY);
+    private DynaProp<Level> level = prop(Level.INFO);
 }

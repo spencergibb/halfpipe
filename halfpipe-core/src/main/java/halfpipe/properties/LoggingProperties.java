@@ -14,6 +14,7 @@ import java.util.List;
  * Time: 3:12 AM
  */
 @Component
+//TODO: make ArchaiusProperties
 @ConfigurationProperties("logging")
 @Data
 public class LoggingProperties {

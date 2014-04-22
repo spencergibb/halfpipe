@@ -28,3 +28,4 @@ logging:
 
 hello:
   defaultMessage: Hi from default config file
+#  myThings: 1,2,a,b

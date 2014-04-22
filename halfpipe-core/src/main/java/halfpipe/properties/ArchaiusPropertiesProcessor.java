@@ -91,7 +91,16 @@ public class ArchaiusPropertiesProcessor implements BeanPostProcessor {
                     if (isNotBlank(prefix)) {
                         propertyName = prefix + "." + propertyName;
                     }
-                    DynamicProp dynamicProp = new DynamicProp(propertyName, defaultValue, (Class<?>) typeArgument);
+                    Class<?> valueClass;
+                    if (typeArgument instanceof ParameterizedType) {
+                        ParameterizedType pt = (ParameterizedType) typeArgument;
+                        valueClass = (Class<?>) pt.getRawType();
+                    } else if (typeArgument instanceof Class) {
+                        valueClass = (Class<?>) typeArgument;
+                    } else {
+                        throw new IllegalArgumentException("Unknown valueClass type: "+typeArgument.getClass());
+                    }
+                    DynamicProp dynamicProp = new DynamicProp(propertyName, defaultValue, valueClass);
                     dynamicProp.conversionService = conversionService;
 
                     addCallback(bean, dynamicProp, prefix);

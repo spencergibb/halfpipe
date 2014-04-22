@@ -5,7 +5,10 @@ import halfpipe.properties.DynaProp;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 import static halfpipe.properties.DynamicProp.*;
+import static com.google.common.collect.Lists.*;
 
 /**
  * User: spencergibb
@@ -20,4 +23,6 @@ public class HelloProperties {
     private DynaProp<String> defaultMessage = prop("HelloWorld");
 
     private DynaProp<Integer> myNumber = prop(1);
+
+    private DynaProp<List<String>> myThings = prop(newArrayList("z", "y"));
 }

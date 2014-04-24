@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 
 import javax.inject.Inject;
-import javax.servlet.ServletException;
 
 /**
  * User: spencergibb
@@ -33,7 +32,7 @@ public class JerseyAutoConfig {
     }
 
     @Bean
-    public ServletRegistrationBean jerseyServlet() throws ServletException {
+    public ServletRegistrationBean jerseyServlet() {
         ServletContainer servletContainer = new ServletContainer(jerseyConfig());
         String prefix = halfpipeProperties.getPrefix();
         ServletRegistrationBean bean = new ServletRegistrationBean(servletContainer, toUrlMapping(prefix));

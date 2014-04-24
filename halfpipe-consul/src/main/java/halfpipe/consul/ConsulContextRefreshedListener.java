@@ -38,6 +38,9 @@ public class ConsulContextRefreshedListener implements ApplicationListener<Conte
         service.setPort(port);
         service.setTags(consulProperties.getTags());
 
+        String managementPort = context.getEnvironment().getProperty("management.port", (String) null);
+        //TODO: add support for management port: tags? convention
+
         //TODO: add support for Check
 
         agentClient.register(service);

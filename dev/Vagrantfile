@@ -19,11 +19,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
-  # config.vm.network "forwarded_port", guest: 80, host: 8080
+  config.vm.network "forwarded_port", guest: 8301, host: 18301
+  config.vm.network "forwarded_port", guest: 8302, host: 18302
+  config.vm.network "forwarded_port", guest: 8400, host: 18400
+  config.vm.network "forwarded_port", guest: 8500, host: 18500
+  config.vm.network "forwarded_port", guest: 8600, host: 18600
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
   config.vm.network "private_network", ip: "192.168.32.10"
+  #config.vm.network "private_network", ip: "192.168.32.11"
 
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
@@ -52,6 +57,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #   vb.customize ["modifyvm", :id, "--memory", "1024"]
   # end
   #
+
   config.vm.provision :ansible do |ansible|
     playbook = 'docker'
 
@@ -64,4 +70,15 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     ansible.inventory_path = 'ansible/vagrant.ini'
     ansible.limit = 'vagrant'
   end
+
+  # https://blog.codecentric.de/en/2014/01/docker-networking-made-simple-3-ways-connect-lxc-containers/
+  # TODO move to ansible
+  # config.vm.provision :shell, :inline => 'echo DOCKER_OPTS="-bip=192.168.32.10/24" > /etc/default/docker'
+  # config.vm.provision :shell, :inline => '
+  # echo ip addr del 192.168.32.10/24 dev eth1 > /etc/rc.local
+  # echo ip link set eth1 master docker0 >> /etc/rc.local
+  # echo service docker restart >> /etc/rc.local
+  # chmod +x /etc/rc.local 2> /dev/null'
+  # config.vm.provision :shell, :inline => '/etc/rc.local'
+
 end

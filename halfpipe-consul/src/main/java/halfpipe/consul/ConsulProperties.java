@@ -15,7 +15,7 @@ import java.util.List;
 @Data
 public class ConsulProperties {
     @NotNull
-    private String host = "http://localhost:8500";
+    private String url = "http://localhost:8500";
 
     private List<String> tags;
 

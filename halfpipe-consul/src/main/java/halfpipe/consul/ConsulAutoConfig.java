@@ -64,16 +64,16 @@ public class ConsulAutoConfig extends ClientConfigurer {
 
     @Bean
     KVClient kvClient() {
-        return client().target(KVClient.class, consulProperties().getHost());
+        return client().target(KVClient.class, consulProperties().getUrl());
     }
 
     @Bean
     AgentClient agentClient() {
-        return client().target(AgentClient.class, consulProperties().getHost());
+        return client().target(AgentClient.class, consulProperties().getUrl());
     }
 
     @Bean
     CatalogClient catalogClient() {
-        return client().target(CatalogClient.class, consulProperties().getHost());
+        return client().target(CatalogClient.class, consulProperties().getUrl());
     }
 }

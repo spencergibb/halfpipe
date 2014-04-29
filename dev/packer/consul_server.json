@@ -1,0 +1,26 @@
+{
+    "builders": [
+        {
+            "type": "docker",
+            "image": "32degrees/consul:0.1",
+            "export_path": "consul_server.tar",
+            "pull": false
+        }
+    ],
+
+    "provisioners": [
+        {
+            "type": "file",
+            "source": "files/consul_server_config.json",
+            "destination": "/opt/consul.json"
+        }
+    ],
+
+    "post-processors": [
+        {
+            "type": "docker-import",
+            "repository": "32degrees/consul_server",
+            "tag": "0.1"
+        }
+    ]
+}

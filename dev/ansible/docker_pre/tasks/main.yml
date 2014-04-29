@@ -26,3 +26,18 @@
 - name: copy packer configuration to docker server
   sudo: no
   synchronize: src=../packer dest=/home/vagrant recursive=yes delete=yes
+
+#- name: download consul
+#  get_url: url=https://dl.bintray.com/mitchellh/consul/0.1.0_linux_amd64.zip
+#           sha256sum=80912eb136acf5ac6ba77284138e4536cd1289870f202ed17ed67bbf2c6b630c
+#           dest=/tmp/consul.zip
+#
+#- name: unzip consul
+#  command: unzip /tmp/consul.zip -d /tmp/consul_bin creates=/usr/local/bin/consul
+#
+#- name: install consul
+#  shell: mv /tmp/consul_bin/* /usr/local/bin creates=/usr/local/bin/consul
+#
+#- name: chmod consul
+#  shell: chmod 775 /usr/local/bin/consul
+#TODO: install pipework https://raw.githubusercontent.com/jpetazzo/pipework/master/pipework

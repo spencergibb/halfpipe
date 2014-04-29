@@ -1,6 +1,5 @@
-package halfpipe.mvc;
+package halfpipe.web;
 
-import com.netflix.hystrix.contrib.metrics.eventstream.HystrixMetricsStreamServlet;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.actuate.endpoint.Endpoint;
@@ -18,27 +17,27 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * User: spencergibb
- * Date: 4/22/14
- * Time: 3:16 PM
+ * Date: 4/24/14
+ * Time: 9:13 PM
  */
-public class HystrixStreamEndpoint implements MvcEndpoint, InitializingBean,
+public abstract class ServletWrappingEndpoint implements MvcEndpoint, InitializingBean,
         ApplicationContextAware, ServletContextAware {
 
-    private String path;
+    protected final ServletWrappingController controller = new ServletWrappingController();
+    protected String path;
+    protected boolean sensitive;
+    protected boolean enabled = true;
 
-    private boolean sensitive;
-
-    private boolean enabled = true;
-
-    private final ServletWrappingController controller = new ServletWrappingController();
-
-    public HystrixStreamEndpoint() {
-        this.path = "/hystrix.stream";
-        this.controller.setServletClass(HystrixMetricsStreamServlet.class);
-        this.controller.setServletName("hystrixStream");
+    protected ServletWrappingEndpoint(Class<?> servletClass, String path, String servletName,
+                                      boolean sensitive, boolean enabled) {
+        controller.setServletClass(servletClass);
+        controller.setServletName(servletName);
+        this.path = path;
+        this.sensitive = sensitive;
+        this.enabled = enabled;
     }
 
-    @RequestMapping("/**")
+    @RequestMapping("**")
     public ModelAndView handle(HttpServletRequest request, HttpServletResponse response) throws Exception {
         return this.controller.handleRequest(request, response);
     }

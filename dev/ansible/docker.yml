@@ -1,0 +1,6 @@
+- hosts: vagrant
+  sudo: yes
+  roles:
+    - docker_pre
+    - angstwad.docker_ubuntu
+    - docker_post

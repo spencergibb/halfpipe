@@ -8,7 +8,7 @@ import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
 import halfpipe.client.ClientProperties;
 import halfpipe.jackson.GuavaExtrasModule;
 import halfpipe.jackson.ObjectMapperProvider;
-import halfpipe.mvc.HystrixStreamEndpoint;
+import halfpipe.web.HystrixStreamEndpoint;
 import halfpipe.properties.ArchaiusInitializer;
 import halfpipe.properties.ArchaiusPropertiesProcessor;
 import halfpipe.properties.HalfpipeProperties;

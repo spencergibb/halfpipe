@@ -1,4 +1,4 @@
-package halfpipe.mvc;
+package halfpipe.web;
 
 import halfpipe.properties.DynaProp;
 import lombok.Data;

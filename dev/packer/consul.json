@@ -1,0 +1,28 @@
+{
+    "builders": [
+        {
+            "type": "docker",
+            "image": "ubuntu:12.04",
+            "export_path": "consul.tar"
+        }
+    ],
+
+    "provisioners": [
+        {
+            "type": "shell",
+            "script": "scripts/install_ansible.sh"
+        },
+        {
+            "type": "ansible-local",
+            "playbook_file": "ansible/consul.yml"
+        }
+    ],
+
+    "post-processors": [
+        {
+            "type": "docker-import",
+            "repository": "32degrees/consul",
+            "tag": "0.1"
+        }
+    ]
+}

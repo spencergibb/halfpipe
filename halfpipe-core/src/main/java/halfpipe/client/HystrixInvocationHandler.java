@@ -57,8 +57,8 @@ public class HystrixInvocationHandler implements InvocationHandler {
 
         HalfpipeProperties properties = getBean(HalfpipeProperties.class);
 
-        String fallbackBeanName = method.getName() + ".fallback";
-        String setterBeanName = method.getName() + ".setter";
+        String fallbackBeanName = getBeanName(method, "fallback");
+        String setterBeanName = getBeanName(method, "setter");
 
         String groupKey = properties.getId(); //.optional().or("default");
 
@@ -88,6 +88,11 @@ public class HystrixInvocationHandler implements InvocationHandler {
         }
 
         return command.execute();
+    }
+
+    private String getBeanName(Method method, String suffix) {
+        String typeName = target.type().getSimpleName();
+        return typeName + "." + method.getName() + "."+ suffix;
     }
 
     @Override public int hashCode() {

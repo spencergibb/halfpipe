@@ -1,0 +1,9 @@
+management:
+  security:
+     enabled: false
+
+server:
+  port: 7080
+
+halfpipe:
+  id: halfpipeRouter

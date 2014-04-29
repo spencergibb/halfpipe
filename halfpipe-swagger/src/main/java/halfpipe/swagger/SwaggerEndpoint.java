@@ -8,7 +8,7 @@ import com.wordnik.swagger.model.ApiListingReference;
 import com.wordnik.swagger.model.ResourceListing;
 import com.wordnik.swagger.reader.ClassReader;
 import com.wordnik.swagger.reader.ClassReaders;
-import halfpipe.mvc.EndpointDelegate;
+import halfpipe.web.EndpointDelegate;
 import org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;

@@ -1,4 +1,4 @@
-package halfpipe.mvc;
+package halfpipe.web;
 
 import lombok.Data;
 

@@ -1,0 +1,28 @@
+---
+- name: install docker/packer/ansible prereqs
+  apt: name={{item}} state=present
+  with_items:
+    - python-pycurl
+    - apt-transport-https
+    - unzip
+    - python-apt
+
+- name: install ansible repo
+  apt_repository: repo='ppa:rquillo/ansible' update_cache=yes
+
+- name: install ansible
+  apt: name=ansible state=present
+
+- name: download packer
+  get_url: url=https://dl.bintray.com/mitchellh/packer/0.5.2_linux_amd64.zip dest=/tmp/packer.zip
+           sha256sum=813f856a3d326d2a65f561edac8050d981f93ea51da03b0fb6b3d72010a5fc96
+
+- name: unzip packer
+  command: unzip /tmp/packer.zip -d /tmp/packer_bin creates=/usr/local/bin/packer
+
+- name: install packer
+  shell: mv /tmp/packer_bin/* /usr/local/bin creates=/usr/local/bin/packer
+
+- name: copy packer configuration to docker server
+  sudo: no
+  synchronize: src=../packer dest=/home/vagrant recursive=yes delete=yes

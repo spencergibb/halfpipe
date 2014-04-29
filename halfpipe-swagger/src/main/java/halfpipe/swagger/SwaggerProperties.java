@@ -1,6 +1,6 @@
 package halfpipe.swagger;
 
-import halfpipe.mvc.EndpointDynaProps;
+import halfpipe.web.EndpointDynaProps;
 import halfpipe.properties.ArchaiusProperties;
 import halfpipe.properties.DynaProp;
 import lombok.Data;

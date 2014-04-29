@@ -41,12 +41,23 @@ public class ConsulAutoConfig extends ClientConfigurer {
         return new ShutdownDeregister();
     }
 
-    @Bean(name = "getKeyValueRecurse.fallback")
+    @Bean(name = "KVClient.getKeyValueRecurse.fallback")
     Supplier<List<KeyValue>> getKeyValueRecurseFallback() {
         return new Supplier<List<KeyValue>>() {
             @Override
             public List<KeyValue> get() {
                 return new ArrayList<>();
+            }
+        };
+    }
+
+    @Bean(name = "AgentClient.register.fallback")
+    Supplier<Void> agentClientRegisterFallback() {
+        return new Supplier<Void>() {
+            @Override
+            public Void get() {
+                //TODO LOG Warning or error, retry later
+                return null;
             }
         };
     }

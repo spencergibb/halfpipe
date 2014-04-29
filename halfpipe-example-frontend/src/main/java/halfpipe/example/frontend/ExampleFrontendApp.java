@@ -28,7 +28,7 @@ public class ExampleFrontendApp extends ConsulConfigurer {
                 .target(loadBalance(PostClient.class, "http://exampleService"));
     }
 
-    @Bean(name = "postsAsync.fallback")
+    @Bean(name = "PostClient.postsAsync.fallback")
     Supplier<List<Post>> postsAsyncFallback() {
         return () -> Lists.newArrayList(getPost());
     }

@@ -1,6 +1,8 @@
-package halfpipe.properties;
+package halfpipe.logging;
 
 import ch.qos.logback.classic.Level;
+import halfpipe.properties.ArchaiusProperties;
+import halfpipe.properties.DynaProp;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 

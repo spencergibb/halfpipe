@@ -2,10 +2,11 @@ package halfpipe.properties;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Throwables;
-import halfpipe.util.BeanUtils;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.TypeUtils;
@@ -30,7 +31,7 @@ import static org.springframework.util.ReflectionUtils.*;
 public class ArchaiusPropertiesProcessor implements BeanPostProcessor {
 
     @Inject
-    @Qualifier("mvcConversionService")
+    @Qualifier("mvcConversionService") //TODO: fix this
     ConversionService conversionService;
 
     @Inject
@@ -40,7 +41,7 @@ public class ArchaiusPropertiesProcessor implements BeanPostProcessor {
     Validator validator;*/
 
     @Inject
-    BeanUtils beanUtils;
+    ConfigurableApplicationContext context;
 
     @PostConstruct
     public void init() {
@@ -119,7 +120,7 @@ public class ArchaiusPropertiesProcessor implements BeanPostProcessor {
     private void addCallback(Object bean, DynamicProp dynamicProp, String beanPrefix) {
         String beanName = beanPrefix+".callback";
         try {
-            Optional<Runnable> callback = beanUtils.getOptionalBean(beanName, Runnable.class);
+            Optional<Runnable> callback = getOptionalBean(beanName, Runnable.class);
             if (callback.isPresent()) {
                 if (callback.get() instanceof AbstractCallback) {
                     AbstractCallback abstractCallback = AbstractCallback.class.cast(callback.get());
@@ -132,6 +133,15 @@ public class ArchaiusPropertiesProcessor implements BeanPostProcessor {
             }
         } catch (Exception e) {
             Throwables.propagate(e);
+        }
+    }
+
+    protected <T> Optional<T> getOptionalBean(String name, Class<T> requiredType) {
+        try {
+            T bean = context.getBean(name, requiredType);
+            return Optional.fromNullable(bean);
+        } catch (NoSuchBeanDefinitionException e) {
+            return Optional.absent();
         }
     }
 }

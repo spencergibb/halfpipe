@@ -1,7 +1,6 @@
 package halfpipe.logging;
 
 import ch.qos.logback.classic.Level;
-import halfpipe.properties.LoggingProperties;
 import org.slf4j.ILoggerFactory;
 import org.slf4j.Logger;
 import org.slf4j.impl.StaticLoggerBinder;
@@ -35,7 +34,7 @@ public class LogbackConfigurer {
 
     public void setLogLevel(String loggerName, Level level) {
         ILoggerFactory factory = StaticLoggerBinder.getSingleton().getLoggerFactory();
-        Logger slf4jLogger = factory .getLogger(StringUtils.isEmpty(loggerName) ? Logger.ROOT_LOGGER_NAME : loggerName);
+        Logger slf4jLogger = factory.getLogger(StringUtils.isEmpty(loggerName) ? Logger.ROOT_LOGGER_NAME : loggerName);
         ch.qos.logback.classic.Logger logger = (ch.qos.logback.classic.Logger) slf4jLogger;
         logger.setLevel(level);
     }

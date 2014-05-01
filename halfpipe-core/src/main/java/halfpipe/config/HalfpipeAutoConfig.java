@@ -37,6 +37,9 @@ import javax.servlet.http.HttpServletRequest;
 public class HalfpipeAutoConfig {
 
     @Inject
+    ApplicationContext context;
+
+    @Inject
     ObjectMapper objectMapper;
 
     @PostConstruct
@@ -60,12 +63,13 @@ public class HalfpipeAutoConfig {
     }
 
     @Bean
-    BeanUtils halfpipeBeanUtils(ApplicationContext context) {
+    BeanUtils halfpipeBeanUtils() {
         return new BeanUtils(context);
     }
 
     @Bean
-    public ArchaiusPropertiesProcessor archaiusProcessor() {
+    public ArchaiusPropertiesProcessor archaiusPropertiesProcessor() {
+        halfpipeBeanUtils(); //force creation
         return new ArchaiusPropertiesProcessor();
     }
 

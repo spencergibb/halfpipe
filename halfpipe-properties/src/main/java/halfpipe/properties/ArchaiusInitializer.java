@@ -33,9 +33,6 @@ public class ArchaiusInitializer {
     @Autowired(required = false)
     List<PropertiesSourceFactory> factories;
 
-    @Inject
-    HalfpipeProperties properties;
-
     private FixedDelayPollingScheduler pollingScheduler;
 
     @SuppressWarnings("deprecated")
@@ -50,8 +47,9 @@ public class ArchaiusInitializer {
             String defaultFileName = env.getProperty("archauis.file.name", "application.yml");
             System.setProperty("archaius.configurationSource.defaultFileName", defaultFileName);
 
+            String id = context.getEnvironment().getProperty("halfpipe.id");
             //this is deprecated, but currently it seams the only way to set it initially
-            System.setProperty(DEPLOYMENT_APPLICATION_ID_PROPERTY, properties.getId());
+            System.setProperty(DEPLOYMENT_APPLICATION_ID_PROPERTY, id);
 
             //TODO: support for other DeploymentContexts
 

@@ -1,8 +1,8 @@
 package halfpipe.properties;
 
-import halfpipe.logging.Log;
 import lombok.Data;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * User: spencergibb
@@ -14,7 +14,7 @@ public abstract class AbstractCallback<C, V> implements Runnable {
     protected C properties;
     protected DynaProp<V> prop;
 
-    @Log
-    protected Logger logger;
+    //@Log TODO: avoiding circular dependency
+    protected Logger logger = LoggerFactory.getLogger(this.getClass());
 }
 

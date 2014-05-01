@@ -2,7 +2,6 @@ package halfpipe.logging;
 
 import ch.qos.logback.classic.Level;
 import halfpipe.properties.AbstractCallback;
-import halfpipe.properties.LoggingProperties;
 
 import javax.inject.Inject;
 

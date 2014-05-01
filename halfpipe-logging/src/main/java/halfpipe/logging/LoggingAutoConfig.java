@@ -1,10 +1,6 @@
-package halfpipe.config;
+package halfpipe.logging;
 
 import ch.qos.logback.classic.Level;
-import halfpipe.logging.LevelCallback;
-import halfpipe.logging.LogInjector;
-import halfpipe.logging.LogbackConfigurer;
-import halfpipe.logging.LoggingProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ConditionalOnClass(Level.class)
-public class LogbackAutoConfig {
+public class LoggingAutoConfig {
 
     @Bean
     LogInjector logInjector() {

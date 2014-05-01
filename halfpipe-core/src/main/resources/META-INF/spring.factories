@@ -1,7 +1,6 @@
 # Auto Configuration
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-halfpipe.config.HalfpipeAutoConfig,\
-halfpipe.config.LogbackAutoConfig
+halfpipe.config.HalfpipeAutoConfig
 
 # Application Listeners
 #org.springframework.context.ApplicationListener=\

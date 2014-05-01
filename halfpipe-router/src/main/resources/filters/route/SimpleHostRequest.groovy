@@ -247,10 +247,12 @@ class SimpleHostRoutingFilter extends ZuulFilter {
                 break;
             default:
                 httpRequest = new BasicHttpRequest(verb, uri + getQueryString())
+                LOG.debug(uri + getQueryString())
         }
 
         try {
             httpRequest.setHeaders(headers)
+            LOG.debug(httpHost.getHostName() + " " + httpHost.getPort() + " " + httpHost.getSchemeName())
             HttpResponse zuulResponse = forwardRequest(httpclient, httpHost, httpRequest)
             return zuulResponse
         } finally {

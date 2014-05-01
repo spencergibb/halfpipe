@@ -24,32 +24,38 @@ Features
 - Metrics
     - Health Checks
     - web metrics
-    - spring metrics, TODO: including forking metrics-spring which is no longer maintained
+    - spring metrics, TODO: including forking metrics-spring which is no longer maintained. Needed?
 - Dynamic Config [Archaius](https://github.com/Netflix/archaius)
     - config classes
     - dynamic reload of config files
     - yaml or property config files
     - callbacks when config property changes
-    - TODO: validate archaius config
     - Custom sources: consul.io kv, Jdbc, DynamoDb, Zookeeper, jclouds, etc...
     - TODO: consul deployment context aware configuration
+    - TODO: validate archaius config
 - Client
     - Service Discovery (consul.io/TODO: Eureka)
     - Feign
-    - Hysterix
+    - Hystrix
     - Ribbon
 - Logging
     - Logback
     - yaml/properties based configuration
     - dynamically update log levels (based on Archaius)
 
-- TODO: Admin like karyon (In progress)
+- TODO: metrics influxdb
+- TODO: coda hale metrics to influxdb
+- TODO: turbine vagrant deploy
+- TODO: hystrix dashboard vagrant deploy
+- TODO: influxdb vagrant deploy
+- TODO: upload to [sonatype](https://docs.sonatype.org/display/Repository/Sonatype+OSS+Maven+Repository+Usage+Guide)
+- TODO: Admin like karyon (Started)
+
+Old list:
+
 - Model example after RSS recipe and flux capacitor see [32degrees/recipes-rss](https://github.com/32degrees/recipes-rss)
 - TODO: Netflix OSS Platform [flux capacitor example app](https://github.com/cfregly/fluxcapacitor)
-- TODO: upload to [sonatype](https://docs.sonatype.org/display/Repository/Sonatype+OSS+Maven+Repository+Usage+Guide)
-- TODO: coda hale metrics to hysterix?
 - TODO: Ansible playbooks
 - TODO: metrics aws cloudwatch
-- TODO: metrics graphite
 - TODO: Spring command line? [spring shell](http://www.springsource.org/spring-shell/)
 

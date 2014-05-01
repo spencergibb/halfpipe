@@ -4,7 +4,7 @@ server:
 
 shell:
   ssh:
-    port: 3000
+    enabled: false
 
 application:
   id: exampleFrontend

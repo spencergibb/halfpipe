@@ -2,7 +2,7 @@ package halfpipe.consul;
 
 import halfpipe.consul.client.AgentClient;
 import halfpipe.consul.model.Service;
-import halfpipe.properties.ApplicationProperties;
+import halfpipe.core.ApplicationProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.web.ServerProperties;

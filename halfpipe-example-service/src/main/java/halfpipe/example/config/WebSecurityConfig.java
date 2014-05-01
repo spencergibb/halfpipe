@@ -1,7 +1,7 @@
 package halfpipe.example.config;
 
 import halfpipe.example.properties.ExampleServiceProps;
-import halfpipe.properties.ApplicationProperties;
+import halfpipe.core.ApplicationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;

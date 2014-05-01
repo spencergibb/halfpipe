@@ -6,7 +6,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
 import halfpipe.jackson.ObjectMapperProvider;
 import halfpipe.logging.Log;
-import halfpipe.properties.ApplicationProperties;
+import halfpipe.core.ApplicationProperties;
 import org.glassfish.jersey.filter.LoggingFilter;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.ServerProperties;

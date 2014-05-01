@@ -2,7 +2,7 @@ package halfpipe.consul;
 
 import com.netflix.hystrix.Hystrix;
 import halfpipe.consul.client.AgentClient;
-import halfpipe.properties.ApplicationProperties;
+import halfpipe.core.ApplicationProperties;
 
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;

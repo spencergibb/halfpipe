@@ -1,7 +1,7 @@
 package halfpipe.consul.client;
 
 import com.google.common.collect.Lists;
-import halfpipe.config.HalfpipeAutoConfig;
+import halfpipe.core.HalfpipeAutoConfig;
 import halfpipe.consul.ConsulAutoConfig;
 import halfpipe.consul.TestConfiguration;
 import halfpipe.consul.model.Check;

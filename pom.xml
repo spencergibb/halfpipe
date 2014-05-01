@@ -58,6 +58,7 @@
         <module>halfpipe-client</module>
         <module>halfpipe-properties</module>
         <module>halfpipe-logging</module>
+        <module>halfpipe-jackson</module>
         <module>halfpipe-core</module>
         <module>halfpipe-jersey</module>
         <module>halfpipe-resteasy</module>

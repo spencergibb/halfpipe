@@ -1,6 +1,6 @@
 package halfpipe.resteasy;
 
-import halfpipe.properties.ApplicationProperties;
+import halfpipe.core.ApplicationProperties;
 import org.jboss.resteasy.spi.ResteasyDeployment;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 import org.jboss.resteasy.springmvc.ResteasyHandlerAdapter;

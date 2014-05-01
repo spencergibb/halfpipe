@@ -1,22 +1,13 @@
-package halfpipe.config;
+package halfpipe.core;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.guava.GuavaModule;
-import com.fasterxml.jackson.datatype.joda.JodaModule;
-import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
-import halfpipe.jackson.GuavaExtrasModule;
-import halfpipe.jackson.ObjectMapperProvider;
-import halfpipe.web.HystrixStreamEndpoint;
-import halfpipe.properties.ApplicationProperties;
 import halfpipe.util.BeanUtils;
+import halfpipe.web.HystrixStreamEndpoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.handler.AbstractHandlerMapping;
 
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -34,24 +25,6 @@ public class HalfpipeAutoConfig {
 
     @Inject
     BeanUtils beanUtils;
-
-    @Inject
-    ObjectMapper objectMapper;
-
-    @PostConstruct
-    public void init() {
-        //TODO auto config configurer ala boot
-        objectMapper.registerModule(new GuavaModule());
-        objectMapper.registerModule(new GuavaExtrasModule());
-        objectMapper.registerModule(new JodaModule());
-        objectMapper.registerModule(new JSR310Module());
-        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-    }
-
-    @Bean
-    public ObjectMapperProvider jerseyObjectMapperProvider() {
-        return new ObjectMapperProvider(objectMapper);
-    }
 
     @Bean
     public ApplicationProperties halfpipeProperties() {

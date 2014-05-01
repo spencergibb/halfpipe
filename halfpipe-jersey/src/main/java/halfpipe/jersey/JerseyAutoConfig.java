@@ -1,7 +1,7 @@
 package halfpipe.jersey;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import halfpipe.properties.ApplicationProperties;
+import halfpipe.core.ApplicationProperties;
 import org.glassfish.jersey.servlet.ServletContainer;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;

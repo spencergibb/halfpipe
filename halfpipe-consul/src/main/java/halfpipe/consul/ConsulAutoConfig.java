@@ -2,7 +2,7 @@ package halfpipe.consul;
 
 import com.google.common.base.Supplier;
 import halfpipe.client.ClientConfigurer;
-import halfpipe.config.HalfpipeAutoConfig;
+import halfpipe.core.HalfpipeAutoConfig;
 import halfpipe.consul.client.AgentClient;
 import halfpipe.consul.client.CatalogClient;
 import halfpipe.consul.client.KVClient;

@@ -1,6 +1,6 @@
 package halfpipe.consul.client;
 
-import halfpipe.config.HalfpipeAutoConfig;
+import halfpipe.core.HalfpipeAutoConfig;
 import halfpipe.consul.ConsulAutoConfig;
 import halfpipe.consul.TestConfiguration;
 import halfpipe.consul.model.KeyValue;

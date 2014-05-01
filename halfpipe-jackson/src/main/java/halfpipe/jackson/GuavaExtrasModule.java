@@ -9,6 +9,7 @@ import com.google.common.net.HostAndPort;
 
 import java.io.IOException;
 
+// original https://github.com/dropwizard/dropwizard/blob/master/dropwizard-jackson/src/main/java/io/dropwizard/jackson/GuavaExtrasModule.java
 public class GuavaExtrasModule extends Module {
     private static class HostAndPortDeserializer extends JsonDeserializer<HostAndPort> {
         @Override

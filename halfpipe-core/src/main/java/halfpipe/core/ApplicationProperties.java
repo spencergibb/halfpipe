@@ -1,4 +1,4 @@
-package halfpipe.properties;
+package halfpipe.core;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

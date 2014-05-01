@@ -58,16 +58,6 @@ public class HalfpipeAutoConfig {
     }
 
     @Bean
-    public ArchaiusPropertiesProcessor archaiusPropertiesProcessor() {
-        return new ArchaiusPropertiesProcessor();
-    }
-
-    @Bean
-    public ArchaiusInitializer archaiusInitializer() {
-        return new ArchaiusInitializer();
-    }
-
-    @Bean
     public HalfpipeProperties halfpipeProperties() {
         return new HalfpipeProperties();
     }

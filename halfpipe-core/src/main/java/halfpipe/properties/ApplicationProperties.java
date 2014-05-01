@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 @Component
 @ConfigurationProperties("application")
 @Data
-public class HalfpipeProperties {
+public class ApplicationProperties {
     private String prefix;
 
     @NotNull

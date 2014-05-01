@@ -1,6 +1,6 @@
 package halfpipe.resteasy;
 
-import halfpipe.properties.HalfpipeProperties;
+import halfpipe.properties.ApplicationProperties;
 import org.jboss.resteasy.spi.ResteasyDeployment;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 import org.jboss.resteasy.springmvc.ResteasyHandlerAdapter;
@@ -34,7 +34,7 @@ public class ResteasyAutoConfig extends WebMvcConfigurerAdapter {
     ResteasyDeployment resteasyDeployment;
 
     @Inject
-    HalfpipeProperties properties;
+    ApplicationProperties properties;
 
     @PostConstruct
     public void init() {

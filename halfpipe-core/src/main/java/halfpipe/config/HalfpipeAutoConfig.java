@@ -5,15 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.guava.GuavaModule;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
-import halfpipe.client.ClientProperties;
 import halfpipe.jackson.GuavaExtrasModule;
 import halfpipe.jackson.ObjectMapperProvider;
 import halfpipe.web.HystrixStreamEndpoint;
-import halfpipe.properties.ArchaiusInitializer;
-import halfpipe.properties.ArchaiusPropertiesProcessor;
-import halfpipe.properties.HalfpipeProperties;
+import halfpipe.properties.ApplicationProperties;
 import halfpipe.util.BeanUtils;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.HandlerMapping;
@@ -58,8 +54,8 @@ public class HalfpipeAutoConfig {
     }
 
     @Bean
-    public HalfpipeProperties halfpipeProperties() {
-        return new HalfpipeProperties();
+    public ApplicationProperties halfpipeProperties() {
+        return new ApplicationProperties();
     }
 
     @Bean

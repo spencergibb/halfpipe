@@ -1,7 +1,7 @@
 package halfpipe.example.config;
 
 import halfpipe.example.properties.ExampleServiceProps;
-import halfpipe.properties.HalfpipeProperties;
+import halfpipe.properties.ApplicationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -18,7 +18,7 @@ import javax.inject.Inject;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Inject
-    HalfpipeProperties halfpipeProperties;
+    ApplicationProperties applicationProperties;
 
     @Inject
     ExampleServiceProps props;
@@ -29,7 +29,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", "/home").permitAll()
                 .antMatchers("/v1/**").hasRole("USER")
                 .anyRequest().authenticated();
-        http.httpBasic().realmName(halfpipeProperties.getId())
+        http.httpBasic().realmName(applicationProperties.getId())
             .and()
             .csrf().disable();
     }

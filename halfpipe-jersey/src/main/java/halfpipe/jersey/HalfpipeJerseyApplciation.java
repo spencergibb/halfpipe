@@ -6,7 +6,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Ordering;
 import halfpipe.jackson.ObjectMapperProvider;
 import halfpipe.logging.Log;
-import halfpipe.properties.HalfpipeProperties;
+import halfpipe.properties.ApplicationProperties;
 import org.glassfish.jersey.filter.LoggingFilter;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.ServerProperties;
@@ -36,7 +36,7 @@ public class HalfpipeJerseyApplciation extends ResourceConfig {
     ApplicationContext context;
 
     @Inject
-    HalfpipeProperties properties;
+    ApplicationProperties properties;
 
     @Inject
     ObjectMapperProvider objectMapperProvider;

@@ -2,7 +2,7 @@ package halfpipe.consul;
 
 import com.netflix.hystrix.Hystrix;
 import halfpipe.consul.client.AgentClient;
-import halfpipe.properties.HalfpipeProperties;
+import halfpipe.properties.ApplicationProperties;
 
 import javax.annotation.PreDestroy;
 import javax.inject.Inject;
@@ -20,7 +20,7 @@ public class ShutdownDeregister {
     ConsulProperties consulProperties;
 
     @Inject
-    HalfpipeProperties properties;
+    ApplicationProperties properties;
 
     @PreDestroy
     public void destroy() {

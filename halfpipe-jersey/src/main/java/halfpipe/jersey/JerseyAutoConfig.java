@@ -1,7 +1,7 @@
 package halfpipe.jersey;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import halfpipe.properties.HalfpipeProperties;
+import halfpipe.properties.ApplicationProperties;
 import org.glassfish.jersey.servlet.ServletContainer;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
@@ -21,7 +21,7 @@ import javax.inject.Inject;
 public class JerseyAutoConfig {
 
     @Inject
-    HalfpipeProperties halfpipeProperties;
+    ApplicationProperties applicationProperties;
 
     @Inject
     ObjectMapper objectMapper;
@@ -34,7 +34,7 @@ public class JerseyAutoConfig {
     @Bean
     public ServletRegistrationBean jerseyServlet() {
         ServletContainer servletContainer = new ServletContainer(jerseyConfig());
-        String prefix = halfpipeProperties.getPrefix();
+        String prefix = applicationProperties.getPrefix();
         ServletRegistrationBean bean = new ServletRegistrationBean(servletContainer, toUrlMapping(prefix));
         bean.setOrder(Ordered.HIGHEST_PRECEDENCE);
         return bean;

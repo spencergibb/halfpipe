@@ -12,7 +12,7 @@ import static halfpipe.properties.DynamicProp.*;
  * Date: 4/21/14
  * Time: 4:02 PM
  */
-@ArchaiusProperties("halfpipe.swagger")
+@ArchaiusProperties("swagger")
 @Data
 public class SwaggerProperties extends EndpointDynaProps {
     protected DynaProp<String> id = prop("swagger");

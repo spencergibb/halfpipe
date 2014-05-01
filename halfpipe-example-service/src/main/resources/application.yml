@@ -8,16 +8,18 @@ endpoints:
   shutdown:
     enabled: true
 
-halfpipe:
+application:
   id: exampleService
   prefix: /v1
-  consul:
-    tags:
-      - api
-      - example
-  swagger:
-    apiVersion: 1
-    basePath: http://localhost:8080/v1
+
+consul:
+  tags:
+    - api
+    - example
+
+swagger:
+  apiVersion: 1
+  basePath: http://localhost:8080/v1
 
 logging:
   level: INFO

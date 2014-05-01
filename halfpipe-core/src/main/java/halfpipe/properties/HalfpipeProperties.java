@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
  * Time: 3:12 AM
  */
 @Component
-@ConfigurationProperties("halfpipe")
+@ConfigurationProperties("application")
 @Data
 public class HalfpipeProperties {
     private String prefix;

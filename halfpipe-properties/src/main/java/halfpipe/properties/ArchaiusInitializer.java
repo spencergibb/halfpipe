@@ -47,7 +47,7 @@ public class ArchaiusInitializer {
             String defaultFileName = env.getProperty("archauis.file.name", "application.yml");
             System.setProperty("archaius.configurationSource.defaultFileName", defaultFileName);
 
-            String id = context.getEnvironment().getProperty("halfpipe.id");
+            String id = context.getEnvironment().getProperty("application.id");
             //this is deprecated, but currently it seams the only way to set it initially
             System.setProperty(DEPLOYMENT_APPLICATION_ID_PROPERTY, id);
 

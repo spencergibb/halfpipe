@@ -5,5 +5,5 @@ management:
 server:
   port: 7080
 
-halfpipe:
+application:
   id: halfpipeRouter

@@ -6,12 +6,13 @@ shell:
   ssh:
     port: 3000
 
-halfpipe:
+application:
   id: exampleFrontend
   prefix: /v1
-  consul:
-    clients:
-      - exampleService
+
+consul:
+  clients:
+    - exampleService
 
 exampleService:
   ribbon:

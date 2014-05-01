@@ -11,7 +11,7 @@ import java.util.List;
  * Date: 4/18/14
  * Time: 12:17 PM
  */
-@ConfigurationProperties("halfpipe.consul")
+@ConfigurationProperties("consul")
 @Data
 public class ConsulProperties {
     @NotNull

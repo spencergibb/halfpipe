@@ -8,10 +8,12 @@ import halfpipe.consul.client.CatalogClient;
 import halfpipe.consul.client.KVClient;
 import halfpipe.consul.model.KeyValue;
 import halfpipe.properties.PropertiesSourceFactory;
+import halfpipe.util.BeanUtils;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +25,9 @@ import java.util.List;
 @Configuration
 @AutoConfigureAfter(HalfpipeAutoConfig.class)
 public class ConsulAutoConfig extends ClientConfigurer {
+
+    @Inject
+    BeanUtils beanUtils;
 
     @Bean
     ConsulProperties consulProperties() {

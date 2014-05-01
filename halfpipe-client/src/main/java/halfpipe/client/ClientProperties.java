@@ -8,7 +8,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * Date: 4/16/14
  * Time: 11:53 AM
  */
-@ConfigurationProperties("halfpipe.client")
+@ConfigurationProperties("client")
 @Data
 public class ClientProperties {
     private String defaultGroup = "default";

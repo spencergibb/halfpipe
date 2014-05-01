@@ -7,7 +7,7 @@ import com.netflix.hystrix.HystrixCommand.Setter;
 import feign.InvocationHandlerFactory;
 import feign.MethodHandler;
 import feign.Target;
-import halfpipe.properties.HalfpipeProperties;
+import org.springframework.context.ApplicationContext;
 import rx.Observable;
 
 import java.lang.reflect.InvocationHandler;
@@ -55,12 +55,10 @@ public class HystrixInvocationHandler implements InvocationHandler {
             return hashCode();
         }
 
-        HalfpipeProperties properties = getBean(HalfpipeProperties.class);
-
         String fallbackBeanName = getBeanName(method, "fallback");
         String setterBeanName = getBeanName(method, "setter");
 
-        String groupKey = properties.getId(); //.optional().or("default");
+        String groupKey = context().getEnvironment().getProperty("application.id"); //.optional().or("default");
 
         Optional<Setter> setterOptional = getOptionalBean(setterBeanName, Setter.class);
 

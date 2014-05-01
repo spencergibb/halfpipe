@@ -25,3 +25,4 @@ logging:
     - org.springframework.boot:INFO
     - org.springframework.security:ERROR
     - com.netflix.hystrix.HystrixCommand:DEBUG
+    - org.jboss.resteasy.springmvc.ResteasyHandlerMapping:ERROR

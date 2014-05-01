@@ -26,6 +26,7 @@ logging:
   loggers:
     - org.springframework.boot:INFO
     - org.springframework.security:ERROR
+    - org.jboss.resteasy.springmvc.ResteasyHandlerMapping:ERROR
 
 hello:
   defaultMessage: Hi from default config file

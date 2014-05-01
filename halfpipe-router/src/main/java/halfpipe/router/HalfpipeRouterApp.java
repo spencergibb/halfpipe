@@ -7,6 +7,8 @@ import org.springframework.boot.context.embedded.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,7 +21,7 @@ import java.util.Collection;
 @Configuration
 @EnableAutoConfiguration
 @ComponentScan(basePackageClasses = HalfpipeRouterApp.class)
-public class HalfpipeRouterApp {
+public class HalfpipeRouterApp extends WebSecurityConfigurerAdapter {
 
     @Bean
     public FilterRegistrationBean contextLifecycleFilter() {
@@ -35,6 +37,18 @@ public class HalfpipeRouterApp {
     @Bean
     FilterIntializer filterIntializer() {
         return new FilterIntializer();
+    }
+
+    @Bean
+    ZuulEndpoint zuulEndpoint() {
+        return new ZuulEndpoint();
+    }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+                .antMatchers("/**")
+                .permitAll();
     }
 
     public static void main(String[] args) {

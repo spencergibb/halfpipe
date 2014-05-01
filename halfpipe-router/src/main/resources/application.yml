@@ -2,6 +2,10 @@ management:
   security:
      enabled: false
 
+shell:
+  ssh:
+    enabled: false
+
 server:
   port: 7080
 

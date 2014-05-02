@@ -1,20 +1,15 @@
 package filters.pre
 
-import com.netflix.zuul.ZuulFilter
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.netflix.zuul.context.RequestContext
-import groovy.json.JsonSlurper
-import org.apache.commons.codec.binary.Base64
-
-import javax.servlet.http.Cookie
+import halfpipe.consul.client.CatalogClient
+import halfpipe.consul.client.KVClient
+import halfpipe.router.SpringFilter
 
 /**
  * @author mhawthorne
  */
-class PreDecorationFilter extends ZuulFilter {
-
-    static def hosts = [
-            defaulthost: "http://127.0.0.1:8080",
-    ]
+class PreDecorationFilter extends SpringFilter {
 
     @Override
     int filterOrder() {
@@ -33,43 +28,76 @@ class PreDecorationFilter extends ZuulFilter {
 
     @Override
     Object run() {
+        def kvClient = getBean(KVClient.class)
+        def objectMapper = getBean(ObjectMapper.class)
 
-        RequestContext ctx = RequestContext.getCurrentContext()
+        def routingList = kvClient.getKeyValueRecurse("routing")
 
-        if(!ctx.getRequest().getRequestURI().startsWith("/")) {
-            return null;
-        }
+        //TODO: cache
+        def routes = new LinkedHashMap<String, String>() //preserve ordering
+        def defaultServiceId = null;
 
-        String env = "defaulthost";
-
-        // first attempt to get the environment from the state
-        def params = ctx.getRequestQueryParams();
-
-        if(params != null && params.get("state") != null) {
-            String encoded = (String) params.get("state")
-            String decoded = new String(Base64.decodeBase64(encoded))
-
-            def slurper = new JsonSlurper()
-            def result = slurper.parseText(decoded)
-            env = result.e
-        }
-
-        // if it isn't there, get the state from the cookie
-        def request = ctx.getRequest();
-
-        if(request.getCookies() != null) {
-            for (Cookie cookie : request.getCookies()) {
-                if ("e".equals(cookie.getName())) {
-                    env = cookie.getValue();
-                    break;
+        routingList.each { routeDef ->
+            def key = routeDef.key
+            def parts = key.tokenize('/');
+            if (parts.size() == 2) {
+                def serviceId = parts[1]
+                def decoded = routeDef.decoded
+                def serviceRoutes = objectMapper.readValue(decoded, List.class)
+                serviceRoutes.each {
+                    if (it == "/") {
+                        if (defaultServiceId != null) {
+                            println("Warning default route already defined by ${serviceId}")
+                        }
+                        defaultServiceId = serviceId
+                    } else {
+                        if (routes.containsKey(it)) {
+                            println("Warning routes contains entry for ${it}: "+routes[it])
+                        }
+                        routes[it] = serviceId
+                    }
                 }
+            } else {
+                //TODO: log warning
             }
         }
 
-        // route if a value was found in the request
-        if(env != null) {
-            ctx.setRouteHost(new URL(hosts.get(env)));
-            ctx.addOriginResponseHeader("X-Env", env);
+        if (defaultServiceId) {
+            routes["/"] = defaultServiceId
+        }
+
+        RequestContext ctx = RequestContext.getCurrentContext()
+
+
+        def requestURI = ctx.getRequest().getRequestURI()
+
+        def serviceId = null;
+        routes.keySet().find { path ->
+            //TODO: use ant matchers?
+            if (requestURI.startsWith(path)) {
+                serviceId = routes[path]
+                return true
+            }
+            return false
+        }
+
+        // ctx.getRequestQueryParams();
+        //def request = ctx.getRequest();
+
+        if (serviceId != null) {
+            //TODO: use ribbon with serviceId and consul server lookup
+            def catalogClient = getBean(CatalogClient.class)
+            def nodes = catalogClient.getServiceNodes(serviceId)
+
+            def node = nodes.find()
+
+            // route if a node was found
+            if (node) {
+                //TODO: use tags for https
+                def url = "http://${node.address}:${node.servicePort}"
+                ctx.setRouteHost(new URL(url));
+                ctx.addOriginResponseHeader("X-Halfpipe-ServiceId", serviceId);
+            }
         }
     }
 }

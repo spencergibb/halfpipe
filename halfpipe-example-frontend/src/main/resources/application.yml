@@ -9,6 +9,8 @@ shell:
 application:
   id: exampleFrontend
   prefix: /v1
+  routes:
+    - /
 
 consul:
   clients:

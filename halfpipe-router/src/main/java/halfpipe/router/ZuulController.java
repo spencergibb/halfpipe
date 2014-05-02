@@ -15,9 +15,9 @@ import javax.servlet.http.HttpServletResponse;
  * Time: 9:12 PM
  */
 @Controller
-public class ZuulEndpoint extends AbstractServletWrappingController {
+public class ZuulController extends AbstractServletWrappingController {
 
-    public ZuulEndpoint() {
+    public ZuulController() {
         super(ZuulServlet.class, "zuulServlet");
     }
 

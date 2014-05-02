@@ -55,8 +55,8 @@ public class ConsulContextRefreshedListener implements ApplicationListener<Conte
                 ObjectMapper objectMapper = context.getBean(ObjectMapper.class);
 
                 String key = String.format("routing/%s", appProps.getId());
-                String value = objectMapper.writeValueAsString(appProps.getRoutes());
-                kvClient.put(key, value);
+                //TODO: get routes from jax-rs and spring mvc
+                kvClient.put(key, appProps.getRoutes());
             } catch (Exception e) {
                 LOGGER.error("Error writing routes for app: "+appProps.getId(), e);
             }

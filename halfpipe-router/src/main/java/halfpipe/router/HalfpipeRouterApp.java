@@ -1,6 +1,7 @@
 package halfpipe.router;
 
 import com.netflix.zuul.context.ContextLifecycleFilter;
+import halfpipe.util.BeanUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.context.embedded.FilterRegistrationBean;
@@ -10,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -22,6 +24,9 @@ import java.util.Collection;
 @EnableAutoConfiguration
 @ComponentScan(basePackageClasses = HalfpipeRouterApp.class)
 public class HalfpipeRouterApp extends WebSecurityConfigurerAdapter {
+
+    @Inject
+    BeanUtils beanUtils;
 
     @Bean
     public FilterRegistrationBean contextLifecycleFilter() {
@@ -40,8 +45,8 @@ public class HalfpipeRouterApp extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    ZuulEndpoint zuulEndpoint() {
-        return new ZuulEndpoint();
+    ZuulController zuulController() {
+        return new ZuulController();
     }
 
     @Override

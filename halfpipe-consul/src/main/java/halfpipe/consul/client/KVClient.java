@@ -18,8 +18,11 @@ public interface KVClient {
     @RequestLine("GET /v1/kv/?recurse=true")
     List<KeyValue> getKeyValueRecurse();
 
+    @RequestLine("GET /v1/kv/{key}?recurse=true")
+    List<KeyValue> getKeyValueRecurse(@Named("key") String key);
+
     @RequestLine("PUT /v1/kv/{key}")
-    boolean put(@Named("key")String key, String value);
+    boolean put(@Named("key")String key, Object value);
 
     @RequestLine("DELETE /v1/kv/{key}")
     void delete(@Named("key")String key);

@@ -52,7 +52,6 @@ public class ConsulContextRefreshedListener implements ApplicationListener<Conte
         if (!appProps.getRoutes().isEmpty()) {
             try {
                 KVClient kvClient = context.getBean(KVClient.class);
-                ObjectMapper objectMapper = context.getBean(ObjectMapper.class);
 
                 String key = String.format("routing/%s", appProps.getId());
                 //TODO: get routes from jax-rs and spring mvc

@@ -33,7 +33,7 @@ class PreDecorationFilter extends SpringFilter {
 
         def routingList = kvClient.getKeyValueRecurse("routing")
 
-        //TODO: cache
+        //TODO: cache w/polling or use archaius callback
         def routes = new LinkedHashMap<String, String>() //preserve ordering
         def defaultServiceId = null;
 

@@ -21,6 +21,7 @@ public class EndpointDelegate implements Endpoint<Object> {
     }
 
     public EndpointDelegate(EndpointProperties props) {
+        assert props.getId() != null;
         id = props.getId();
         enabled = props.isEnabled();
         sensitive = props.isSensitive();

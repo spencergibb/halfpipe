@@ -35,6 +35,11 @@ public class ConsulAutoConfig extends ClientConfigurer {
     }
 
     @Bean
+    ConsulEndpointProps consulEndpointProps() {
+        return new ConsulEndpointProps();
+    }
+
+    @Bean
     PropertiesSourceFactory consulPropertiesSourceFactory() {
         return new ConsulPropertiesSourceFactory();
     }
@@ -46,7 +51,7 @@ public class ConsulAutoConfig extends ClientConfigurer {
 
     @Bean
     ConsulEndpoint consulEndpoint() {
-        return new ConsulEndpoint(consulProperties());
+        return new ConsulEndpoint(consulEndpointProps());
     }
 
     @Bean

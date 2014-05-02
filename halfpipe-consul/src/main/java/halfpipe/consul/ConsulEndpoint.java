@@ -34,7 +34,7 @@ public class ConsulEndpoint extends EndpointMvcAdapter {
     AgentClient agentClient;
 
     @Inject
-    public ConsulEndpoint(ConsulProperties properties) {
+    public ConsulEndpoint(ConsulEndpointProps properties) {
         super(new EndpointDelegate(properties));
     }
 

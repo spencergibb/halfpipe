@@ -10,6 +10,6 @@ import lombok.Data;
 @Data
 public class EndpointProperties {
     private String id;
-    private boolean enabled;
-    private boolean sensitive;
+    private boolean enabled = true;
+    private boolean sensitive = false;
 }

@@ -33,8 +33,13 @@ public class SwaggerAutoConfig {
     }
 
     @Bean
+    SwaggerEndpointProps swaggerEndpointProps() {
+        return new SwaggerEndpointProps();
+    }
+
+    @Bean
     SwaggerEndpoint swaggerEndpoint() {
-        return new SwaggerEndpoint(swaggerProperties());
+        return new SwaggerEndpoint(swaggerEndpointProps());
     }
 
     @Bean

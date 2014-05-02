@@ -42,11 +42,14 @@ public class SwaggerEndpoint extends EndpointMvcAdapter {
     @Inject
     private SwaggerConfig swaggerConfig;
 
-    private final SwaggerProperties properties;
+    @Inject
+    private SwaggerProperties properties;
 
-    public SwaggerEndpoint(SwaggerProperties properties) {
-        super(new EndpointDelegate(properties));
-        this.properties = properties;
+    private final SwaggerEndpointProps endpointProps;
+
+    public SwaggerEndpoint(SwaggerEndpointProps endpointProps) {
+        super(new EndpointDelegate(endpointProps));
+        this.endpointProps = endpointProps;
     }
 
     @Override
@@ -116,7 +119,7 @@ public class SwaggerEndpoint extends EndpointMvcAdapter {
     }
 
     private String getApiUrl() {
-        return "/"+properties.getId().get()+ API_DOCS;
+        return "/"+endpointProps.getId().get()+ API_DOCS;
     }
 
     private static <T> scala.collection.immutable.List<T> scalaList(Iterable<T> javaList) {

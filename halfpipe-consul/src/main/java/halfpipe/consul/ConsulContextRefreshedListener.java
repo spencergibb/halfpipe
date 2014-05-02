@@ -1,6 +1,8 @@
 package halfpipe.consul;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import halfpipe.consul.client.AgentClient;
+import halfpipe.consul.client.KVClient;
 import halfpipe.consul.model.Service;
 import halfpipe.core.ApplicationProperties;
 import org.slf4j.Logger;
@@ -25,12 +27,12 @@ public class ConsulContextRefreshedListener implements ApplicationListener<Conte
         if (!consulProperties.isEnabled())
             return;
 
-        ApplicationProperties applicationProperties = context.getBean(ApplicationProperties.class);
+        ApplicationProperties appProps = context.getBean(ApplicationProperties.class);
         ServerProperties serverProperties = context.getBean(ServerProperties.class);
         AgentClient agentClient = context.getBean(AgentClient.class);
 
         Service service = new Service();
-        service.setName(applicationProperties.getId());
+        service.setName(appProps.getId());
         Integer port = serverProperties.getPort();
         if (port == null) {
             port = 8080;
@@ -43,6 +45,21 @@ public class ConsulContextRefreshedListener implements ApplicationListener<Conte
 
         //TODO: add support for Check
 
+        LOGGER.info("Registering service {} with consul", appProps.getId());
+
         agentClient.register(service);
+
+        if (!appProps.getRoutes().isEmpty()) {
+            try {
+                KVClient kvClient = context.getBean(KVClient.class);
+                ObjectMapper objectMapper = context.getBean(ObjectMapper.class);
+
+                String key = String.format("routing/%s", appProps.getId());
+                String value = objectMapper.writeValueAsString(appProps.getRoutes());
+                kvClient.put(key, value);
+            } catch (Exception e) {
+                LOGGER.error("Error writing routes for app: "+appProps.getId(), e);
+            }
+        }
     }
 }

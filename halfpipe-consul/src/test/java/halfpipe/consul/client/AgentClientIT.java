@@ -26,6 +26,10 @@ import static org.testng.Assert.*;
 })
 public class AgentClientIT extends AbstractTestNGSpringContextTests {
 
+    static {
+        System.setProperty("application.id", "testId");
+    }
+
     @Autowired
     AgentClient client;
 

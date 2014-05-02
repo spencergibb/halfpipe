@@ -5,6 +5,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * User: spencergibb
@@ -19,4 +21,6 @@ public class ApplicationProperties {
 
     @NotNull
     private String id;
+
+    private List<String> routes = new ArrayList<>();
 }

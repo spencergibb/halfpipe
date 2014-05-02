@@ -1,9 +1,10 @@
 package halfpipe.consul.client;
 
-import halfpipe.core.HalfpipeAutoConfig;
+import halfpipe.client.ClientAutoConfig;
 import halfpipe.consul.ConsulAutoConfig;
 import halfpipe.consul.TestConfiguration;
 import halfpipe.consul.model.KeyValue;
+import halfpipe.core.HalfpipeAutoConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
@@ -13,14 +14,20 @@ import java.util.List;
 
 import static org.testng.Assert.*;
 
-@SpringApplicationConfiguration(classes = {TestConfiguration.class,
+@SpringApplicationConfiguration(classes = {
         ConsulAutoConfig.class,
-        HalfpipeAutoConfig.class
+        HalfpipeAutoConfig.class,
+        ClientAutoConfig.class,
+        TestConfiguration.class,
 })
 public class KVClientIT extends AbstractTestNGSpringContextTests {
 
     @Autowired
     KVClient kvClient;
+
+    static {
+        System.setProperty("application.id", "testId");
+    }
 
     @Test
     public void testPut() {

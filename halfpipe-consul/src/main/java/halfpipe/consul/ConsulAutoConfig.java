@@ -45,6 +45,11 @@ public class ConsulAutoConfig extends ClientConfigurer {
     }
 
     @Bean
+    ConsulEndpoint consulEndpoint() {
+        return new ConsulEndpoint(consulProperties());
+    }
+
+    @Bean
     ShutdownDeregister shutdownDeregister() {
         return new ShutdownDeregister();
     }

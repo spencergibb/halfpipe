@@ -2,12 +2,16 @@ package halfpipe.client;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Supplier;
-import com.netflix.hystrix.*;
+import com.netflix.hystrix.HystrixCommand;
 import com.netflix.hystrix.HystrixCommand.Setter;
+import com.netflix.hystrix.HystrixCommandGroupKey;
+import com.netflix.hystrix.HystrixCommandKey;
+import com.netflix.hystrix.HystrixExecutable;
 import feign.InvocationHandlerFactory;
 import feign.MethodHandler;
 import feign.Target;
-import org.springframework.context.ApplicationContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import rx.Observable;
 
 import java.lang.reflect.InvocationHandler;
@@ -23,9 +27,9 @@ import static halfpipe.util.BeanUtils.*;
  * User: spencergibb
  * Date: 4/11/14
  * Time: 10:44 PM
- * TODO: use spring and archaius to wire up setter and getfallback using HalfpipeClientConfigurer?
  */
 public class HystrixInvocationHandler implements InvocationHandler {
+    private static Logger LOG = LoggerFactory.getLogger(HystrixInvocationHandler.class);
 
     public static class Factory implements InvocationHandlerFactory {
         @Override
@@ -147,7 +151,9 @@ public class HystrixInvocationHandler implements InvocationHandler {
                 Supplier supplier = fallback.get();
                 return supplier.get();
             }
-            throw new UnsupportedOperationException("No fallback available for "+name);
+            Throwable e = getFailedExecutionException();
+            LOG.debug("No fallback with exception", e);
+            throw new UnsupportedOperationException("No fallback available for "+name, e);
         }
     }
 }

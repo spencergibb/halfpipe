@@ -1,7 +1,9 @@
 package halfpipe.consul;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import halfpipe.core.ApplicationProperties;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.ConversionService;
@@ -37,5 +39,12 @@ public class TestConfiguration {
     @Bean
     public ServerProperties serverProperties() {
         return new ServerProperties();
+    }
+
+    @Bean
+    public ApplicationProperties halfpipeProperties(ApplicationContext context) {
+        ApplicationProperties appProps = new ApplicationProperties();
+        appProps.setId("testId");
+        return appProps;
     }
 }

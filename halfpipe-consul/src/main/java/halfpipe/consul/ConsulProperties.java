@@ -1,9 +1,11 @@
 package halfpipe.consul;
 
+import halfpipe.web.EndpointProperties;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,13 +15,15 @@ import java.util.List;
  */
 @ConfigurationProperties("consul")
 @Data
-public class ConsulProperties {
+public class ConsulProperties extends EndpointProperties {
     @NotNull
     private String url = "http://localhost:8500";
 
-    private List<String> tags;
+    private List<String> tags = new ArrayList<>();
 
     private boolean enabled = true;
 
-    private List<String> clients;
+    private List<String> clients = new ArrayList<>();
+
+    protected String id = "consul";
 }

@@ -25,6 +25,10 @@ import static org.testng.Assert.*;
 })
 public class CatalogClientIT extends AbstractTestNGSpringContextTests {
 
+    static {
+        System.setProperty("application.id", "testId");
+    }
+
     @Autowired
     CatalogClient client;
 

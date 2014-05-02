@@ -1,27 +1,29 @@
 package halfpipe.consul;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import halfpipe.consul.client.AgentClient;
 import halfpipe.consul.client.KVClient;
 import halfpipe.consul.model.Service;
 import halfpipe.core.ApplicationProperties;
+import halfpipe.util.RunOnceApplicationListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * User: spencergibb
  * Date: 4/18/14
  * Time: 3:57 PM
  */
-public class ConsulContextRefreshedListener implements ApplicationListener<ContextRefreshedEvent> {
+public class ConsulContextRefreshedListener extends RunOnceApplicationListener<ContextRefreshedEvent> {
     private static final Logger LOGGER = LoggerFactory.getLogger(ConsulContextRefreshedListener.class);
 
     @Override
-    public void onApplicationEvent(ContextRefreshedEvent event) {
+    public void onApplicationEventInternal(ContextRefreshedEvent event) {
         ApplicationContext context = event.getApplicationContext();
         ConsulProperties consulProperties = context.getBean(ConsulProperties.class);
         if (!consulProperties.isEnabled())
@@ -40,14 +42,21 @@ public class ConsulContextRefreshedListener implements ApplicationListener<Conte
         service.setPort(port);
         service.setTags(consulProperties.getTags());
 
-        String managementPort = context.getEnvironment().getProperty("management.port", (String) null);
-        //TODO: add support for management port: tags? convention
-
         //TODO: add support for Check
 
-        LOGGER.info("Registering service {} with consul", appProps.getId());
+        register(agentClient, service);
 
-        agentClient.register(service);
+        String managementPort = context.getEnvironment().getProperty("management.port", (String) null);
+        if (managementPort != null) {
+            Service management = new Service();
+            management.setName(appProps.getId() + "/management"); //TODO: configurable management suffix
+            management.setPort(Integer.parseInt(managementPort));
+            List<String> tags = new ArrayList<>(consulProperties.getTags());
+            tags.add("management"); //TODO: configurable management tag
+            management.setTags(tags);
+
+            register(agentClient, management);
+        }
 
         if (!appProps.getRoutes().isEmpty()) {
             try {
@@ -57,8 +66,13 @@ public class ConsulContextRefreshedListener implements ApplicationListener<Conte
                 //TODO: get routes from jax-rs and spring mvc
                 kvClient.put(key, appProps.getRoutes());
             } catch (Exception e) {
-                LOGGER.error("Error writing routes for app: "+appProps.getId(), e);
+                LOGGER.error("Error writing routes for app: " + appProps.getId(), e);
             }
         }
+    }
+
+    private void register(AgentClient agentClient, Service service) {
+        LOGGER.info("Registering service with consul: {}", service.toString());
+        agentClient.register(service);
     }
 }

@@ -1,4 +1,6 @@
-#management.port=8081
+management:
+  port: 8081
+
 security:
   user:
     name: admin

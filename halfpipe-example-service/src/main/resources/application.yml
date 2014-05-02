@@ -22,7 +22,8 @@ consul:
 
 swagger:
   apiVersion: 1
-  basePath: http://localhost:8080/v1
+  #TODO: lookup host?
+  basePath: http://service.dev:8080/v1
 
 logging:
   level: INFO

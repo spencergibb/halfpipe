@@ -8,6 +8,7 @@ import org.springframework.boot.context.embedded.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
@@ -22,11 +23,17 @@ import java.util.Collection;
  */
 @Configuration
 @EnableAutoConfiguration
+@EnableScheduling
 @ComponentScan(basePackageClasses = HalfpipeRouterApp.class)
 public class HalfpipeRouterApp extends WebSecurityConfigurerAdapter {
 
     @Inject
     BeanUtils beanUtils;
+
+    @Bean
+    RouterProperties routerProperties() {
+        return new RouterProperties();
+    }
 
     @Bean
     public FilterRegistrationBean contextLifecycleFilter() {

@@ -5,6 +5,8 @@ import halfpipe.client.ClientConfigurer;
 
 import java.net.URI;
 
+import static halfpipe.consul.loadbalancer.ConsulServerList.setServiceListClass;
+
 /**
  * User: spencergibb
  * Date: 4/21/14
@@ -18,6 +20,7 @@ public class ConsulConfigurer extends ClientConfigurer {
         //return client.target(PostClient.class, "http://localhost:8080");
         String name = URI.create(schemeName).getHost();
         //TODO: figure out how to set this property dynamically
+        setServiceListClass(name);
         //System.setProperty(name + ".ribbon.NIWSServerListClassName", ConsulServerList.class.getName());
         LoadBalancingTarget<T> target = LoadBalancingTarget.create(type, schemeName);
         return target;

@@ -2,7 +2,6 @@ package filters.pre
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.netflix.zuul.context.RequestContext
-import halfpipe.consul.client.CatalogClient
 import halfpipe.consul.client.KVClient
 import halfpipe.router.SpringFilter
 import org.slf4j.Logger
@@ -84,25 +83,11 @@ class PreDecorationFilter extends SpringFilter {
             return false
         }
 
-        // ctx.getRequestQueryParams();
-        //def request = ctx.getRequest();
-
         if (serviceId != null) {
             // set serverId for use in filters.route.RibbonRequest
             ctx.set("serviceId", serviceId)
             ctx.setRouteHost(null)
             ctx.addOriginResponseHeader("X-Halfpipe-ServiceId", serviceId);
-            /*def catalogClient = getBean(CatalogClient.class)
-            def nodes = catalogClient.getServiceNodes(serviceId)
-
-            def node = nodes.find()
-
-            // route if a node was found
-            if (node) {
-                //TODO: use tags for https
-                def url = "http://${node.address}:${node.servicePort}"
-                ctx.setRouteHost(new URL(url));
-            }*/
         }
     }
 }

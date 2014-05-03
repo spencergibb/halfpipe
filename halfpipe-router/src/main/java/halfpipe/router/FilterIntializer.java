@@ -7,9 +7,8 @@ import com.netflix.zuul.groovy.GroovyFileFilter;
 import com.netflix.zuul.monitoring.MonitoringHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.EnvironmentAware;
-import org.springframework.core.env.Environment;
 
+import javax.inject.Inject;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.http.HttpSessionEvent;
@@ -21,10 +20,12 @@ import javax.servlet.http.HttpSessionListener;
  * Time: 9:23 PM
  * TODO:  .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
  */
-public class FilterIntializer implements HttpSessionListener, ServletContextListener, EnvironmentAware {
+public class FilterIntializer implements HttpSessionListener, ServletContextListener {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FilterIntializer.class);
-    private Environment environment;
+
+    @Inject
+    RouterProperties props;
 
     @Override
     public void sessionCreated(HttpSessionEvent se) {
@@ -54,7 +55,7 @@ public class FilterIntializer implements HttpSessionListener, ServletContextList
         //TODO: pluggable filter initialzer
         FilterLoader.getInstance().setCompiler(new GroovyCompiler());
 
-        final String scriptRoot = environment.getProperty("zuul.filter.root");
+        final String scriptRoot = props.getFilterRoot();
         LOGGER.info("Using file system script: " + scriptRoot);
 
         try {
@@ -68,10 +69,5 @@ public class FilterIntializer implements HttpSessionListener, ServletContextList
         catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @Override
-    public void setEnvironment(Environment environment) {
-        this.environment = environment;
     }
 }

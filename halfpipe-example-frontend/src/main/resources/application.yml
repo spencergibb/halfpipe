@@ -12,10 +12,6 @@ application:
   routes:
     - /
 
-consul:
-  clients:
-    - exampleService
-
 exampleService:
   ribbon:
     #listOfServers: 192.168.33.1:8080

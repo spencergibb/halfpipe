@@ -5,7 +5,6 @@ import com.netflix.client.ClientFactory
 import com.netflix.client.IClient
 import com.netflix.client.http.HttpRequest
 import com.netflix.client.http.HttpResponse
-import com.netflix.config.ConfigurationManager
 import com.netflix.hystrix.exception.HystrixRuntimeException
 import com.netflix.niws.client.http.RestClient
 import com.netflix.zuul.ZuulFilter
@@ -14,7 +13,6 @@ import com.netflix.zuul.context.RequestContext
 import com.netflix.zuul.exception.ZuulException
 import com.netflix.zuul.util.HTTPRequestUtils
 import com.sun.jersey.core.util.MultivaluedMapImpl
-import halfpipe.consul.loadbalancer.ConsulServerList
 import halfpipe.router.RibbonCommand
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -24,6 +22,7 @@ import javax.ws.rs.core.MultivaluedMap
 import java.util.zip.GZIPInputStream
 
 import static HttpRequest.Verb
+import static halfpipe.consul.loadbalancer.ConsulServerList.setServiceListClass
 
 class RibbonRequest extends ZuulFilter {
 
@@ -55,7 +54,7 @@ class RibbonRequest extends ZuulFilter {
         Object requestEntity = getRequestBody(request)
 
         def serviceId = context.get("serviceId")
-        ConfigurationManager.configInstance.setProperty(serviceId+".ribbon.NIWSServerListClassName", ConsulServerList.class.getName())
+        setServiceListClass(serviceId)
         IClient restClient = ClientFactory.getNamedClient(serviceId);
 
         String uri = request.getRequestURI()
@@ -108,19 +107,6 @@ class RibbonRequest extends ZuulFilter {
     def HttpResponse forward(RestClient restClient, Verb verb, uri, MultivaluedMap<String, String> headers,
                              MultivaluedMap<String, String> params, InputStream requestEntity) {
         debug(restClient, verb, uri, headers, params, requestEntity)
-
-        /*  restClient.apacheHttpClient.params.setVirtualHost(headers.getFirst("host"))
-
-        String route = RequestContext.getCurrentContext().route
-        if (route == null) {
-            String path = RequestContext.currentContext.requestURI
-            if (path == null) {
-                path = RequestContext.currentContext.getRequest() getRequestURI()
-            }
-            route = "route" //todo get better name
-        }
-        route = route.replace("/", "_")*/
-
 
         RibbonCommand command = new RibbonCommand(restClient, verb, uri, headers, params, requestEntity);
         try {

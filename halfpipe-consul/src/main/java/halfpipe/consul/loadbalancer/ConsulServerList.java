@@ -2,6 +2,7 @@ package halfpipe.consul.loadbalancer;
 
 import com.google.common.base.Function;
 import com.netflix.client.config.IClientConfig;
+import com.netflix.config.ConfigurationManager;
 import com.netflix.loadbalancer.AbstractServerList;
 import com.netflix.loadbalancer.Server;
 import halfpipe.consul.client.CatalogClient;
@@ -56,5 +57,10 @@ public class ConsulServerList extends AbstractServerList<Server> {
         });
 
         return newArrayList(servers);
+    }
+
+    public static void setServiceListClass(String serviceId) {
+        ConfigurationManager.getConfigInstance().setProperty(serviceId+".ribbon.NIWSServerListClassName",
+                ConsulServerList.class.getName());
     }
 }

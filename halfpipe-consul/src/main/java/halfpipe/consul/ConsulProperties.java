@@ -21,6 +21,4 @@ public class ConsulProperties {
     private List<String> tags = new ArrayList<>();
 
     private boolean enabled = true;
-
-    private List<String> clients = new ArrayList<>();
 }

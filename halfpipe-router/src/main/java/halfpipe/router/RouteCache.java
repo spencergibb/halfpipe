@@ -11,7 +11,10 @@ import javax.inject.Inject;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
+
+import static java.util.Collections.*;
 
 /**
  * User: spencergibb
@@ -30,9 +33,9 @@ public class RouteCache {
     @Inject
     ObjectMapper objectMapper;
 
-    AtomicReference<LinkedHashMap<String, String>> routesRef = new AtomicReference<>(new LinkedHashMap<String, String>());
+    AtomicReference<Map<String, String>> routesRef = new AtomicReference<Map<String, String>>(new LinkedHashMap<String, String>());
 
-    public LinkedHashMap<String, String> getRoutes() {
+    public Map<String, String> getRoutes() {
         return routesRef.get();
     }
 
@@ -74,7 +77,7 @@ public class RouteCache {
             routes.put(DEFAULT_ROUTE, defaultServiceId);
         }
 
-        routesRef.set(routes);
+        routesRef.set(unmodifiableMap(routes));
 
         logger.info("Completed refresh of route cache");
     }

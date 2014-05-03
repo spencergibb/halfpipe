@@ -11,3 +11,7 @@ server:
 
 application:
   id: halfpipeRouter
+
+#has to be here so it can be picked up in @Value
+#router:
+#  cacheRefresh: 1100

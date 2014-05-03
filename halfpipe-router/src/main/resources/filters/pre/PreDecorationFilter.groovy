@@ -1,8 +1,7 @@
 package filters.pre
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.netflix.zuul.context.RequestContext
-import halfpipe.consul.client.KVClient
+import halfpipe.router.RouteCache
 import halfpipe.router.SpringFilter
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -30,50 +29,14 @@ class PreDecorationFilter extends SpringFilter {
 
     @Override
     Object run() {
-        def kvClient = getBean(KVClient.class)
-        def objectMapper = getBean(ObjectMapper.class)
-
-        def routingList = kvClient.getKeyValueRecurse("routing")
-
-        //TODO: cache w/polling or use archaius callback
-        def routes = new LinkedHashMap<String, String>() //preserve ordering
-        def defaultServiceId = null;
-
-        routingList.each { routeDef ->
-            def key = routeDef.key
-            def parts = key.tokenize('/');
-            if (parts.size() == 2) {
-                def serviceId = parts[1]
-                def decoded = routeDef.decoded
-                def serviceRoutes = objectMapper.readValue(decoded, List.class)
-                serviceRoutes.each {
-                    if (it == "/") {
-                        if (defaultServiceId != null) {
-                            LOG.warn('Default route already defined by {}', serviceId)
-                        }
-                        defaultServiceId = serviceId
-                    } else {
-                        if (routes.containsKey(it)) {
-                            LOG.warn('Routes contains entry for {}: ', it, routes[it])
-                        }
-                        routes[it] = serviceId
-                    }
-                }
-            } else {
-                LOG.warn('Invalid route definition key {}, routes {}', key, routeDef.decoded)
-            }
-        }
-
-        if (defaultServiceId) {
-            routes["/"] = defaultServiceId
-        }
+        def routeCache = getBean(RouteCache.class)
 
         RequestContext ctx = RequestContext.getCurrentContext()
-
 
         def requestURI = ctx.getRequest().getRequestURI()
 
         def serviceId = null;
+        def routes = routeCache.getRoutes()
         routes.keySet().find { path ->
             //TODO: use ant matchers?
             if (requestURI.startsWith(path)) {

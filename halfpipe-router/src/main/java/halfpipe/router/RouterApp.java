@@ -24,8 +24,8 @@ import java.util.Collection;
 @Configuration
 @EnableAutoConfiguration
 @EnableScheduling
-@ComponentScan(basePackageClasses = HalfpipeRouterApp.class)
-public class HalfpipeRouterApp extends WebSecurityConfigurerAdapter {
+@ComponentScan(basePackageClasses = RouterApp.class)
+public class RouterApp extends WebSecurityConfigurerAdapter {
 
     @Inject
     BeanUtils beanUtils;
@@ -33,6 +33,11 @@ public class HalfpipeRouterApp extends WebSecurityConfigurerAdapter {
     @Bean
     RouterProperties routerProperties() {
         return new RouterProperties();
+    }
+
+    @Bean
+    RouteCache routeCache() {
+        return new RouteCache();
     }
 
     @Bean
@@ -64,6 +69,6 @@ public class HalfpipeRouterApp extends WebSecurityConfigurerAdapter {
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(HalfpipeRouterApp.class, args);
+        SpringApplication.run(RouterApp.class, args);
     }
 }

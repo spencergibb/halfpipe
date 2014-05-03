@@ -5,11 +5,14 @@ import com.netflix.zuul.context.RequestContext
 import halfpipe.consul.client.CatalogClient
 import halfpipe.consul.client.KVClient
 import halfpipe.router.SpringFilter
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 /**
  * @author mhawthorne
  */
 class PreDecorationFilter extends SpringFilter {
+    private static Logger LOG = LoggerFactory.getLogger(PreDecorationFilter.class);
 
     @Override
     int filterOrder() {
@@ -47,18 +50,18 @@ class PreDecorationFilter extends SpringFilter {
                 serviceRoutes.each {
                     if (it == "/") {
                         if (defaultServiceId != null) {
-                            println("Warning default route already defined by ${serviceId}")
+                            LOG.warn('Default route already defined by {}', serviceId)
                         }
                         defaultServiceId = serviceId
                     } else {
                         if (routes.containsKey(it)) {
-                            println("Warning routes contains entry for ${it}: "+routes[it])
+                            LOG.warn('Routes contains entry for {}: ', it, routes[it])
                         }
                         routes[it] = serviceId
                     }
                 }
             } else {
-                //TODO: log warning
+                LOG.warn('Invalid route definition key {}, routes {}', key, routeDef.decoded)
             }
         }
 
@@ -85,8 +88,11 @@ class PreDecorationFilter extends SpringFilter {
         //def request = ctx.getRequest();
 
         if (serviceId != null) {
-            //TODO: use ribbon with serviceId and consul server lookup
-            def catalogClient = getBean(CatalogClient.class)
+            // set serverId for use in filters.route.RibbonRequest
+            ctx.set("serviceId", serviceId)
+            ctx.setRouteHost(null)
+            ctx.addOriginResponseHeader("X-Halfpipe-ServiceId", serviceId);
+            /*def catalogClient = getBean(CatalogClient.class)
             def nodes = catalogClient.getServiceNodes(serviceId)
 
             def node = nodes.find()
@@ -96,8 +102,7 @@ class PreDecorationFilter extends SpringFilter {
                 //TODO: use tags for https
                 def url = "http://${node.address}:${node.servicePort}"
                 ctx.setRouteHost(new URL(url));
-                ctx.addOriginResponseHeader("X-Halfpipe-ServiceId", serviceId);
-            }
+            }*/
         }
     }
 }

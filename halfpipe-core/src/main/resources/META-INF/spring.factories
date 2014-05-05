@@ -4,6 +4,7 @@ halfpipe.core.HalfpipeAutoConfig
 
 # Application Listeners
 #org.springframework.context.ApplicationListener=\
+#org.springframework.boot.actuate.system.ApplicationPidListener
 #halfpipe.properties.ArchaiusApplicationListener
 
 # ProperySource Loaders

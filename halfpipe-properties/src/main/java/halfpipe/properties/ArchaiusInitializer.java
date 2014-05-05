@@ -48,6 +48,9 @@ public class ArchaiusInitializer {
             System.setProperty("archaius.configurationSource.defaultFileName", defaultFileName);
 
             String id = context.getEnvironment().getProperty("application.id");
+            if (id == null) {
+                throw new IllegalStateException("application.id may not be null");
+            }
             //this is deprecated, but currently it seams the only way to set it initially
             System.setProperty(DEPLOYMENT_APPLICATION_ID_PROPERTY, id);
 

@@ -2,6 +2,16 @@ package halfpipe.core;
 
 import halfpipe.util.BeanUtils;
 import halfpipe.web.HystrixStreamEndpoint;
+import halfpipe.web.WarController;
+import halfpipe.web.WarHandlerMapping;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.webapp.WebAppContext;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
+import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
+import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
+import org.springframework.boot.context.embedded.jetty.JettyEmbeddedServletContainerFactory;
+import org.springframework.boot.context.embedded.jetty.JettyServerCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.HandlerMapping;
@@ -11,6 +21,7 @@ import org.springframework.web.servlet.handler.AbstractHandlerMapping;
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Collection;
 
 /**
  * User: spencergibb
@@ -22,6 +33,8 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Configuration
 public class HalfpipeAutoConfig {
+    @Inject
+    ApplicationProperties properties;
 
     @Inject
     BeanUtils beanUtils;
@@ -51,6 +64,50 @@ public class HalfpipeAutoConfig {
         };
         return handlerMapping;
     }
+
+    @Bean
+    @ConditionalOnExpression("'${application.embeddedWar}' != null")
+    WebAppContext webAppContext () {
+        WebAppContext webapp = new WebAppContext();
+        //webapp.setContextPath(properties.getEmbeddedWar().getPath());
+        webapp.setContextPath("/");
+        webapp.setWar(properties.getEmbeddedWar().getLocation());
+        webapp.setExtractWAR(false);
+        return webapp;
+    }
+
+    @Bean
+    @ConditionalOnBean(WebAppContext.class)
+    WarController warController() throws Exception {
+        return new WarController(properties.getEmbeddedWar(), webAppContext());
+    }
+
+    @Bean
+    @ConditionalOnBean(WebAppContext.class)
+    public EmbeddedServletContainerCustomizer containerCustomizer(final WebAppContext webapp) {
+        return new EmbeddedServletContainerCustomizer() {
+
+            @Override
+            public void customize(ConfigurableEmbeddedServletContainer containerFactory) {
+                if (containerFactory instanceof JettyEmbeddedServletContainerFactory) {
+                    JettyEmbeddedServletContainerFactory factory = (JettyEmbeddedServletContainerFactory) containerFactory;
+                    factory.addServerCustomizers(new JettyServerCustomizer() {
+                        @Override
+                        public void customize(Server server) {
+                            webapp.setServer(server);
+                        }
+                    });
+                }
+            }
+        };
+    }
+
+    @Bean
+    @ConditionalOnBean(WebAppContext.class)
+    WarHandlerMapping warHandlerMapping(Collection<? extends WarController> controllers) {
+        return new WarHandlerMapping(controllers);
+    }
+
 
     private class LocalConfigurer extends DefaultServletHandlerConfigurer {
         public LocalConfigurer(ServletContext servletContext) {

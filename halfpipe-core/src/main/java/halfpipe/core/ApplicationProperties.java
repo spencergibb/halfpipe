@@ -1,5 +1,6 @@
 package halfpipe.core;
 
+import halfpipe.web.EmbeddedWar;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
@@ -23,4 +24,7 @@ public class ApplicationProperties {
     private String id;
 
     private List<String> routes = new ArrayList<>();
+
+    //TODO: list of embedded wars
+    private EmbeddedWar embeddedWar;
 }

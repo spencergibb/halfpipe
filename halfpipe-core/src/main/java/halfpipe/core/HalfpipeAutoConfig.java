@@ -65,12 +65,14 @@ public class HalfpipeAutoConfig {
         return handlerMapping;
     }
 
+    //TODO: move embedded war stuff to isolated autoconfig
     @Bean
     @ConditionalOnExpression("'${application.embeddedWar}' != null")
     WebAppContext webAppContext () {
         WebAppContext webapp = new WebAppContext();
         //webapp.setContextPath(properties.getEmbeddedWar().getPath());
-        webapp.setContextPath("/");
+        webapp.setContextPath("/"); //TODO: does this matter?
+        //TODO: if embedded in fat jar, extract
         webapp.setWar(properties.getEmbeddedWar().getLocation());
         webapp.setExtractWAR(false);
         return webapp;
@@ -84,7 +86,7 @@ public class HalfpipeAutoConfig {
 
     @Bean
     @ConditionalOnBean(WebAppContext.class)
-    public EmbeddedServletContainerCustomizer containerCustomizer(final WebAppContext webapp) {
+    public EmbeddedServletContainerCustomizer warContainerCustomizer(final WebAppContext webapp) {
         return new EmbeddedServletContainerCustomizer() {
 
             @Override

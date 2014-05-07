@@ -3,7 +3,7 @@
         {
             "type": "docker",
             "image": "32degrees/consul:0.1",
-            "export_path": "consul_server.tar",
+            "export_path": "consulserver.tar",
             "pull": false
         }
     ],
@@ -19,7 +19,7 @@
     "post-processors": [
         {
             "type": "docker-import",
-            "repository": "32degrees/consul_server",
+            "repository": "32degrees/consulserver",
             "tag": "0.1"
         }
     ]

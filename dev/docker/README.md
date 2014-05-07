@@ -7,15 +7,25 @@ https://github.com/phusion/baseimage-docker
 
     vagrant provision
     vagrant ssh
+    docker pull phusion/baseimage
     cd build/packer/
     packer build consul.json
     packer build consul_server.json
 
+    #skydns https://github.com/crosbymichael/skydock
+
+    docker pull crosbymichael/skydns
+    docker pull crosbymichael/skydock
+    docker_skydns.sh
+    docker_skydock.sh
+
     #bash
     docker run --rm -t -i 32degrees/consul:0.1 /sbin/my_init -- bash -l
 
-    docker_server.sh
-    docker run -d --name consul_server 32degrees/consul_server:0.1 /sbin/my_init --enable-insecure-key
+    docker_consul_server.sh
+
+    dig @172.17.42.1 +short consulserver1.consulserver.dev.halfpipe
+
 
 On laptop
 http://ispyker.blogspot.com/2014/04/accessing-docker-container-private.html
@@ -23,7 +33,9 @@ http://ispyker.blogspot.com/2014/04/accessing-docker-container-private.html
     sudo route -n add 172.17.0.0/16 172.16.0.11
     netstat -nr |grep 172\.17
 
-    consul agent -join 172.17.0.2 -data-dir=/tmp/consul-client -bind 172.16.0.1
+    echo "nameserver 172.17.42.1" | sudo tee /etc/resolver/dev.halfpipe
+
+    consul agent -join consulserver1.consulserver.dev.halfpipe -data-dir=/tmp/consul-client -bind 172.16.0.1
 
 OLD
 

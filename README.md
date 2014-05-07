@@ -42,6 +42,11 @@ Features
     - Logback
     - yaml/properties based configuration
     - dynamically update log levels (based on Archaius)
+- Local dev environment
+    - docker
+    - dns resolution of docker containers (skydns/skydock)
+    - TODO: simple auto scaler?
+    - TODO: asgard points to simple auto scaler and consul (instead of eureka)?
 
 - TODO: metrics influxdb
 - TODO: coda hale metrics to influxdb
@@ -50,6 +55,7 @@ Features
 - TODO: influxdb vagrant deploy
 - TODO: upload to [sonatype](https://docs.sonatype.org/display/Repository/Sonatype+OSS+Maven+Repository+Usage+Guide)
 - TODO: Admin like karyon (Started)
+- TODO: research existing docker platforms: http://stackoverflow.com/questions/18285212/how-to-scale-docker-containers-in-production
 
 Old list:
 

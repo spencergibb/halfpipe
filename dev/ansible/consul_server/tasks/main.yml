@@ -3,5 +3,5 @@
 - name: create consul runit dir
   file: path=/etc/service/consul state=directory owner=root group=root
 
-- name: install cunsul runit script
+- name: install consul runit script
   copy: src=consul_server.sh dest=/etc/service/consul/run owner=root group=root mode=0755

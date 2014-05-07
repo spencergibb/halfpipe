@@ -34,6 +34,7 @@ import static org.junit.Assert.*;
         "application.embeddedWar.enabled=true",
         "application.embeddedWar.path=/hello",
         "application.embeddedWar.location=src/test/resources/helloworld.war",
+        "shell.ssh.enabled=false",
 })
 public class EmbeddedWarTest {
 

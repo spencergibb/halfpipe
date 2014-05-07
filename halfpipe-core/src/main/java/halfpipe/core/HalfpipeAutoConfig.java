@@ -1,10 +1,7 @@
 package halfpipe.core;
 
 import halfpipe.util.BeanUtils;
-import halfpipe.web.EmbeddedWar;
-import halfpipe.web.HystrixStreamEndpoint;
-import halfpipe.web.WarController;
-import halfpipe.web.WarHandlerMapping;
+import halfpipe.web.*;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -40,6 +37,16 @@ public class HalfpipeAutoConfig {
     @Bean
     public ApplicationProperties halfpipeProperties() {
         return new ApplicationProperties();
+    }
+
+    @Bean
+    public ApplicationEndpointProps applicationEndpointProps() {
+        return new ApplicationEndpointProps();
+    }
+
+    @Bean
+    public ApplicationEndpoint applicationEndpoint() {
+        return new ApplicationEndpoint(applicationEndpointProps());
     }
 
     @Bean

@@ -26,5 +26,5 @@ public class ApplicationProperties {
     private List<String> routes = new ArrayList<>();
 
     //TODO: list of embedded wars
-    private EmbeddedWar embeddedWar = new EmbeddedWar();
+    private EmbeddedWar embeddedWar;
 }

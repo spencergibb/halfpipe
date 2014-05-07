@@ -1,0 +1,23 @@
+---
+
+#TODO: move to java8 role
+- name: ensure oracle java ppa is installed
+  apt_repository: repo=ppa:webupd8team/java update_cache=yes
+
+- name: accept java 8 license
+  raw: echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
+
+- name: ensure oracle java 8 is installed
+  apt: pkg={{item}} state=installed
+  with_items:
+     - oracle-java8-installer
+     - oracle-java8-set-default
+
+- name: ensure default-java symlink exists
+  file: src=/usr/lib/jvm/java-8-oracle dest=/usr/lib/jvm/default-java state=link
+
+- name: create java app runit dir
+  file: path=/etc/service/javaapp state=directory owner=root group=root
+
+- name: install consul runit script
+  copy: src=java_app.sh dest=/etc/service/javaapp/run owner=root group=root mode=0755

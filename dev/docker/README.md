@@ -3,7 +3,7 @@ Development environment setup
 
 Ansible, Vagrant, packer.io and docker.io and docker phusion/baseimage
 https://github.com/phusion/baseimage-docker
-
+TODO: move docker_*.sh and packer commands to ansible
 
     vagrant provision
     vagrant ssh
@@ -11,6 +11,7 @@ https://github.com/phusion/baseimage-docker
     cd build/packer/
     packer build consul.json
     packer build consul_server.json
+    packer build java_app.json
 
     #skydns https://github.com/crosbymichael/skydock
 

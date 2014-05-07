@@ -1,0 +1,8 @@
+---
+
+#https://github.com/phusion/baseimage-docker
+- name: create consul runit dir
+  file: path=/etc/service/consulclient state=directory owner=root group=root
+
+- name: install consul runit script
+  copy: src=consul_client.sh dest=/etc/service/consulclient/run owner=root group=root mode=0755

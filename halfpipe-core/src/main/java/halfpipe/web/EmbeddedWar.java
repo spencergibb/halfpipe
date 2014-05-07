@@ -11,4 +11,5 @@ import lombok.Data;
 public class EmbeddedWar {
     private String path;
     private String location;
+    private boolean enable = false;
 }

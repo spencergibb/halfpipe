@@ -1,6 +1,7 @@
 package halfpipe.core;
 
 import halfpipe.util.BeanUtils;
+import halfpipe.web.EmbeddedWar;
 import halfpipe.web.HystrixStreamEndpoint;
 import halfpipe.web.WarController;
 import halfpipe.web.WarHandlerMapping;
@@ -34,9 +35,6 @@ import java.util.Collection;
 @Configuration
 public class HalfpipeAutoConfig {
     @Inject
-    ApplicationProperties properties;
-
-    @Inject
     BeanUtils beanUtils;
 
     @Bean
@@ -67,13 +65,13 @@ public class HalfpipeAutoConfig {
 
     //TODO: move embedded war stuff to isolated autoconfig
     @Bean
-    @ConditionalOnExpression("'${application.embeddedWar}' != null")
+    @ConditionalOnExpression("${application.embeddedWar.enabled:false}")
     WebAppContext webAppContext () {
         WebAppContext webapp = new WebAppContext();
         //webapp.setContextPath(properties.getEmbeddedWar().getPath());
         webapp.setContextPath("/"); //TODO: does this matter?
         //TODO: if embedded in fat jar, extract
-        webapp.setWar(properties.getEmbeddedWar().getLocation());
+        webapp.setWar(halfpipeProperties().getEmbeddedWar().getLocation());
         webapp.setExtractWAR(false);
         return webapp;
     }
@@ -81,7 +79,7 @@ public class HalfpipeAutoConfig {
     @Bean
     @ConditionalOnBean(WebAppContext.class)
     WarController warController() throws Exception {
-        return new WarController(properties.getEmbeddedWar(), webAppContext());
+        return new WarController(halfpipeProperties().getEmbeddedWar(), webAppContext());
     }
 
     @Bean

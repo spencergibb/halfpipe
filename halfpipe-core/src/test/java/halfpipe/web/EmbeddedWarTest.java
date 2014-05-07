@@ -31,6 +31,7 @@ import static org.junit.Assert.*;
 @IntegrationTest({
         "server.port=0",
         "application.id=testEmbeddedWarApp",
+        "application.embeddedWar.enabled=true",
         "application.embeddedWar.path=/hello",
         "application.embeddedWar.location=src/test/resources/helloworld.war",
 })

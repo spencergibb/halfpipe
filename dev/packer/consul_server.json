@@ -10,9 +10,9 @@
 
     "provisioners": [
         {
-            "type": "file",
-            "source": "files/consul_server_config.json",
-            "destination": "/opt/consul.json"
+            "type": "ansible-local",
+            "playbook_file": "../ansible/consul_server.yml",
+            "role_paths": "../ansible/consul_server"
         }
     ],
 

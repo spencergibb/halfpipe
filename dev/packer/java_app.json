@@ -13,8 +13,8 @@
             "type": "ansible-local",
             "playbook_file": "../ansible/java_app.yml",
             "role_paths": [
-                "../ansible/consul_client",
-                "../ansible/java_app"
+                "../ansible/roles/consul_client",
+                "../ansible/roles/java_app"
             ]
         }
     ],

@@ -12,7 +12,7 @@
         {
             "type": "ansible-local",
             "playbook_file": "../ansible/consul_server.yml",
-            "role_paths": "../ansible/consul_server"
+            "role_paths": "../ansible/roles/consul_server"
         }
     ],
 

@@ -1,0 +1,26 @@
+{
+    "builders": [
+        {
+            "type": "docker",
+            "image": "32degrees/javaapp:0.1",
+            "export_path": "halfpiperouter.tar",
+            "pull": false
+        }
+    ],
+
+    "provisioners": [
+        {
+            "type": "file",
+            "source": "app.tar.gz",
+            "destination": "/tmp/app.tar.gz"
+        }
+    ],
+
+    "post-processors": [
+        {
+            "type": "docker-import",
+            "repository": "32degrees/halfpiperouter",
+            "tag": "0.1"
+        }
+    ]
+}

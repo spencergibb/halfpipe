@@ -1,4 +1,5 @@
 ---
+#install dnsutils with apt
 #https://github.com/phusion/baseimage-docker
 - name: create consul runit dir
   file: path=/etc/service/consul state=directory owner=root group=root

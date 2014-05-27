@@ -8,7 +8,7 @@ import com.netflix.hystrix.HystrixCommandGroupKey;
 import com.netflix.hystrix.HystrixCommandKey;
 import com.netflix.hystrix.HystrixExecutable;
 import feign.InvocationHandlerFactory;
-import feign.MethodHandler;
+import feign.InvocationHandlerFactory.MethodHandler;
 import feign.Target;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

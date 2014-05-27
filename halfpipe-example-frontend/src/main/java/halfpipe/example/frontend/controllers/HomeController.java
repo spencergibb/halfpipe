@@ -47,7 +47,7 @@ public class HomeController {
     public Callable<String> exec(Map<String, Object> model) throws Exception {
         return () -> {
             values(model);
-            HystrixExecutable<List<Post>> posts = postClient.postsExecuatble();
+            HystrixExecutable<List<Post>> posts = postClient.postsExecutable();
             model.put("posts", posts.execute());
             return "home";
         };

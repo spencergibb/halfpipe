@@ -14,6 +14,9 @@ import java.util.concurrent.Future;
  * Time: 2:54 PM
  */
 public interface PostClient {
+    @RequestLine("POST /v1/posts")
+    Post create(Post post);
+
     @RequestLine("GET /v1/posts")
     List<Post> posts();
 
@@ -21,7 +24,7 @@ public interface PostClient {
     Future<List<Post>> postsAsync();
 
     @RequestLine("GET /v1/posts")
-    HystrixExecutable<List<Post>> postsExecuatble();
+    HystrixExecutable<List<Post>> postsExecutable();
 
     //TODO: this is odd, should be Observable<Post>, need hint
     @RequestLine("GET /v1/posts")
